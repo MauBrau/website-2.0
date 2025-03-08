@@ -1,18 +1,10 @@
-.App {
+.app {
     text-align: center;
     background-color: #352e34;
     background-image: url('./data/images/texture.png');
 }
 
-.banner {
-    text-align: center;
-    background-color: #2374AB;
-    padding: 10px;
-    color: white;
-}
-
-.header {
-    font-family: "Grand Hotel";
-    font-size: 4.5em;
-    color: #C7E6FC;
+.home {
+    margin-left: 40px;
+    margin-right: 40px;
 }
