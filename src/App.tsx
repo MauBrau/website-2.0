@@ -31,14 +31,13 @@ export const App = () => {
 
     return (
         <div className="app">
-            <div className="home">
-                <ThemeProvider theme={theme}>
-                    <Header></Header>
+            <ThemeProvider theme={theme}>
+                <Header></Header>
+                <div className="home">
                     <div style={ { height: windowState.height }}>content</div>
-                    <Footer></Footer>
-                </ThemeProvider>
-            </div>
-            
+                </div>
+                <Footer></Footer>
+            </ThemeProvider>
         </div>
     );
 }

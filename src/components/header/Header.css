@@ -1,9 +1,9 @@
 .header {
-    position: fixed;
     z-index: 9999;
     width: 100%;
     top: 0px;
     background-color: #00000000;
+    height: 50px;
 }
 
 .name {
@@ -19,5 +19,16 @@
     padding: 10px;
     font-size: 16px;
     font-weight: 500;
-    line-height: 22px;
+    line-height: inherit;
 }
+/* 
+@media screen and (max-width: 500px) {
+    .header a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+    .header-right {
+      float: none;
+    }
+  } */
