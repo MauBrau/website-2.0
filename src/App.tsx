@@ -3,10 +3,10 @@ import React, { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "./redux/hooks";
 import { updateWindow } from "./redux/window/windowSlice";
 
-import { Grid2, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
-import theme from "./components/styling/Style";
+import { theme } from "./components/styling/Style";
 
 export const App = () => {
     const windowState = useAppSelector((state) => state.window);
@@ -34,7 +34,7 @@ export const App = () => {
             <ThemeProvider theme={theme}>
                 <Header></Header>
                 <div className="home">
-                    <div style={ { height: windowState.height }}>content</div>
+                    
                 </div>
                 <Footer></Footer>
             </ThemeProvider>

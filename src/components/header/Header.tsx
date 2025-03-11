@@ -5,7 +5,6 @@ import {
     Box,
     Toolbar,
     Button,
-    Divider,
     List,
     ListItem,
     ListItemText,
@@ -15,7 +14,8 @@ import {
     CssBaseline,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
+import { nameFont, textFont } from "../styling/Style";
 
 const pages = ["resume", "projects", "contact"];
 const drawerWidth = 240;
@@ -27,25 +27,26 @@ function Header() {
     };
 
     const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }} >
+        <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
             <List>
                 {pages.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: "center" }}>
+                        <ListItemButton sx={{ textAlign: "center", color: "primary.main" }}>
                             <ListItemText primary={item} />
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
+            
         </Box>
     );
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <AppBar
                 component="nav"
-                position="static"
+                position="fixed"
                 color="transparent"
                 elevation={0}
             >
@@ -57,26 +58,37 @@ function Header() {
                         onClick={handleDrawerToggle}
                         sx={{ mr: 2, display: { sm: "none" } }}
                     >
-                        <MenuIcon />
+                        <MenuIcon color="primary"/>
                     </IconButton>
                     <Typography
-                        variant="h4"
+                        variant="h3"
                         component="div"
                         sx={{
                             flexGrow: 1,
                             mr: 2,
-                            display: {  sm: "flex" },
-                            fontFamily: "bagel fat one",
-                            fontWeight: 400,
+                            fontFamily: nameFont,
+                            fontWeight: 500,
+                            textAlign: { xs: "center", sm: "left" },
                             color: "primary.main",
-                            textDecoration: "none",
+                            "&::first-letter": {
+                                fontSize: "4rem"
+                            }
                         }}
                     >
-                        Maude Braunstein
+                        Maude
                     </Typography>
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Box sx={{ display: { xs: "none", sm: "block" } }}>
                         {pages.map((item) => (
-                            <Button color="primary">{item}</Button>
+                            <Button
+                                color="primary"
+                                sx={{
+                                    fontFamily: textFont,
+                                    textTransform: "lowercase",
+                                    fontWeight: 400,
+                                }}
+                            >
+                                {item}
+                            </Button>
                         ))}
                     </Box>
                 </Toolbar>
@@ -93,6 +105,7 @@ function Header() {
                         display: { xs: "block", sm: "none" },
                         "& .MuiDrawer-paper": {
                             boxSizing: "border-box",
+                            backgroundColor: "#352e34",
                             width: drawerWidth,
                         },
                     }}
@@ -105,5 +118,3 @@ function Header() {
 }
 
 export default Header;
-
-

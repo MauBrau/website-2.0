@@ -8,7 +8,8 @@ declare module "@mui/material/styles" {
         transparent?: PaletteOptions["primary"];
     }
 }
-const theme = createTheme({
+
+export const theme = createTheme({
     components: {},
     palette: {
         primary: {
@@ -29,4 +30,5 @@ const theme = createTheme({
     },
 });
 
-export default theme;
+export const nameFont = 'birthstone bounce';
+export const textFont = 'bagel fat one';
