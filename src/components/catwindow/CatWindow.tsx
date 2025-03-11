@@ -8,6 +8,16 @@ export default function CatWindow() {
     var className = 'windowView ' + (palette?.sky ?? 'day');
 
     // TODO: weather call out
+    async function getWeather() {
+        try {
+            //const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`)
+            console.log(response);
+            //setWeatherResponse(response);
+        } catch(error) {
+            console.log('error get');
+            console.error(error);
+        }
+    }
     return (
         <div className="cat-window">
             <div className={className}>
