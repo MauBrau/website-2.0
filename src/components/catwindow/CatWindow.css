@@ -1,0 +1,165 @@
+.catWindow {
+    text-align: center;
+}
+
+.weatherInfo {
+    font-size: 12px;
+    padding-top: 3em;
+    font-family: "'Raleway', sans-serif";
+    color: #352e34
+}
+
+.windowFrame {
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -200px;
+}
+
+.windowView {
+    width: 315px;
+    height: 315px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -167.5px;
+    margin-left: -157.5px;
+}
+
+.windowView.day {
+    background-image: radial-gradient(at top, #bdddf9, #91bae0); /* FF3.6+ */
+    background-image: -moz-radial-gradient(at top, #bdddf9, #91bae0); /* FF3.6+ */
+    background-image: -o-radial-gradient(at top, #bdddf9, #91bae0); /* Opera 11.10+ */
+    background-image: -ms-radial-gradient(at top, #bdddf9, #91bae0); /* IE10+ */
+}
+
+.windowView.dayRain {
+    background-image: radial-gradient(at top, #b8b9d8, #9899ad); /* FF3.6+ */
+    background-image: -moz-radial-gradient(at top, #b8b9d8, #9899ad); /* FF3.6+ */
+    background-image: -o-radial-gradient(at top, #b8b9d8, #9899ad); /* Opera 11.10+ */
+    background-image: -ms-radial-gradient(at top, #b8b9d8, #9899ad); /* IE10+ */
+}
+
+.windowView.sunrise {
+    background-image: linear-gradient(to bottom right, #e08594, #ffd596);
+    background-image: -moz-linear-gradient(to bottom right, #e08594, #ffd596);
+    background-image: -o-linear-gradient(to bottom right, #e08594, #ffd596);
+    background-image: -ms-linear-gradient(to bottom right, #e08594, #ffd596);
+}
+
+.windowView.sunset {
+    background-image: linear-gradient(to bottom left, #ffcb32, yellow);
+    background-image: -moz-linear-gradient(to bottom left, #ffcb32, yellow);
+    background-image: -o-linear-gradient(to bottom left, #ffcb32, yellow);
+    background-image: -ms-linear-gradient(to bottom left, #ffcb32, yellow);
+}
+
+.windowView.night {
+    background-image: radial-gradient(at top, #2454c1, #17377f);
+    background-image: -moz-radial-gradient(at top, #2454c1, #17377f);
+    background-image: -o-radial-gradient(at top, #2454c1, #17377f);
+    background-image: -ms-radial-gradient(at top, #2454c1, #17377f);
+    }
+
+.windowView.nightRain {
+    background-image: radial-gradient(at top, #1e2528, #1e2e30);
+    background-image: -moz-radial-gradient(at top, #1e2528, #1e2e30); /* FF3.6+ */
+    background-image: -o-radial-gradient(at top, #1e2528, #1e2e30); /* Opera 11.10+ */
+    background-image: -ms-radial-gradient(at top, #1e2528, #1e2e30); /* IE10+ */
+}
+
+
+.cloud {
+    will-change: transform;
+    transform: translateX(-100%);
+}
+
+.c1{
+    animation: move 35s infinite linear;
+    animation-delay: -12s;
+}
+
+.c2 {
+    animation: move 30s infinite linear;
+    animation-delay: -25s;
+}
+.c3 {
+    animation: move 33s infinite linear;
+    animation-delay: -21s;
+}
+.c4 {
+    animation: move 37s infinite linear;
+    animation-delay: -17s;
+}
+.c5 {
+    animation: move 39s infinite linear;
+    animation-delay: -24s;
+}
+.c6 {
+    animation: move 45s infinite linear;
+    animation-delay: -20s;
+}
+.c7 {
+    animation: move 60s infinite linear;
+    animation-delay: -29s;
+}
+.snow {
+    will-change: transform;
+    transform: translateY(-100%);
+}
+.s-top-layer {
+    animation: fall 22.5s infinite linear; 
+    animation-delay: -10s;
+}
+
+.s-bottom-layer {
+    animation: fall 45s infinite linear;
+    animation-delay: -20s;
+}
+.s-middle-layer {
+    animation: fall 33s infinite linear;
+}
+
+.rain {
+    will-change: transform;
+    transform: translateY(-100%);
+}
+
+.r-top-layer {
+    animation: fall 1.7s infinite linear; 
+}
+
+.r-bottom-layer {
+    animation: fall 1.2s infinite linear;
+}
+
+.r-middle-layer {
+    animation: fall 1.5s infinite linear;
+    animation-delay: -1s;
+}
+
+.second {
+    animation: fall 1s infinite linear;
+    animation-delay: -0.5s;
+}
+
+@keyframes fall {
+from {
+    transform: translateY(-370px);
+}
+to {
+    transform: translateY(370px);
+}
+}
+
+@keyframes move {
+from {
+    transform: translateX(-400px);
+}
+to {
+    transform: translateX(400px);
+}
+}

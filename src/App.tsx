@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import { theme } from "./components/styling/Style";
+import CatWindow from "./components/catwindow/CatWindow";
 
 export const App = () => {
     const windowState = useAppSelector((state) => state.window);
@@ -34,7 +35,7 @@ export const App = () => {
             <ThemeProvider theme={theme}>
                 <Header></Header>
                 <div className="home">
-                    
+                    <CatWindow />
                 </div>
                 <Footer></Footer>
             </ThemeProvider>

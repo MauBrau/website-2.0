@@ -49,6 +49,7 @@ function Header() {
                 position="fixed"
                 color="transparent"
                 elevation={0}
+                sx={{ mt: 2 }}
             >
                 <Toolbar>
                     <IconButton
