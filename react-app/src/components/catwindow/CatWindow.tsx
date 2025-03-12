@@ -11,7 +11,7 @@ export default function CatWindow() {
     async function getWeather() {
         try {
             //const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`)
-            console.log(response);
+            //console.log(response);
             //setWeatherResponse(response);
         } catch(error) {
             console.log('error get');
