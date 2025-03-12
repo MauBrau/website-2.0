@@ -15,9 +15,9 @@ import {
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import { nameFont, textFont } from "../styling/Style";
+import { nameFont, textFont } from "../helper/Style";
+import { pages } from "../helper/Routes";
 
-const pages = ["resume", "projects", "contact"];
 const drawerWidth = 240;
 
 function Header() {
@@ -30,9 +30,9 @@ function Header() {
         <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
             <List>
                 {pages.map((item) => (
-                    <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: "center", color: "primary.main" }}>
-                            <ListItemText primary={item} />
+                    <ListItem key={item.name} disablePadding>
+                        <ListItemButton sx={{ textAlign: "center", color: "primary.main" }} href={item.link}>
+                            <ListItemText primary={item.name} />
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -63,7 +63,8 @@ function Header() {
                     </IconButton>
                     <Typography
                         variant="h3"
-                        component="div"
+                        component="a"
+                        aria-label="home page"
                         sx={{
                             flexGrow: 1,
                             mr: 2,
@@ -73,8 +74,10 @@ function Header() {
                             color: "primary.main",
                             "&::first-letter": {
                                 fontSize: "4rem"
-                            }
+                            },
+                            textDecoration: 'none'
                         }}
+                        href="/"
                     >
                         Maude
                     </Typography>
@@ -87,8 +90,9 @@ function Header() {
                                     textTransform: "lowercase",
                                     fontWeight: 400,
                                 }}
+                                href={item.link}
                             >
-                                {item}
+                                {item.name}
                             </Button>
                         ))}
                     </Box>

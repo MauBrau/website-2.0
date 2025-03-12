@@ -6,8 +6,9 @@ import { updateWindow } from "./redux/window/windowSlice";
 import { ThemeProvider } from "@mui/material";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
-import { theme } from "./components/styling/Style";
+import { theme } from "./components/helper/Style";
 import CatWindow from "./components/catwindow/CatWindow";
+import { BrowserRouter, Routes, Route } from "react-router";
 
 export const App = () => {
     const windowState = useAppSelector((state) => state.window);
@@ -31,14 +32,18 @@ export const App = () => {
     });
 
     return (
-        <div className="app">
-            <ThemeProvider theme={theme}>
-                <Header></Header>
-                <div className="home">
-                    <CatWindow />
-                </div>
-                <Footer></Footer>
-            </ThemeProvider>
-        </div>
+        
+        <BrowserRouter>
+            <div className="app">
+                <ThemeProvider theme={theme}>
+                    <Header></Header>
+                    <Routes>
+                        <Route path="/" element={<div className="home"><CatWindow /></div>} />
+                        <Route path="/home" element={<div className="home">temp!</div>} />
+                    </Routes>
+                    <Footer></Footer>
+                </ThemeProvider>
+            </div>
+        </BrowserRouter>
     );
 }

@@ -89,7 +89,7 @@ function SceneBuilder(props: SceneProps) {
                     y="313.914"
                     width="16.403"
                     height="21.493"
-                    fill={palette.trunk}
+                    fill={props.palette.trunk}
                 />
                 <path
                     fill={props.palette.tree1}
@@ -101,7 +101,7 @@ function SceneBuilder(props: SceneProps) {
                     y="291.29"
                     width="6.222"
                     height="14.705"
-                    fill={palette.trunk}
+                    fill={props.palette.trunk}
                 />
                 <path
                     fill={props.palette.tree2}
@@ -113,7 +113,7 @@ function SceneBuilder(props: SceneProps) {
                     y="290.159"
                     width="5.656"
                     height="12.443"
-                    fill={palette.trunk}
+                    fill={props.palette.trunk}
                 />
                 <path
                     fill={props.palette.tree1}
