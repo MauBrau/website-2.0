@@ -1,7 +1,7 @@
 'use strict';
-
+require('dotenv').config();
 import {NextFunction, Request, Response} from "express";
-import ErrnoException = NodeJS.ErrnoException;
+import axios from "./node_modules/axios/index";
 
 const express = require('express');
 const path = require('path');
@@ -9,8 +9,21 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'build')));
 
+app.get('/api/weather/', (req: Request, res: Response, next: NextFunction) => {
+    const lat = 45.5088;
+    const lon = -73.5878;
+    const APIkey = process.env.REACT_APP_WEATHER_API_KEY;
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${APIkey}`)
+    .then(response => {
+        res.send(response.data);
+    }).catch(error => {
+        next(error);
+    });
+});
+
 app.use((req: Request, res: Response, next: NextFunction) => {
-    if (/(.ico|.js|.css|.jpg|.png|.map)$/i.test(req.path)) {
+    console.log('log: ' + req.path);
+    if (/(.ico|.js|.css|.jpg|.png|.map|\/api\/)$/i.test(req.path)) {
         next();
     } else {
         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -19,6 +32,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
         res.sendFile(path.join(__dirname, 'build', 'index.html'));
     }
 });
+
 
 // Start the server
 const PORT = process.env.PORT || 8080;

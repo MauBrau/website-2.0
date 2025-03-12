@@ -7,6 +7,7 @@ import EmailIcon from "@mui/icons-material/Email";
 function Footer() {
     return (
         <div className="footer">
+            {/* © 2025 Maude Braunstein  */}
             <IconButton
                 color="primary"
                 aria-label="LinkedIn"
