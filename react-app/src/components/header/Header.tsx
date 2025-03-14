@@ -84,6 +84,7 @@ function Header() {
                     <Box sx={{ display: { xs: "none", sm: "block" } }}>
                         {pages.map((item) => (
                             <Button
+                                key={item.name}
                                 color="primary"
                                 sx={{
                                     fontFamily: textFont,

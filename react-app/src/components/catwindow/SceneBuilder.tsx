@@ -1,4 +1,19 @@
+import React, { useEffect, useState } from "react";
 import "./CatWindow.css";
+import { Weather, WeatherMain } from "../../interface/IWeather";
+import {
+    DAY_RAIN_SKY,
+    DAY_SKY,
+    DEFAULT_SUN,
+    DEFAULT_TRUNK,
+    LIGHT_GRAY,
+    NIGHT_RAIN_SKY,
+    NIGHT_SKY,
+    SUNSET_SKY,
+    WHITE,
+    WINDOW_FRAME,
+} from "../helper/Style";
+import { DateTime } from "luxon";
 
 export interface Palette {
     sky: string;
@@ -16,17 +31,16 @@ export interface Palette {
 }
 
 interface SceneProps {
-    palette: Palette;
-    weather: Weather;
-    timeOfDay: TimeOfDay;
-    winter: boolean;
-    temp: number;
-    width: number;
-    height: number;
-    static: boolean;
+    weatherInfo: Weather;
 }
 
-enum Weather {
+interface SceneValues {
+    weather : WeatherState;
+    isWinter : Boolean;
+    time : TimeOfDay ;
+}
+
+enum WeatherState {
     Clear = "Clear Skies",
     Cloudy = "Cloudy",
     PartlyCloudy = "Partly Cloudy",
@@ -40,43 +54,262 @@ enum TimeOfDay {
     Sunset = "Sunset",
     Night = "Night",
 }
+// Used for sunset/sunrise windows. While those only last about 30 minutes in reality,
+// it's too pretty to skip for the window so we're making them an hour long
+const THIRTY_MINS = 1800;
 
-function SceneBuilder(props: SceneProps) {
-    const isSnowy = props.weather === Weather.Snowy;
-    const isRainy = props.weather === Weather.Rainy;
+function SceneBuilder({ weatherInfo }: SceneProps) {
+    const currentTime : DateTime = DateTime.now().setZone("America/Toronto");
+    const currentTimeUnix : number = currentTime.toUnixInteger();
+    var scene : SceneValues = createScene();
+
+    if (scene === undefined) {
+        return <div/>
+    }
+    const palette = generatePalette();
+    const windowClass = 'windowView ' + palette.sky;
+    const isSnowy = scene.weather === WeatherState.Snowy;
+    const isRainy = scene.weather === WeatherState.Rainy;
     const showSunOrMoon = !isSnowy && !isRainy;
+
     return (
-        <div>
-            {isSnowy || isRainy ? null : stars()}
-            {showSunOrMoon ? props.timeOfDay === TimeOfDay.Night ? moon() : sun() : null}
-            {clouds()}
-            {city()}
-            {land()}
-            {trees()}
-            {isSnowy ? snow() : null}
-            {isRainy ? rain() : null}
+        <div className={windowClass}>
+            <svg
+                width="315px"
+                viewBox="0 0 315 315"
+                style={{ overflow: "hidden" }}
+            >
+                <g transform="matrix(0.867628, 0, 0, 0.864012, -0.340668, 0.604332)">
+                    {baseScene()}
+                </g>
+            </svg>
+            <div className="weatherInfo">
+                <p>temp weather info</p>
+            </div>
         </div>
     );
 
+    function createScene() {
+        var scene : SceneValues = {
+            weather: getWeatherFromId(weatherInfo.weather),
+            isWinter: getWinter(),
+            time: getTimeOfDay()
+        };
+        
+        return scene
+    }
+
+    function getWeatherFromId(weatherMain: WeatherMain[]) {
+        var weatherResult;
+        if (weatherMain.length === 1) {
+            weatherResult = determineWeather(weatherMain[0].id);
+        } else {
+            // IWeather.ts describes my chosen priority
+            // Look through all the returned weather info and see if it contains a high priority ID
+            var index = weatherMain.findIndex((w) => w.id >= 600 && w.id < 700);
+            if (index < 0) {
+                index = weatherMain.findIndex((w) => w.id >= 200 && w.id < 600);
+            }
+            if (index < 0) {
+                index = weatherMain.findIndex((w) => w.id >= 700 && w.id < 800);
+            }
+            if (index < 0) {
+                index = weatherMain.findIndex(
+                    (w) => w.id === 803 || w.id === 804
+                );
+            }
+            if (index < 0) {
+                index = weatherMain.findIndex(
+                    (w) => w.id === 801 || w.id === 802
+                );
+            }
+            if (index < 0) {
+                weatherResult = WeatherState.Clear;
+            } else {
+                weatherResult = determineWeather(weatherMain[index].id);
+            }
+        }
+        return weatherResult;
+    }
+
+    function determineWeather(weatherID: number) {
+        if (weatherID >= 200 && weatherID < 600) {
+            // Thunderstorm and rain variants
+            return WeatherState.Rainy;
+        } else if (weatherID >= 600 && weatherID < 700) {
+            return WeatherState.Snowy;
+        } else if (
+            (weatherID >= 700 && weatherID < 800) ||
+            weatherID === 803 ||
+            weatherID === 804
+        ) {
+            return WeatherState.Cloudy;
+        } else if (weatherID === 801 || weatherID === 802) {
+            return WeatherState.PartlyCloudy;
+        } else {
+            return WeatherState.Clear;
+        }
+    }
+
+    function getTimeOfDay() {
+        var sunrise = weatherInfo.sys.sunrise;
+        var sunset = weatherInfo.sys.sunset;
+
+        if (currentTimeUnix > (sunrise+THIRTY_MINS) && currentTimeUnix < (sunset-THIRTY_MINS)) {
+            return TimeOfDay.Day;
+        } else if (currentTimeUnix > (sunset+THIRTY_MINS)) {
+            return TimeOfDay.Night;
+        } else if (currentTimeUnix >= (sunrise-THIRTY_MINS) && currentTimeUnix <= (sunrise+THIRTY_MINS)) {
+            return TimeOfDay.Sunrise;
+        } else {
+            return TimeOfDay.Sunset;
+        }
+    }
+
+    function getWinter() {
+        var month = currentTime.month;
+        // If it's November, December, January, February, or March, it's winter
+        // 2025 update: remember when it snowed in November? Good times. Removing November from Winter.
+        if (month === 12 || (month >= 1 && month < 4)) {
+            return true;
+        }
+        return false;
+    }
+    function generatePalette() {
+        if (scene.weather === WeatherState.Rainy || scene.weather === WeatherState.Snowy) {
+            if (scene.time !== TimeOfDay.Night) {
+                return {
+                    sky: DAY_RAIN_SKY,
+                    sun: DEFAULT_SUN,
+                    building: "#4a5767",
+                    window: LIGHT_GRAY,
+                    windowFrame: WINDOW_FRAME,
+                    cloud: LIGHT_GRAY,
+                    closeHill: "#205b38",
+                    midHill: "#2b844f",
+                    farHill: "#36a563",
+                    tree1: "#7ca83f",
+                    tree2: "#648931",
+                    trunk: "rgb(124, 108, 81)",
+                };
+            } else {
+                return {
+                    sky: NIGHT_RAIN_SKY,
+                    sun: DEFAULT_SUN,
+                    building: "#12110d",
+                    window: "#e5fffa",
+                    windowFrame: WINDOW_FRAME,
+                    cloud: "#4d4e51",
+                    closeHill: "#2b4c63",
+                    midHill: "#396584",
+                    farHill: "#618ba8",
+                    tree1: "#394651",
+                    tree2: "#14212d",
+                    trunk: DEFAULT_TRUNK,
+                };
+            }
+        } else {
+            if (scene.time === TimeOfDay.Sunset) {
+                return {
+                    sky: SUNSET_SKY,
+                    sun: WHITE,
+                    building: "#341c1b",
+                    window: "#fff179",
+                    windowFrame: "#bf360c",
+                    cloud: "#c08b6a",
+                    closeHill: "#de9f26",
+                    midHill: "#e6ad28",
+                    farHill: "#ebbd53",
+                    tree1: "#90963c",
+                    tree2: "#747c0b",
+                    trunk: DEFAULT_TRUNK,
+                }
+            } else if (scene.time === TimeOfDay.Night) {
+                return {
+                    sky: NIGHT_SKY,
+                    sun: WHITE,
+                    building: "#131e29",
+                    window: "#d7fcf5",
+                    windowFrame: "#02050a",
+                    cloud: "#4a626c",
+                    closeHill: "#38617e",
+                    midHill: "#508bb5",
+                    farHill: "#73a2c3",
+                    tree1: "#495662",
+                    tree2: "#1c2c3b",
+                    trunk: DEFAULT_TRUNK,
+                }
+            } else if (scene.time === TimeOfDay.Sunrise) {
+                return {
+                    sky: SUNSET_SKY,
+                    sun: "#ffffda",
+                    building: "#ba909a",
+                    window: "#f6a5c0",
+                    windowFrame: "#dd949e",
+                    cloud: "#eb70a1",
+                    closeHill: "#ad7b77",
+                    midHill: "#c4918d",
+                    farHill: "#cfa7a3",
+                    tree1: "#d89449",
+                    tree2: "#ce791c",
+                    trunk: DEFAULT_TRUNK,
+                }
+            } else {
+                return {
+                    sky: DAY_SKY,
+                    sun: DEFAULT_SUN,
+                    building: "#b4bec8",
+                    window: WHITE,
+                    windowFrame: "#979d9c",
+                    cloud: WHITE,
+                    closeHill: "rgb(46, 130, 80)",
+                    midHill: "rgb(59, 175, 106)",
+                    farHill: "rgb(66, 196, 119)",
+                    tree1: "rgb(160, 215, 85)",
+                    tree2: "rgb(136, 183, 73)",
+                    trunk: "rgb(124, 108, 81)",
+                }
+            }
+        }
+    }
+
+    function baseScene() {
+        return (
+            <>
+                {isSnowy || isRainy ? null : stars()}
+                {showSunOrMoon
+                    ? scene.time === TimeOfDay.Night
+                        ? moon()
+                        : sun()
+                    : null}
+                {clouds()}
+                {city()}
+                {land()}
+                {trees()}
+                {isSnowy ? snow() : null}
+                {isRainy ? rain() : null}
+            </>
+        );
+    }
+
     function trees() {
-        // TODO: Clean up
-        if (props.winter) {
+        if (scene.isWinter) {
             // M 68.487 306.771 C 68.532 306.853 68.39 269.839 67.429 259.418 C 68.149 258.666 49.489 228.65 48.405 228.464 L 50.468 225.823 L 66.971 251.107 C 66.971 251.98 68.881 204.075 68.881 204.013 L 72.058 204.211 C 71.608 204.211 70.662 242.054 70.73 242.054 L 90.411 214.259 L 92.102 217.345 L 76.032 239.987 C 75.561 240.697 71.158 241.212 72.43 269.384 C 73.702 297.555 73.316 305.124 73.455 306.8 L 68.487 306.771 Z
             return (
                 <g>
                     {/* Biggest */}
                     <path
-                        fill={props.palette.trunk}
+                        fill={palette.trunk}
                         d="M 344.764 334.685 C 344.859 334.863 344.554 255.162 342.485 232.724 C 344.035 231.103 303.854 166.471 301.521 166.073 L 305.964 160.386 L 341.497 214.828 C 341.497 216.708 345.61 113.557 345.61 113.424 L 352.451 113.849 C 351.482 113.849 349.447 195.335 349.591 195.335 L 391.972 135.484 L 395.612 142.129 L 361.009 190.884 C 359.994 192.413 350.514 193.52 353.254 254.182 C 355.991 314.84 355.161 331.14 355.461 334.748 L 344.764 334.685 Z"
                     />
                     {/* First, on the left*/}
                     <path
-                        fill={props.palette.trunk}
+                        fill={palette.trunk}
                         d="M 68.487 306.771 C 68.532 306.853 68.39 269.839 67.429 259.418 C 68.149 258.666 49.489 228.65 48.405 228.464 L 50.468 225.823 L 66.971 251.107 C 66.971 251.98 68.881 204.075 68.881 204.013 L 72.058 204.211 C 71.608 204.211 70.662 242.054 70.73 242.054 L 90.411 214.259 L 92.102 217.345 L 76.032 239.987 C 75.561 240.697 71.158 241.212 72.43 269.384 C 73.702 297.555 73.316 305.124 73.455 306.8 L 68.487 306.771 Z"
                     />
                     {/* Smallest */}
                     <path
-                        fill={props.palette.trunk}
+                        fill={palette.trunk}
                         d="M 100.391 302.44 C 100.426 302.505 100.314 273.299 99.556 265.077 C 100.124 264.483 88.421 260.784 87.566 260.638 L 89.659 258.321 L 99.194 261.075 C 99.194 261.764 100.003 226.521 100.003 226.472 L 102.976 226.628 C 102.621 226.628 102.107 251.376 102.16 251.376 L 113.042 242.225 L 113.68 244.66 L 106.344 249.745 C 105.972 250.305 102.498 250.711 103.502 272.94 C 104.505 295.168 104.201 301.141 104.311 302.463 L 100.391 302.44 Z"
                     />
                 </g>
@@ -89,10 +322,10 @@ function SceneBuilder(props: SceneProps) {
                     y="313.914"
                     width="16.403"
                     height="21.493"
-                    fill={props.palette.trunk}
+                    fill={palette.trunk}
                 />
                 <path
-                    fill={props.palette.tree1}
+                    fill={palette.tree1}
                     d="M 399.549 261.593 C 399.549 293.111 376.917 318.661 348.989 318.661 C 321.06 318.661 298.414 293.104 298.414 261.593 C 298.414 188.204 321.06 106.679 348.989 106.679 C 376.917 106.679 399.549 188.204 399.549 261.593 Z"
                 />
 
@@ -101,10 +334,10 @@ function SceneBuilder(props: SceneProps) {
                     y="291.29"
                     width="6.222"
                     height="14.705"
-                    fill={props.palette.trunk}
+                    fill={palette.trunk}
                 />
                 <path
-                    fill={props.palette.tree2}
+                    fill={palette.tree2}
                     d="M 96.227 266.852 C 96.227 282.56 84.733 295.293 70.55 295.293 C 56.367 295.293 44.866 282.556 44.866 266.852 C 44.866 230.276 56.367 189.646 70.55 189.646 C 84.733 189.646 96.227 230.276 96.227 266.852 Z"
                 />
 
@@ -113,10 +346,10 @@ function SceneBuilder(props: SceneProps) {
                     y="290.159"
                     width="5.656"
                     height="12.443"
-                    fill={props.palette.trunk}
+                    fill={palette.trunk}
                 />
                 <path
-                    fill={props.palette.tree1}
+                    fill={palette.tree1}
                     d="M 119.994 274.121 C 119.994 285.288 111.823 294.34 101.741 294.34 C 91.658 294.34 83.482 285.285 83.482 274.121 C 83.482 248.12 91.658 219.236 101.741 219.236 C 111.823 219.236 119.994 248.12 119.994 274.121 Z"
                 />
             </g>
@@ -124,23 +357,23 @@ function SceneBuilder(props: SceneProps) {
     }
 
     function land() {
-        var farHill = props.palette.farHill;
-        var midHill = props.palette.midHill;
-        var closeHill = props.palette.closeHill;
+        var farHill = palette.farHill;
+        var midHill = palette.midHill;
+        var closeHill = palette.closeHill;
         if (
-            props.winter &&
-            props.weather !== Weather.Snowy &&
-            props.weather !== Weather.Rainy
+            scene.isWinter &&
+            scene.weather !== WeatherState.Snowy &&
+            scene.weather !== WeatherState.Rainy
         ) {
-            if (props.timeOfDay === TimeOfDay.Day) {
+            if (scene.time === TimeOfDay.Day) {
                 farHill = "#f9fafc";
                 midHill = "#ebeef3";
                 closeHill = "#e1e8ef";
-            } else if (props.timeOfDay === TimeOfDay.Sunrise) {
+            } else if (scene.time === TimeOfDay.Sunrise) {
                 farHill = "#fcf9f9";
                 midHill = "#f2eaea";
                 closeHill = "#efe1e1";
-            } else if (props.timeOfDay === TimeOfDay.Sunset) {
+            } else if (scene.time === TimeOfDay.Sunset) {
                 farHill = "#fcfaf9";
                 midHill = "#f2efea";
                 closeHill = "#efe9e1";
@@ -149,7 +382,7 @@ function SceneBuilder(props: SceneProps) {
                 midHill = "#dadfe8";
                 closeHill = "#ccd6e0";
             }
-        } else if (props.winter) {
+        } else if (scene.isWinter) {
             farHill = "#e8ebf2";
             midHill = "#dadfe8";
             closeHill = "#ccd6e0";
@@ -174,9 +407,9 @@ function SceneBuilder(props: SceneProps) {
     }
 
     function city() {
-        var buildingColour = props.palette.building;
-        var windowColour = props.palette.window;
-        var windowBorder = props.palette.windowFrame;
+        var buildingColour = palette.building;
+        var windowColour = palette.window;
+        var windowBorder = palette.windowFrame;
         return (
             <g>
                 {/* 6 buildings */}
@@ -318,13 +551,13 @@ function SceneBuilder(props: SceneProps) {
     }
 
     function sun() {
-        var colour = props.palette.sun;
+        var colour = palette.sun;
         var cx = "182.5";
         var cy = "46.095";
-        if (props.timeOfDay === TimeOfDay.Sunset) {
+        if (scene.time === TimeOfDay.Sunset) {
             cx = "27.523";
             cy = "105.484";
-        } else if (props.timeOfDay === TimeOfDay.Sunrise) {
+        } else if (scene.time === TimeOfDay.Sunrise) {
             cx = "334.084";
             cy = "117.927";
         }
@@ -353,7 +586,7 @@ function SceneBuilder(props: SceneProps) {
         return (
             <g>
                 <path
-                    fill="white"
+                    fill={WHITE}
                     d="M 197.444 35.317 C 188.55 24.211 170.968 26.895 165.795 40.151 C 160.623 53.406 171.739 67.29 185.805 65.143 C 190.39 64.443 194.544 62.044 197.444 58.423 C 188.55 64.321 176.607 58.382 175.944 47.731 C 175.283 37.08 186.398 29.706 195.954 34.458 C 196.468 34.714 196.965 35.001 197.444 35.317 Z"
                     transform="matrix(0.891006, -0.453991, 0.453991, 0.891006, -1.554919, 87.269449)"
                 />
@@ -361,16 +594,15 @@ function SceneBuilder(props: SceneProps) {
         );
     }
     function clouds() {
-        var cloud = props.palette.cloud;
-        var weather = props.weather;
+        var cloud = palette.cloud;
 
-        if (weather === Weather.Clear) {
+        if (scene.weather === WeatherState.Clear) {
             return <g />;
         }
         var showAllClouds =
-            weather === Weather.Cloudy ||
-            weather === Weather.Rainy ||
-            weather === Weather.Snowy;
+            scene.weather === WeatherState.Cloudy ||
+            scene.weather === WeatherState.Rainy ||
+            scene.weather === WeatherState.Snowy;
 
         if (!showAllClouds) {
             return (
@@ -459,7 +691,7 @@ function SceneBuilder(props: SceneProps) {
     }
 
     function stars() {
-        if (props.timeOfDay === TimeOfDay.Night) {
+        if (scene.time === TimeOfDay.Night) {
             return (
                 <g>
                     <circle

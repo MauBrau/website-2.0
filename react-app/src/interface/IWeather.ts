@@ -1,48 +1,45 @@
 export interface Weather {
-    statusCode: number;
-    result: {
-      coord: {
-        lon: number;
-        lat: number;
-      };
-      weather: WeatherMain[];
-      base: string;
-      main: {
-        temp: number;
-        pressure: number;
-        humidity: number;
-        temp_min: number;
-        temp_max: number;
-      };
-      visibility: number;
-      wind: {
-        speed: number;
-        deg: number;
-        gust: number;
-      };
-      clouds: {
-        all: number;
-      };
-      dt: number;
-      sys: {
-        type: number;
-        id: number;
-        message: number;
-        country: string;
-        sunrise: number;
-        sunset: number;
-      };
+    coord: {
+      lon: number;
+      lat: number;
+    };
+    weather: WeatherMain[];
+    base: string;
+    main: {
+      temp: number;
+      pressure: number;
+      humidity: number;
+      temp_min: number;
+      temp_max: number;
+    };
+    visibility: number;
+    wind: {
+      speed: number;
+      deg: number;
+      gust: number;
+    };
+    clouds: {
+      all: number;
+    };
+    dt: number;
+    sys: {
+      type: number;
       id: number;
-      name: string;
-      cod: string;
-    }
+      message: number;
+      country: string;
+      sunrise: number;
+      sunset: number;
+    };
+    id: number;
+    name: string;
+    cod: string;
   }
   
   export interface WeatherMain {
     id: number;
     main: string;
     description: string;
-    icoon: string;
+    icon: string;
     /*
       Using ID mainly to figure out what to display - https://openweathermap.org/weather-conditions
       If ID is in 2XX, it's thunderstorm, so we set to rain

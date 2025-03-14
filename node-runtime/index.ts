@@ -1,22 +1,24 @@
 'use strict';
 require('dotenv').config();
-import {NextFunction, Request, Response} from "express";
-import axios from "./node_modules/axios/index";
-
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
+const axios = require('axios');
 const app = express();
+import { Request, Response, NextFunction } from "express";
+import { AxiosError, AxiosResponse } from "axios";
 
 app.use(express.static(path.join(__dirname, 'build')));
+app.use(cors());
 
 app.get('/api/weather/', (req: Request, res: Response, next: NextFunction) => {
     const lat = 45.5088;
     const lon = -73.5878;
     const APIkey = process.env.REACT_APP_WEATHER_API_KEY;
     axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${APIkey}`)
-    .then(response => {
+    .then((response: AxiosResponse) => {
         res.send(response.data);
-    }).catch(error => {
+    }).catch((error: AxiosError) => {
         next(error);
     });
 });

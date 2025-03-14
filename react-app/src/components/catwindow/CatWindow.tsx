@@ -1,41 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CatWindow.css";
 import SceneBuilder from "./SceneBuilder";
-import { Palette } from "./SceneBuilder";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { Weather } from "../../interface/IWeather";
 
 export default function CatWindow() {
-    const [palette, setPalette] = React.useState<Palette>();
-    var className = 'windowView ' + (palette?.sky ?? 'day');
-
-    // TODO: weather call out
-    async function getWeather() {
-        try {
-            //const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`)
-            //console.log(response);
-            //setWeatherResponse(response);
-        } catch(error) {
-            console.log('error get');
-            console.error(error);
+    //var weatherInfo : Weather = getWeather();
+    const [weatherInfo, setWeatherInfo] = useState<Weather>();
+    useEffect(() => {
+        const getWeather = async () => (
+            await axios.get<Weather>("/api/weather")
+        );
+        if (weatherInfo === undefined) {
+            console.log('weatherinfo: ' + weatherInfo);
+            getWeather()
+            .then((response: AxiosResponse) => {
+                setWeatherInfo(response.data);
+                console.log('response?');
+                console.log(response.data);
+            })
+            .catch((error: AxiosError) => console.log("error get"));
         }
+        
+    }, [weatherInfo]);
+
+    if (!weatherInfo) {
+        return <div/>
     }
     return (
         <div className="cat-window">
-            <div className={className}>
-                <svg
-                    width="315px"
-                    viewBox="0 0 315 315"
-                    style={{ overflow: "hidden" }}
-                >    
-                    <g transform="matrix(0.867628, 0, 0, 0.864012, -0.340668, 0.604332)">
-                        {/* <SceneBuilder palette={null} weather="" timeOfDay="" winter={} temp={} /> */}
-                    </g>
-                </svg>
-                <div className="weatherInfo">
-                    <p>temp weather info</p>
-                </div>
-            </div>
-            <div className="windowFrame" >
-                <img src={require('../../data/images/windowframe-no-cat.png')}/>
+            <SceneBuilder weatherInfo={weatherInfo} />
+            <div className="windowFrame">
+                <img
+                    alt="Window frame of the cat window"
+                    src={require("../../data/images/windowframe-no-cat.png")}
+                />
             </div>
         </div>
     );
