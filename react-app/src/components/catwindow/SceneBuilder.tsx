@@ -81,6 +81,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             >
                 <g transform="matrix(0.867628, 0, 0, 0.864012, -0.340668, 0.604332)">
                     {baseScene()}
+                    {catTail()}
                 </g>
             </svg>
             <div className="weatherInfo">
@@ -292,6 +293,19 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
+    function catTail() {
+        return (
+            // style="fill: rgb(140, 161, 1); transform-origin: 186.672px 283.553px;"
+            <g id='tail'>
+                <path id="tail-1" fill="black"  d="M 277.531 298.845 L 286.408 309.297 L 289.664 314.681 L 292.119 325.468 L 292.119 330.161 L 289.664 339.267 L 283.952 347.69 L 271.82 357.42 L 260.503 363.512 L 258.862 363.81 L 258.056 364.49 L 251.535 366.86 L 253.152 364.49 L 254.784 360.133 L 253.959 357.755 L 253.152 352.051 L 249.903 346.333 L 238.563 333.851 L 234.484 330.848 L 215.032 319.374 L 189.103 308.292 L 153.415 296.52 L 123.424 283.068 L 107.218 272.615 L 94.986 261.493 L 84.496 246.033 L 81.225 230.885 L 82.029 223.137 L 86.919 211.677 L 95.812 200.247 L 102.314 217.392 L 109.577 226.487 L 122.614 234.911 L 138.019 242.309 L 245.922 279.34 L 263.752 288.783 L 277.531 298.845 Z" />
+                {/* <path id="tail-1" fill="#ffffff" d="M8054 2883s96 377-501 688-129 433 106 284 735-703 551-997-142-10-142-10z" />
+                <path id="tail-2" fill="#ffffff" d="M8054 2883s35 472-262 940 213 397 314 134 288-805 104-1099-142-10-142-10z" />
+                <path id="tail-3" fill="#ffffff" d="M8385 2927s215 714 309 958-141 335-270 90-161-629-184-975 112-92 112-92z" />
+                <path id="tail-4" fill="#ffffff" d="M8385 2927s251 402 775 603 60 447-181 295-716-479-739-825 112-92 112-92z" /> */}
+            </g>
+        )
+    }
+
     function trees() {
         if (scene.isWinter) {
             // M 68.487 306.771 C 68.532 306.853 68.39 269.839 67.429 259.418 C 68.149 258.666 49.489 228.65 48.405 228.464 L 50.468 225.823 L 66.971 251.107 C 66.971 251.98 68.881 204.075 68.881 204.013 L 72.058 204.211 C 71.608 204.211 70.662 242.054 70.73 242.054 L 90.411 214.259 L 92.102 217.345 L 76.032 239.987 C 75.561 240.697 71.158 241.212 72.43 269.384 C 73.702 297.555 73.316 305.124 73.455 306.8 L 68.487 306.771 Z
@@ -388,17 +402,20 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             closeHill = "#ccd6e0";
         }
         return (
-            <g>
+            <g id='land'>
                 <path
+                    id='land-far'
                     fill={farHill}
                     d="M 0.741 272.444 C 103.909 235.368 375.944 240.152 363.869 240.152 L 364.133 306.428 L 0.741 306.024 L 0.741 272.444 Z"
                 />
                 <path
+                    id='land-mid'
                     fill={midHill}
                     d="M 0.741 298.57 C 103.909 335.646 375.944 330.862 363.869 330.862 L 364.133 264.586 L 0.741 264.99 L 0.741 298.57 Z"
                     transform="matrix(-1, 0, 0, -1, 364.999364, 595.649292)"
                 />
                 <path
+                    id='land-close'
                     fill={closeHill}
                     d="M 1.59 318.026 C 104.276 266.778 375.041 281.673 363.023 281.673 L 363.286 365 L 1.59 364.443 L 1.59 318.026 Z"
                 />
@@ -410,10 +427,12 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         var buildingColour = palette.building;
         var windowColour = palette.window;
         var windowBorder = palette.windowFrame;
+        // TODO: lots of duplicating, maybe we generate window/building positions in a loop eventually?
         return (
-            <g>
+            <g id='city'>
                 {/* 6 buildings */}
                 <rect
+                    id='city-building-1'
                     x="295.249"
                     y="126.696"
                     width="76.357"
@@ -421,6 +440,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     fill={buildingColour}
                 />
                 <rect
+                    id='city-building-2'
                     x="88.235"
                     y="127.262"
                     width="41.29"
@@ -428,6 +448,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     fill={buildingColour}
                 />
                 <rect
+                    id='city-building-3'
                     x="196.833"
                     y="154.412"
                     width="45.249"
@@ -435,6 +456,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     fill={buildingColour}
                 />
                 <rect
+                    id='city-building-4'
                     x="1.131"
                     y="110.294"
                     width="96.72"
@@ -442,6 +464,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     fill={buildingColour}
                 />
                 <rect
+                    id='city-building-5'
                     x="234.728"
                     y="109.163"
                     width="67.873"
@@ -449,6 +472,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     fill={buildingColour}
                 />
                 <rect
+                    id='city-building-6'
                     x="123.869"
                     y="92.76"
                     width="83.145"
@@ -458,6 +482,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
                 {/* Multiple windows */}
                 <rect
+                    id='city-window-1'
                     x="19.796"
                     y="138.009"
                     width="13.575"
@@ -466,6 +491,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     stroke={windowBorder}
                 />
                 <rect
+                    id='city-window-2'
                     x="53.733"
                     y="158.654"
                     width="13.575"
@@ -474,6 +500,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     stroke={windowBorder}
                 />
                 <rect
+                    id='city-window-3'
                     x="148.19"
                     y="125.283"
                     width="13.575"
@@ -482,6 +509,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     stroke={windowBorder}
                 />
                 <rect
+                    id='city-window-4'
                     x="213.235"
                     y="184.106"
                     width="13.575"
@@ -490,6 +518,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     stroke={windowBorder}
                 />
                 <rect
+                    id='city-window-5'
                     x="146.493"
                     y="196.55"
                     width="13.575"
@@ -498,6 +527,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     stroke={windowBorder}
                 />
                 <rect
+                    id='city-window-6'
                     x="260.746"
                     y="135.464"
                     width="13.575"
@@ -507,6 +537,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 />
                 {/* <rect x="313.348" y="87.387" width="13.575" height="13.009" fill={windowColour} stroke={windowBorder} /> */}
                 <rect
+                    id='city-window-7'
                     x="263.009"
                     y="205.034"
                     width="13.575"
@@ -515,6 +546,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     stroke={windowBorder}
                 />
                 <rect
+                    id='city-window-8'
                     x="101.81"
                     y="153.563"
                     width="13.575"
@@ -523,6 +555,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     stroke={windowBorder}
                 />
                 <rect
+                    id='city-window-9'
                     x="178.167"
                     y="217.477"
                     width="13.575"
@@ -531,6 +564,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     stroke={windowBorder}
                 />
                 <rect
+                    id='city-window-10'
                     x="24.887"
                     y="207.296"
                     width="13.575"
@@ -539,6 +573,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     stroke={windowBorder}
                 />
                 <rect
+                    id='city-window-11'
                     x="284.502"
                     y="160.916"
                     width="13.575"
@@ -562,8 +597,9 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             cy = "117.927";
         }
         return (
-            <g>
+            <g id='sun'>
                 <circle
+                    id='sun-far-ring'
                     fill={colour}
                     fillOpacity="0.1"
                     cx={cx}
@@ -571,20 +607,21 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     r="42"
                 />
                 <circle
+                    id='sun-mid-ring'
                     fill={colour}
                     fillOpacity="0.3"
                     cx={cx}
                     cy={cy}
                     r="30"
                 />
-                <circle fill={colour} cx={cx} cy={cy} r="20" />
+                <circle id='sun-whole'fill={colour} cx={cx} cy={cy} r="20" />
             </g>
         );
     }
 
     function moon() {
         return (
-            <g>
+            <g id='moon'>
                 <path
                     fill={WHITE}
                     d="M 197.444 35.317 C 188.55 24.211 170.968 26.895 165.795 40.151 C 160.623 53.406 171.739 67.29 185.805 65.143 C 190.39 64.443 194.544 62.044 197.444 58.423 C 188.55 64.321 176.607 58.382 175.944 47.731 C 175.283 37.08 186.398 29.706 195.954 34.458 C 196.468 34.714 196.965 35.001 197.444 35.317 Z"
@@ -599,17 +636,15 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         if (scene.weather === WeatherState.Clear) {
             return <g />;
         }
-        var showAllClouds =
-            scene.weather === WeatherState.Cloudy ||
-            scene.weather === WeatherState.Rainy ||
-            scene.weather === WeatherState.Snowy;
-
+        var showAllClouds = scene.weather !== WeatherState.PartlyCloudy;
+        // TODO: just add showAllClouds condition to the cclouds we don't want showing 
         if (!showAllClouds) {
             return (
-                <g>
+                <g id='clouds'>
                     {/* 7 on rainy/snow/cloudy day, 4 on partly cloudy*/}
                     {/* Furthest to the right */}
                     <path
+                        id='cloud-1'
                         className="cloud c1"
                         fill={cloud}
                         d="M 397.286 45.861 C 401.69 45.861 405.299 48.49 405.299 51.699 C 405.299 54.907 401.692 57.536 397.286 57.536 L 362.946 57.536 L 361.802 57.536 C 355.483 57.536 350.358 53.802 350.358 49.197 C 350.358 44.592 356.507 43.989 362.829 43.989 C 363.358 43.857 371.942 32.975 380.116 34.187 C 388.181 35.383 396.145 37.211 396.145 45.861 L 397.286 45.861 Z"
@@ -617,6 +652,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     />
                     {/* Second from the right */}
                     <path
+                        id='cloud-2'
                         className="cloud c7"
                         fill={cloud}
                         d="M 330.508 21.21 C 340.217 21.21 348.172 23.584 348.172 26.482 C 348.172 29.379 340.222 31.754 330.508 31.754 L 254.805 31.754 L 252.286 31.754 C 238.353 31.754 227.054 28.381 227.054 24.223 C 227.054 20.064 240.613 19.519 254.548 19.519 C 254.548 19.519 263.954 10.667 292.658 10.667 C 310.633 10.667 327.989 13.398 327.989 21.21 L 330.508 21.21 Z"
@@ -624,6 +660,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
                     {/* furthest to the left */}
                     <path
+                        id='cloud-3'
                         className="cloud c2"
                         fill={cloud}
                         d="M 20.872 79.751 C 25.276 79.751 28.885 82.38 28.885 85.589 C 28.885 88.797 25.278 91.426 20.872 91.426 L -13.468 91.426 L -14.612 91.426 C -20.931 91.426 -26.056 87.692 -26.056 83.087 C -26.056 78.482 -19.907 77.879 -13.585 77.879 C -13.056 77.747 -4.472 66.865 3.702 68.077 C 11.767 69.273 19.731 71.101 19.731 79.751 L 20.872 79.751 Z"
@@ -631,6 +668,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
                     {/* third from the left */}
                     <path
+                        id='cloud-4'
                         className="cloud c5"
                         fill={cloud}
                         d="M 120.268 76.358 C 124.446 76.358 127.868 73.73 127.868 70.52 C 127.868 67.312 124.448 64.683 120.268 64.683 C 118.501 55.85 86.467 58.537 87.696 64.683 L 86.611 64.683 C 80.617 64.683 75.755 68.418 75.755 73.022 C 75.755 77.628 80.615 81.361 86.611 81.361 C 86.611 81.361 91.632 88.032 103.983 88.032 C 111.717 88.032 119.185 85.008 119.185 76.358 L 120.268 76.358 Z"
@@ -643,6 +681,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 {/* 7 on rainy/snow/cloudy day, 4 on partly cloudy */}
                 {/* Furthest to the right */}
                 <path
+                    id='cloud-1'
                     className="cloud c1"
                     fill={cloud}
                     d="M 397.286 45.861 C 401.69 45.861 405.299 48.49 405.299 51.699 C 405.299 54.907 401.692 57.536 397.286 57.536 L 362.946 57.536 L 361.802 57.536 C 355.483 57.536 350.358 53.802 350.358 49.197 C 350.358 44.592 356.507 43.989 362.829 43.989 C 363.358 43.857 371.942 32.975 380.116 34.187 C 388.181 35.383 396.145 37.211 396.145 45.861 L 397.286 45.861 Z"
@@ -650,6 +689,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 />
                 {/* Second from the right */}
                 <path
+                    id='cloud-2'
                     className="cloud c2"
                     fill={cloud}
                     d="M 330.508 21.21 C 340.217 21.21 348.172 23.584 348.172 26.482 C 348.172 29.379 340.222 31.754 330.508 31.754 L 254.805 31.754 L 252.286 31.754 C 238.353 31.754 227.054 28.381 227.054 24.223 C 227.054 20.064 240.613 19.519 254.548 19.519 C 254.548 19.519 263.954 10.667 292.658 10.667 C 310.633 10.667 327.989 13.398 327.989 21.21 L 330.508 21.21 Z"
@@ -657,6 +697,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
                 {/* furthest to the left */}
                 <path
+                    id='cloud-3'
                     className="cloud c3"
                     fill={cloud}
                     d="M 20.872 79.751 C 25.276 79.751 28.885 82.38 28.885 85.589 C 28.885 88.797 25.278 91.426 20.872 91.426 L -13.468 91.426 L -14.612 91.426 C -20.931 91.426 -26.056 87.692 -26.056 83.087 C -26.056 78.482 -19.907 77.879 -13.585 77.879 C -13.056 77.747 -4.472 66.865 3.702 68.077 C 11.767 69.273 19.731 71.101 19.731 79.751 L 20.872 79.751 Z"
@@ -664,24 +705,28 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
                 {/* third from the left */}
                 <path
+                    id='cloud-4'
                     className="cloud c4"
                     fill={cloud}
                     d="M 120.268 76.358 C 124.446 76.358 127.868 73.73 127.868 70.52 C 127.868 67.312 124.448 64.683 120.268 64.683 C 118.501 55.85 86.467 58.537 87.696 64.683 L 86.611 64.683 C 80.617 64.683 75.755 68.418 75.755 73.022 C 75.755 77.628 80.615 81.361 86.611 81.361 C 86.611 81.361 91.632 88.032 103.983 88.032 C 111.717 88.032 119.185 85.008 119.185 76.358 L 120.268 76.358 Z"
                 />
                 {/*third from the right, under long one */}
                 <path
+                    id='cloud-5'
                     className="cloud c5"
                     fill={cloud}
                     d="M 265.57 74.377 C 269.158 74.377 272.098 76.942 272.098 80.074 C 272.098 83.204 269.16 85.77 265.57 85.77 C 265.57 87.902 237.593 88.16 237.593 85.77 L 236.662 85.77 C 231.513 85.77 227.337 82.125 227.337 77.633 C 227.337 73.139 231.512 69.495 236.662 69.495 C 236.662 69.495 240.974 62.986 251.582 62.986 C 258.225 62.986 264.639 65.937 264.639 74.377 L 265.57 74.377 Z"
                 />
                 {/* second from the left */}
                 <path
+                    id='cloud-6'
                     className="cloud c6"
                     fill={cloud}
                     d="M 73.379 29.781 C 78.191 29.781 82.134 33.3 82.134 37.599 L 82.134 37.599 C 82.134 41.895 78.194 45.416 73.379 45.416 L 35.857 45.416 L 34.608 45.416 C 27.703 45.416 22.102 40.414 22.102 34.249 C 22.102 28.081 27.701 23.081 34.608 23.081 C 34.608 23.081 40.392 14.148 54.619 14.148 C 63.528 14.148 72.131 18.197 72.131 29.781 L 73.379 29.781 Z"
                 />
                 {/* middle */}
                 <path
+                    id='cloud-7'
                     className="cloud c7"
                     fill={cloud}
                     d="M 199.699 37.329 C 205.916 37.329 211.011 42.121 211.011 47.975 C 211.011 53.825 205.92 58.62 199.699 58.62 C 201.931 61.968 154.938 64.2 151.218 58.62 L 149.604 58.62 C 140.682 58.62 138.79 54.484 133.445 43.413 C 128.1 32.342 133.989 24.86 149.604 28.205 C 145.758 20.513 155.185 9.347 175.459 16.04 C 186.072 19.544 195.778 29.631 198.086 37.329 L 199.699 37.329 Z"
@@ -693,8 +738,9 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     function stars() {
         if (scene.time === TimeOfDay.Night) {
             return (
-                <g>
+                <g id='stars'>
                     <circle
+                        id='star-1'
                         fill="rgb(135, 214, 214"
                         opacity="0.3"
                         cx="276.584"
@@ -702,6 +748,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                         r="1.265"
                     />
                     <circle
+                        id='star-2'
                         fill="rgb(135, 214, 214"
                         opacity="0.3"
                         cx="245.231"
@@ -709,6 +756,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                         r="1.265"
                     />
                     <circle
+                        id='star-3'
                         fill="rgb(135, 214, 214"
                         opacity="0.3"
                         cx="37.231"
@@ -716,6 +764,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                         r="1.265"
                     />
                     <circle
+                        id='star-4'
                         fill="rgb(135, 214, 214"
                         opacity="0.3"
                         cx="326.231"
@@ -723,6 +772,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                         r="1.265"
                     />
                     <circle
+                        id='star-5'
                         fill="rgb(135, 214, 214"
                         opacity="0.3"
                         cx="56.231"
@@ -730,6 +780,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                         r="1.265"
                     />
                     <circle
+                        id='star-6'
                         fill="rgb(135, 214, 214"
                         opacity="0.3"
                         cx="109.231"
@@ -737,6 +788,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                         r="1.265"
                     />
                     <circle
+                        id='star-7'
                         fill="rgb(135, 214, 214"
                         opacity="0.3"
                         cx="17.231"
@@ -750,7 +802,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
     function snow() {
         return (
-            <g>
+            <g id='snow'>
                 <g fill="#FFF" fillOpacity=".35">
                     <g className="snow s-bottom-layer">
                         <ellipse cx="88" cy="84.5" rx="6" ry="5.5" />
@@ -848,7 +900,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             "C 213.516 247.383 213.735 247.004 214.007 246.663 " +
             "C 215.924 244.138 217.051 242.447 217.39 241.588 Z";
         return (
-            <g>
+            <g id='rain'>
                 <g fill="#FFF" fillOpacity=".35">
                     <g className="rain r-bottom-layer">
                         <path d={smallDrop} />
