@@ -6,6 +6,7 @@ export interface Weather {
     weather: WeatherMain[];
     base: string;
     main: {
+      feels_like: number;
       temp: number;
       pressure: number;
       humidity: number;

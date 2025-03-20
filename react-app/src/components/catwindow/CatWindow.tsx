@@ -33,7 +33,7 @@ export default function CatWindow() {
             <div className="windowFrame">
                 <img
                     alt="Window frame of the cat window"
-                    src={require("../../data/images/windowframe-black-notail.png")}
+                    src={require("../../data/images/windowframe-grey-cat-moved.png")}
                 />
             </div>
         </div>

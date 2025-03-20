@@ -37,7 +37,8 @@ interface SceneProps {
 interface SceneValues {
     weather : WeatherState;
     isWinter : Boolean;
-    time : TimeOfDay ;
+    time : TimeOfDay;
+    temp : number;
 }
 
 enum WeatherState {
@@ -71,6 +72,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     const isSnowy = scene.weather === WeatherState.Snowy;
     const isRainy = scene.weather === WeatherState.Rainy;
     const showSunOrMoon = !isSnowy && !isRainy;
+    var weatherText = 'Weather in Montreal: ' + Math.round(scene.temp) + '°C, ' + scene.weather;
 
     return (
         <div className={windowClass}>
@@ -81,11 +83,11 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             >
                 <g transform="matrix(0.867628, 0, 0, 0.864012, -0.340668, 0.604332)">
                     {baseScene()}
-                    {catTail()}
+                    {/* {catTail()} */}
                 </g>
             </svg>
             <div className="weatherInfo">
-                <p>temp weather info</p>
+                <p>{weatherText}</p>
             </div>
         </div>
     );
@@ -94,13 +96,14 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         var scene : SceneValues = {
             weather: getWeatherFromId(weatherInfo.weather),
             isWinter: getWinter(),
-            time: getTimeOfDay()
+            time: getTimeOfDay(),
+            temp: weatherInfo.main.feels_like
         };
         
         return scene
     }
 
-    function getWeatherFromId(weatherMain: WeatherMain[]) {
+    function getWeatherFromId(weatherMain: WeatherMain[]) : WeatherState {
         var weatherResult;
         if (weatherMain.length === 1) {
             weatherResult = determineWeather(weatherMain[0].id);
@@ -133,7 +136,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         return weatherResult;
     }
 
-    function determineWeather(weatherID: number) {
+    function determineWeather(weatherID: number) : WeatherState {
         if (weatherID >= 200 && weatherID < 600) {
             // Thunderstorm and rain variants
             return WeatherState.Rainy;
@@ -152,7 +155,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         }
     }
 
-    function getTimeOfDay() {
+    function getTimeOfDay() : TimeOfDay {
         var sunrise = weatherInfo.sys.sunrise;
         var sunset = weatherInfo.sys.sunset;
 
@@ -167,7 +170,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         }
     }
 
-    function getWinter() {
+    function getWinter() : Boolean {
         var month = currentTime.month;
         // If it's November, December, January, February, or March, it's winter
         // 2025 update: remember when it snowed in November? Good times. Removing November from Winter.
@@ -176,7 +179,8 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         }
         return false;
     }
-    function generatePalette() {
+
+    function generatePalette() : Palette {
         if (scene.weather === WeatherState.Rainy || scene.weather === WeatherState.Snowy) {
             if (scene.time !== TimeOfDay.Night) {
                 return {
@@ -294,6 +298,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function catTail() {
+        // TODO
         return (
             // style="fill: rgb(140, 161, 1); transform-origin: 186.672px 283.553px;"
             <g id='tail'>
