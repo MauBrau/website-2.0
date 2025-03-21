@@ -31,7 +31,7 @@ export interface Palette {
 }
 
 interface SceneProps {
-    weatherInfo: Weather;
+    weatherInfo: Weather | undefined;
 }
 
 interface SceneValues {
@@ -58,8 +58,12 @@ enum TimeOfDay {
 // Used for sunset/sunrise windows. While those only last about 30 minutes in reality,
 // it's too pretty to skip for the window so we're making them an hour long
 const THIRTY_MINS = 1800;
+// Fallback sunrise/sunset times - 6am and 6pm
+const SUNRISE = 1742551200;
+const SUNSET = 1742594400;
 
-function SceneBuilder({ weatherInfo }: SceneProps) {
+function SceneBuilder({ weatherInfo }: SceneProps) { 
+    const fixed = weatherInfo === undefined;
     const currentTime : DateTime = DateTime.now().setZone("America/Toronto");
     const currentTimeUnix : number = currentTime.toUnixInteger();
     var scene : SceneValues = createScene();
@@ -72,7 +76,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     const isSnowy = scene.weather === WeatherState.Snowy;
     const isRainy = scene.weather === WeatherState.Rainy;
     const showSunOrMoon = !isSnowy && !isRainy;
-    var weatherText = 'Weather in Montreal: ' + Math.round(scene.temp) + '°C, ' + scene.weather;
+    var weatherText = fixed ? 'Weather info unavailable' : 'Weather in Montreal: ' + Math.round(scene.temp) + '°C, ' + scene.weather;
 
     return (
         <div className={windowClass}>
@@ -94,10 +98,10 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
     function createScene() {
         var scene : SceneValues = {
-            weather: getWeatherFromId(weatherInfo.weather),
+            weather: weatherInfo === undefined ?  WeatherState.PartlyCloudy : getWeatherFromId(weatherInfo.weather),
             isWinter: getWinter(),
             time: getTimeOfDay(),
-            temp: weatherInfo.main.feels_like
+            temp: weatherInfo === undefined  ? 0 : weatherInfo.main.feels_like
         };
         
         return scene
@@ -156,8 +160,8 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function getTimeOfDay() : TimeOfDay {
-        var sunrise = weatherInfo.sys.sunrise;
-        var sunset = weatherInfo.sys.sunset;
+        var sunrise = weatherInfo === undefined ? SUNRISE : weatherInfo.sys.sunrise;
+        var sunset = weatherInfo === undefined ? SUNSET : weatherInfo.sys.sunset;
 
         if (currentTimeUnix > (sunrise+THIRTY_MINS) && currentTimeUnix < (sunset-THIRTY_MINS)) {
             return TimeOfDay.Day;

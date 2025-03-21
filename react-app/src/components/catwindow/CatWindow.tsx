@@ -5,26 +5,26 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { Weather } from "../../interface/IWeather";
 
 export default function CatWindow() {
-    //var weatherInfo : Weather = getWeather();
+    const [weatherRetrieved, setWeatherRetrieved] = useState<Boolean>(false);
     const [weatherInfo, setWeatherInfo] = useState<Weather>();
     useEffect(() => {
         const getWeather = async () => (
             await axios.get<Weather>("/api/weather")
         );
         if (weatherInfo === undefined) {
-            console.log('weatherinfo: ' + weatherInfo);
             getWeather()
             .then((response: AxiosResponse) => {
                 setWeatherInfo(response.data);
-                console.log('response?');
-                console.log(response.data);
             })
-            .catch((error: AxiosError) => console.log("error get"));
+            .catch((error: AxiosError) => {
+                setWeatherRetrieved(true);
+            })
+            .finally(() =>  setWeatherRetrieved(true));
         }
         
     }, [weatherInfo]);
 
-    if (!weatherInfo) {
+    if (!weatherRetrieved) {
         return <div/>
     }
     return (
