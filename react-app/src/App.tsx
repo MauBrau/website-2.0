@@ -9,6 +9,10 @@ import Footer from "./components/footer/Footer";
 import { theme } from "./components/helper/Style";
 import CatWindow from "./components/catwindow/CatWindow";
 import { BrowserRouter, Routes, Route } from "react-router";
+import Home from "./pages/Home";
+import Resume from "./pages/Resume";
+import Projects from "./pages/Projects";
+import Contact from "./pages/Contact";
 
 export const App = () => {
     // const windowState = useAppSelector((state) => state.window);
@@ -38,8 +42,12 @@ export const App = () => {
                     <ThemeProvider theme={theme}>
                         <Header></Header>
                         <Routes>
-                            <Route path="/" element={<div className="home"><CatWindow /></div>} />
-                            <Route path="/home" element={<div className="home">temp!</div>} />
+                            <Route path="/" element={<Home />} />
+                            <Route path="/home" element={<Home />} />
+                            <Route path="/resume" element={<Resume />} />
+                            <Route path="/projects" element={<Projects />} />
+                            <Route path="/contact" element={<Contact />} />
+                            <Route path="*" element={<div>Bad page</div>} />
                         </Routes>
                         <Footer></Footer>
                     </ThemeProvider>

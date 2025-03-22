@@ -15,6 +15,7 @@ export default function CatWindow() {
             getWeather()
             .then((response: AxiosResponse) => {
                 setWeatherInfo(response.data);
+                console.log(response.data);
             })
             .catch((error: AxiosError) => {
                 setWeatherRetrieved(true);

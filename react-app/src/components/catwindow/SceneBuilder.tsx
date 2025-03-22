@@ -57,10 +57,10 @@ enum TimeOfDay {
 }
 // Used for sunset/sunrise windows. While those only last about 30 minutes in reality,
 // it's too pretty to skip for the window so we're making them an hour long
-const THIRTY_MINS = 1800;
-// Fallback sunrise/sunset times - 6am and 6pm
-const SUNRISE = 1742551200;
-const SUNSET = 1742594400;
+const HOUR = 3600;
+// Fallback sunrise/sunset times - 7am and 7pm
+const SUNRISE = 1742637600;
+const SUNSET = 1742680800;
 
 function SceneBuilder({ weatherInfo }: SceneProps) { 
     const fixed = weatherInfo === undefined;
@@ -71,6 +71,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     if (scene === undefined) {
         return <div/>
     }
+    
     const palette = generatePalette();
     const windowClass = 'windowView ' + palette.sky;
     const isSnowy = scene.weather === WeatherState.Snowy;
@@ -163,11 +164,11 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         var sunrise = weatherInfo === undefined ? SUNRISE : weatherInfo.sys.sunrise;
         var sunset = weatherInfo === undefined ? SUNSET : weatherInfo.sys.sunset;
 
-        if (currentTimeUnix > (sunrise+THIRTY_MINS) && currentTimeUnix < (sunset-THIRTY_MINS)) {
+        if (currentTimeUnix > sunrise && currentTimeUnix < (sunset-HOUR)) {
             return TimeOfDay.Day;
-        } else if (currentTimeUnix > (sunset+THIRTY_MINS)) {
+        } else if (currentTimeUnix > sunset) {
             return TimeOfDay.Night;
-        } else if (currentTimeUnix >= (sunrise-THIRTY_MINS) && currentTimeUnix <= (sunrise+THIRTY_MINS)) {
+        } else if (currentTimeUnix >= (sunrise-HOUR) && currentTimeUnix <= sunrise) {
             return TimeOfDay.Sunrise;
         } else {
             return TimeOfDay.Sunset;
