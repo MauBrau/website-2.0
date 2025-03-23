@@ -15,7 +15,6 @@ export default function CatWindow() {
             getWeather()
             .then((response: AxiosResponse) => {
                 setWeatherInfo(response.data);
-                console.log(response.data);
             })
             .catch((error: AxiosError) => {
                 setWeatherRetrieved(true);
@@ -31,12 +30,12 @@ export default function CatWindow() {
     return (
         <div className="cat-window">
             <SceneBuilder weatherInfo={weatherInfo} />
-            <div className="windowFrame">
+            {/* <div className="windowFrame">
                 <img
                     alt="Window frame of the cat window"
                     src={require("../../data/images/windowframe-grey-cat-moved.png")}
                 />
-            </div>
+            </div> */}
         </div>
     );
 }
