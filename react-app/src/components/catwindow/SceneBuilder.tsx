@@ -62,6 +62,9 @@ const HOUR = 3600;
 const SUNRISE = DateTime.now().set({ hour: 7 }).toUnixInteger();
 const SUNSET = DateTime.now().set({ hour: 19 }).toUnixInteger();
 
+const WINDOWSIZE = 500;
+const SCENESIZE = 354; // roughly
+const matrixScale = SCENESIZE/WINDOWSIZE;
 function SceneBuilder({ weatherInfo }: SceneProps) {
     const fixed = weatherInfo === undefined;
     const currentTime: DateTime = DateTime.now().setZone("America/Toronto");
@@ -78,22 +81,18 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     const isSnowy = scene.weather === WeatherState.Snowy;
     const isRainy = scene.weather === WeatherState.Rainy;
     const showSunOrMoon = !isSnowy && !isRainy;
-    var weatherText = fixed
-        ? "Weather info unavailable"
-        : "Weather in Montreal: " +
-          Math.round(scene.temp) +
-          "°C, " +
-          scene.weather;
-
+    var weatherText = fixed ? "Weather info unavailable" : `Weather in Montreal:  ${Math.round(scene.temp)} °C, ${scene.weather}`;
+    
     return (
-        <div className={windowClass}>
+        <div className={windowClass} style={{ width: WINDOWSIZE, height: WINDOWSIZE }}>
             <svg
-                width="630px"
-                viewBox="0 0 630 630"
+                width={`${WINDOWSIZE}px`}
+                viewBox={`0 0 ${WINDOWSIZE} ${WINDOWSIZE}`}
                 style={{ overflow: "hidden" }}
             >
-                <g transform="matrix(2, 0, 0, 2, 0, 0)">
+                <g >
                     {baseScene()}
+                    {/* transform={`matrix(${matrixScale}, 0, 0, ${matrixScale}, 0, 0)`} */}
                     {/* {catTail()} */}
                 </g>
             </svg>
@@ -322,11 +321,6 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function cat() {
-        {
-            /* <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="200" height="275">
-
-</svg> */
-        }
         return (
             <g transform="matrix(0.5, 0, 0, 0.5, 0, 0)">
                 <path
@@ -353,12 +347,14 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         return (
             <g id="window-frame">
                 <rect
-                    width="795"
-                    height="795"
+                    width={`${WINDOWSIZE - 16}`}
+                    height={`${WINDOWSIZE - 16}`}
                     stroke="white"
                     strokeWidth={16}
                     fillOpacity={0}
                     strokeOpacity={1}
+                    x={8}
+                    y={8}
                 />
             </g>
         );
@@ -464,18 +460,18 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 <path
                     id="land-far"
                     fill={farHill}
-                    d="M 0.741 272.444 C 103.909 235.368 375.944 240.152 363.869 240.152 L 364.133 306.428 L 0.741 306.024 L 0.741 272.444 Z"
+                    d={`M 0.741 272.444 C 103.909 235.368 375.944 240.152 ${WINDOWSIZE} 240.152 L ${WINDOWSIZE} 306.428 L 0.741 306.024 L 0.741 272.444 Z`}
                 />
                 <path
                     id="land-mid"
                     fill={midHill}
-                    d="M 0.741 298.57 C 103.909 335.646 375.944 330.862 363.869 330.862 L 364.133 264.586 L 0.741 264.99 L 0.741 298.57 Z"
+                    d={`M 0.741 298.57 C 103.909 335.646 375.944 330.862 363.869 330.862 L ${WINDOWSIZE} 264.586 L 0.741 264.99 L 0.741 298.57 Z`}
                     transform="matrix(-1, 0, 0, -1, 364.999364, 595.649292)"
                 />
                 <path
                     id="land-close"
                     fill={closeHill}
-                    d="M 1.59 318.026 C 104.276 266.778 375.041 281.673 363.023 281.673 L 363.286 365 L 1.59 364.443 L 1.59 318.026 Z"
+                    d={`M 1.59 318.026 C 104.276 266.778 375.041 281.673 ${WINDOWSIZE} 281.673 L ${WINDOWSIZE} ${WINDOWSIZE} L 1.59 ${WINDOWSIZE} L 1.59 318.026 Z`}
                 />
             </g>
         );
@@ -493,7 +489,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     id="city-building-1"
                     x="295.249"
                     y="126.696"
-                    width="76.357"
+                    width="90"
                     height="151"
                     fill={buildingColour}
                 />
@@ -639,6 +635,33 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     fill={windowColour}
                     stroke={windowBorder}
                 />
+                <rect
+                    id="city-window-12"
+                    x="350"
+                    y="180"
+                    width="13.575"
+                    height="13.009"
+                    fill={windowColour}
+                    stroke={windowBorder}
+                />
+                <rect
+                    id="city-window-13"
+                    x="370"
+                    y="150"
+                    width="13.575"
+                    height="13.009"
+                    fill={windowColour}
+                    stroke={windowBorder}
+                />
+                <rect
+                    id="city-window-14"
+                    x="315"
+                    y="190"
+                    width="13.575"
+                    height="13.009"
+                    fill={windowColour}
+                    stroke={windowBorder}
+                />
             </g>
         );
     }
@@ -695,45 +718,6 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             return <g />;
         }
         var showAllClouds = scene.weather !== WeatherState.PartlyCloudy;
-        // TODO: just add showAllClouds condition to the cclouds we don't want showing
-        if (!showAllClouds) {
-            return (
-                <g id="clouds">
-                    {/* 7 on rainy/snow/cloudy day, 4 on partly cloudy*/}
-                    {/* Furthest to the right */}
-                    <path
-                        id="cloud-1"
-                        className="cloud c1"
-                        fill={cloud}
-                        d="M 397.286 45.861 C 401.69 45.861 405.299 48.49 405.299 51.699 C 405.299 54.907 401.692 57.536 397.286 57.536 L 362.946 57.536 L 361.802 57.536 C 355.483 57.536 350.358 53.802 350.358 49.197 C 350.358 44.592 356.507 43.989 362.829 43.989 C 363.358 43.857 371.942 32.975 380.116 34.187 C 388.181 35.383 396.145 37.211 396.145 45.861 L 397.286 45.861 Z"
-                        transform="matrix(1, 0, 0, 1, -50, 0)"
-                    />
-                    {/* Second from the right */}
-                    <path
-                        id="cloud-2"
-                        className="cloud c7"
-                        fill={cloud}
-                        d="M 330.508 21.21 C 340.217 21.21 348.172 23.584 348.172 26.482 C 348.172 29.379 340.222 31.754 330.508 31.754 L 254.805 31.754 L 252.286 31.754 C 238.353 31.754 227.054 28.381 227.054 24.223 C 227.054 20.064 240.613 19.519 254.548 19.519 C 254.548 19.519 263.954 10.667 292.658 10.667 C 310.633 10.667 327.989 13.398 327.989 21.21 L 330.508 21.21 Z"
-                    />
-
-                    {/* furthest to the left */}
-                    <path
-                        id="cloud-3"
-                        className="cloud c2"
-                        fill={cloud}
-                        d="M 20.872 79.751 C 25.276 79.751 28.885 82.38 28.885 85.589 C 28.885 88.797 25.278 91.426 20.872 91.426 L -13.468 91.426 L -14.612 91.426 C -20.931 91.426 -26.056 87.692 -26.056 83.087 C -26.056 78.482 -19.907 77.879 -13.585 77.879 C -13.056 77.747 -4.472 66.865 3.702 68.077 C 11.767 69.273 19.731 71.101 19.731 79.751 L 20.872 79.751 Z"
-                    />
-
-                    {/* third from the left */}
-                    <path
-                        id="cloud-4"
-                        className="cloud c5"
-                        fill={cloud}
-                        d="M 120.268 76.358 C 124.446 76.358 127.868 73.73 127.868 70.52 C 127.868 67.312 124.448 64.683 120.268 64.683 C 118.501 55.85 86.467 58.537 87.696 64.683 L 86.611 64.683 C 80.617 64.683 75.755 68.418 75.755 73.022 C 75.755 77.628 80.615 81.361 86.611 81.361 C 86.611 81.361 91.632 88.032 103.983 88.032 C 111.717 88.032 119.185 85.008 119.185 76.358 L 120.268 76.358 Z"
-                    />
-                </g>
-            );
-        }
         return (
             <g>
                 {/* 7 on rainy/snow/cloudy day, 4 on partly cloudy */}
@@ -768,27 +752,30 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     fill={cloud}
                     d="M 120.268 76.358 C 124.446 76.358 127.868 73.73 127.868 70.52 C 127.868 67.312 124.448 64.683 120.268 64.683 C 118.501 55.85 86.467 58.537 87.696 64.683 L 86.611 64.683 C 80.617 64.683 75.755 68.418 75.755 73.022 C 75.755 77.628 80.615 81.361 86.611 81.361 C 86.611 81.361 91.632 88.032 103.983 88.032 C 111.717 88.032 119.185 85.008 119.185 76.358 L 120.268 76.358 Z"
                 />
-                {/*third from the right, under long one */}
-                <path
-                    id="cloud-5"
-                    className="cloud c5"
-                    fill={cloud}
-                    d="M 265.57 74.377 C 269.158 74.377 272.098 76.942 272.098 80.074 C 272.098 83.204 269.16 85.77 265.57 85.77 C 265.57 87.902 237.593 88.16 237.593 85.77 L 236.662 85.77 C 231.513 85.77 227.337 82.125 227.337 77.633 C 227.337 73.139 231.512 69.495 236.662 69.495 C 236.662 69.495 240.974 62.986 251.582 62.986 C 258.225 62.986 264.639 65.937 264.639 74.377 L 265.57 74.377 Z"
-                />
-                {/* second from the left */}
-                <path
-                    id="cloud-6"
-                    className="cloud c6"
-                    fill={cloud}
-                    d="M 73.379 29.781 C 78.191 29.781 82.134 33.3 82.134 37.599 L 82.134 37.599 C 82.134 41.895 78.194 45.416 73.379 45.416 L 35.857 45.416 L 34.608 45.416 C 27.703 45.416 22.102 40.414 22.102 34.249 C 22.102 28.081 27.701 23.081 34.608 23.081 C 34.608 23.081 40.392 14.148 54.619 14.148 C 63.528 14.148 72.131 18.197 72.131 29.781 L 73.379 29.781 Z"
-                />
-                {/* middle */}
-                <path
-                    id="cloud-7"
-                    className="cloud c7"
-                    fill={cloud}
-                    d="M 199.699 37.329 C 205.916 37.329 211.011 42.121 211.011 47.975 C 211.011 53.825 205.92 58.62 199.699 58.62 C 201.931 61.968 154.938 64.2 151.218 58.62 L 149.604 58.62 C 140.682 58.62 138.79 54.484 133.445 43.413 C 128.1 32.342 133.989 24.86 149.604 28.205 C 145.758 20.513 155.185 9.347 175.459 16.04 C 186.072 19.544 195.778 29.631 198.086 37.329 L 199.699 37.329 Z"
-                />
+                { showAllClouds && <>
+                    {/*third from the right, under long one */}
+                    <path
+                        id="cloud-5"
+                        className="cloud c5"
+                        fill={cloud}
+                        d="M 265.57 74.377 C 269.158 74.377 272.098 76.942 272.098 80.074 C 272.098 83.204 269.16 85.77 265.57 85.77 C 265.57 87.902 237.593 88.16 237.593 85.77 L 236.662 85.77 C 231.513 85.77 227.337 82.125 227.337 77.633 C 227.337 73.139 231.512 69.495 236.662 69.495 C 236.662 69.495 240.974 62.986 251.582 62.986 C 258.225 62.986 264.639 65.937 264.639 74.377 L 265.57 74.377 Z"
+                    />
+                    {/* second from the left */}
+                    <path
+                        id="cloud-6"
+                        className="cloud c6"
+                        fill={cloud}
+                        d="M 73.379 29.781 C 78.191 29.781 82.134 33.3 82.134 37.599 L 82.134 37.599 C 82.134 41.895 78.194 45.416 73.379 45.416 L 35.857 45.416 L 34.608 45.416 C 27.703 45.416 22.102 40.414 22.102 34.249 C 22.102 28.081 27.701 23.081 34.608 23.081 C 34.608 23.081 40.392 14.148 54.619 14.148 C 63.528 14.148 72.131 18.197 72.131 29.781 L 73.379 29.781 Z"
+                    />
+                    {/* middle */}
+                    <path
+                        id="cloud-7"
+                        className="cloud c7"
+                        fill={cloud}
+                        d="M 199.699 37.329 C 205.916 37.329 211.011 42.121 211.011 47.975 C 211.011 53.825 205.92 58.62 199.699 58.62 C 201.931 61.968 154.938 64.2 151.218 58.62 L 149.604 58.62 C 140.682 58.62 138.79 54.484 133.445 43.413 C 128.1 32.342 133.989 24.86 149.604 28.205 C 145.758 20.513 155.185 9.347 175.459 16.04 C 186.072 19.544 195.778 29.631 198.086 37.329 L 199.699 37.329 Z"
+                    />
+                </>}
+                
             </g>
         );
     }

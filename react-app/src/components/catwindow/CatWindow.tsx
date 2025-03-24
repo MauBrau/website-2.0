@@ -28,7 +28,7 @@ export default function CatWindow() {
         return <div/>
     }
     return (
-        <div className="cat-window">
+        <div>
             <SceneBuilder weatherInfo={weatherInfo} />
             {/* <div className="windowFrame">
                 <img
