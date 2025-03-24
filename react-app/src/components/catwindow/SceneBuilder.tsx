@@ -62,9 +62,8 @@ const HOUR = 3600;
 const SUNRISE = DateTime.now().set({ hour: 7 }).toUnixInteger();
 const SUNSET = DateTime.now().set({ hour: 19 }).toUnixInteger();
 
-const WINDOWSIZE = 500;
-const SCENESIZE = 354; // roughly
-const matrixScale = SCENESIZE/WINDOWSIZE;
+const DEFAULT_WINDOW_SIZE = 400;
+
 function SceneBuilder({ weatherInfo }: SceneProps) {
     const fixed = weatherInfo === undefined;
     const currentTime: DateTime = DateTime.now().setZone("America/Toronto");
@@ -83,16 +82,18 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     const showSunOrMoon = !isSnowy && !isRainy;
     var weatherText = fixed ? "Weather info unavailable" : `Weather in Montreal:  ${Math.round(scene.temp)} °C, ${scene.weather}`;
     
+    const SCENE_SIZE = 80;
+    const matrixScale = SCENE_SIZE/DEFAULT_WINDOW_SIZE;
     return (
-        <div className={windowClass} style={{ width: WINDOWSIZE, height: WINDOWSIZE }}>
+        <div className={windowClass} style={{ width: SCENE_SIZE, height: SCENE_SIZE }}>
             <svg
-                width={`${WINDOWSIZE}px`}
-                viewBox={`0 0 ${WINDOWSIZE} ${WINDOWSIZE}`}
+                width={`${SCENE_SIZE}px`}
+                viewBox={`0 0 ${SCENE_SIZE} ${SCENE_SIZE}`}
                 style={{ overflow: "hidden" }}
             >
-                <g >
+                <g transform={`matrix(${matrixScale}, 0, 0, ${matrixScale}, 0, 0)`}>
                     {baseScene()}
-                    {/* transform={`matrix(${matrixScale}, 0, 0, ${matrixScale}, 0, 0)`} */}
+                    {/*  */}
                     {/* {catTail()} */}
                 </g>
             </svg>
@@ -344,11 +345,12 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function frame() {
+        // Frame uses the default size as it will be scaled by the transformation matrix
         return (
             <g id="window-frame">
                 <rect
-                    width={`${WINDOWSIZE - 16}`}
-                    height={`${WINDOWSIZE - 16}`}
+                    width={`${DEFAULT_WINDOW_SIZE - 16}`}
+                    height={`${DEFAULT_WINDOW_SIZE - 16}`}
                     stroke="white"
                     strokeWidth={16}
                     fillOpacity={0}
@@ -460,18 +462,18 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 <path
                     id="land-far"
                     fill={farHill}
-                    d={`M 0.741 272.444 C 103.909 235.368 375.944 240.152 ${WINDOWSIZE} 240.152 L ${WINDOWSIZE} 306.428 L 0.741 306.024 L 0.741 272.444 Z`}
+                    d={`M 0.741 272.444 C 103.909 235.368 375.944 240.152 ${SCENE_SIZE} 240.152 L ${SCENE_SIZE} 306.428 L 0.741 306.024 L 0.741 272.444 Z`}
                 />
                 <path
                     id="land-mid"
                     fill={midHill}
-                    d={`M 0.741 298.57 C 103.909 335.646 375.944 330.862 363.869 330.862 L ${WINDOWSIZE} 264.586 L 0.741 264.99 L 0.741 298.57 Z`}
+                    d={`M 0.741 298.57 C 103.909 335.646 375.944 330.862 363.869 330.862 L ${SCENE_SIZE} 264.586 L 0.741 264.99 L 0.741 298.57 Z`}
                     transform="matrix(-1, 0, 0, -1, 364.999364, 595.649292)"
                 />
                 <path
                     id="land-close"
                     fill={closeHill}
-                    d={`M 1.59 318.026 C 104.276 266.778 375.041 281.673 ${WINDOWSIZE} 281.673 L ${WINDOWSIZE} ${WINDOWSIZE} L 1.59 ${WINDOWSIZE} L 1.59 318.026 Z`}
+                    d={`M 1.59 318.026 C 104.276 266.778 375.041 281.673 ${SCENE_SIZE} 281.673 L ${SCENE_SIZE} ${SCENE_SIZE} L 1.59 ${SCENE_SIZE} L 1.59 318.026 Z`}
                 />
             </g>
         );
@@ -487,151 +489,150 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 {/* 6 buildings */}
                 <rect
                     id="city-building-1"
-                    x="295.249"
-                    y="126.696"
+                    x="300"
+                    y="125"
                     width="90"
-                    height="151"
+                    height="150"
                     fill={buildingColour}
                 />
                 <rect
                     id="city-building-2"
-                    x="88.235"
-                    y="127.262"
-                    width="41.29"
-                    height="141.403"
+                    x="85"
+                    y="125"
+                    width="45"
+                    height="140"
                     fill={buildingColour}
                 />
                 <rect
                     id="city-building-3"
-                    x="196.833"
-                    y="154.412"
-                    width="45.249"
-                    height="113.688"
+                    x="195"
+                    y="155"
+                    width="45"
+                    height="115"
                     fill={buildingColour}
                 />
                 <rect
                     id="city-building-4"
-                    x="1.131"
-                    y="110.294"
-                    width="96.72"
-                    height="173.077"
+                    x="1"
+                    y="110"
+                    width="95"
+                    height="170"
                     fill={buildingColour}
                 />
                 <rect
                     id="city-building-5"
-                    x="234.728"
-                    y="109.163"
-                    width="67.873"
-                    height="160.068"
+                    x="235"
+                    y="110"
+                    width="65"
+                    height="160"
                     fill={buildingColour}
                 />
                 <rect
                     id="city-building-6"
-                    x="123.869"
-                    y="92.76"
-                    width="83.145"
-                    height="174.774"
+                    x="125"
+                    y="90"
+                    width="80"
+                    height="175"
                     fill={buildingColour}
                 />
 
                 {/* Multiple windows */}
                 <rect
                     id="city-window-1"
-                    x="19.796"
-                    y="138.009"
-                    width="13.575"
-                    height="13.009"
+                    x="20"
+                    y="135"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
                 <rect
                     id="city-window-2"
-                    x="53.733"
-                    y="158.654"
-                    width="13.575"
-                    height="13.009"
+                    x="55"
+                    y="160"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
                 <rect
                     id="city-window-3"
-                    x="148.19"
-                    y="125.283"
-                    width="13.575"
-                    height="13.009"
+                    x="150"
+                    y="125"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
                 <rect
                     id="city-window-4"
-                    x="213.235"
-                    y="184.106"
-                    width="13.575"
-                    height="13.009"
+                    x="215"
+                    y="185"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
                 <rect
                     id="city-window-5"
-                    x="146.493"
-                    y="196.55"
-                    width="13.575"
-                    height="13.009"
+                    x="145"
+                    y="195"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
                 <rect
                     id="city-window-6"
-                    x="260.746"
-                    y="135.464"
-                    width="13.575"
-                    height="13.009"
+                    x="260"
+                    y="135"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
-                {/* <rect x="313.348" y="87.387" width="13.575" height="13.009" fill={windowColour} stroke={windowBorder} /> */}
                 <rect
                     id="city-window-7"
-                    x="263.009"
-                    y="205.034"
-                    width="13.575"
-                    height="13.009"
+                    x="265"
+                    y="205"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
                 <rect
                     id="city-window-8"
-                    x="101.81"
-                    y="153.563"
-                    width="13.575"
-                    height="13.009"
+                    x="100"
+                    y="155"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
                 <rect
                     id="city-window-9"
-                    x="178.167"
-                    y="217.477"
-                    width="13.575"
-                    height="13.009"
+                    x="180"
+                    y="215"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
                 <rect
                     id="city-window-10"
-                    x="24.887"
-                    y="207.296"
-                    width="13.575"
-                    height="13.009"
+                    x="25"
+                    y="210"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
                 <rect
                     id="city-window-11"
-                    x="284.502"
-                    y="160.916"
-                    width="13.575"
-                    height="13.009"
+                    x="285"
+                    y="160"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
@@ -639,8 +640,8 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     id="city-window-12"
                     x="350"
                     y="180"
-                    width="13.575"
-                    height="13.009"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
@@ -648,8 +649,8 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     id="city-window-13"
                     x="370"
                     y="150"
-                    width="13.575"
-                    height="13.009"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
@@ -657,8 +658,8 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     id="city-window-14"
                     x="315"
                     y="190"
-                    width="13.575"
-                    height="13.009"
+                    width="13"
+                    height="13"
                     fill={windowColour}
                     stroke={windowBorder}
                 />
