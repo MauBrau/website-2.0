@@ -82,8 +82,8 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     const showSunOrMoon = !isSnowy && !isRainy;
     var weatherText = fixed ? "Weather info unavailable" : `Weather in Montreal:  ${Math.round(scene.temp)} °C, ${scene.weather}`;
     
-    const SCENE_SIZE = 80;
-    const matrixScale = SCENE_SIZE/DEFAULT_WINDOW_SIZE;
+    const SCENE_SIZE = 400;
+    const scale = SCENE_SIZE/DEFAULT_WINDOW_SIZE;
     return (
         <div className={windowClass} style={{ width: SCENE_SIZE, height: SCENE_SIZE }}>
             <svg
@@ -91,7 +91,8 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 viewBox={`0 0 ${SCENE_SIZE} ${SCENE_SIZE}`}
                 style={{ overflow: "hidden" }}
             >
-                <g transform={`matrix(${matrixScale}, 0, 0, ${matrixScale}, 0, 0)`}>
+                {/* <g transform={`matrix(${matrixScale}, 0, 0, ${matrixScale}, 0, 0)`}> */}
+                <g transform={`scale(${scale})`}>
                     {baseScene()}
                     {/*  */}
                     {/* {catTail()} */}
@@ -307,7 +308,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 {showSunOrMoon
                     ? scene.time === TimeOfDay.Night
                         ? moon()
-                        : sun()
+                        : moon()
                     : null}
                 {clouds()}
                 {city()}
@@ -323,7 +324,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
     function cat() {
         return (
-            <g transform="matrix(0.5, 0, 0, 0.5, 0, 0)">
+            <g transform="scale(0.5)">
                 <path
                     d="M0 0 C6.76199177 -0.49178122 11.02301073 0.93381486 17 4 C17.77472656 4.3815625 18.54945312 4.763125 19.34765625 5.15625 C21.2387667 6.0901317 23.12042021 7.04312301 25 8 C25.474375 6.865625 25.94875 5.73125 26.4375 4.5625 C28 1 28 1 29 0 C35.34207928 0.12943019 39.49171527 2.57462626 44 7 C44.30292969 7.70511719 44.60585937 8.41023437 44.91796875 9.13671875 C45.27503906 9.75160156 45.63210937 10.36648438 46 11 C47.65406261 11.3911084 49.32352029 11.7201703 51 12 C64.76216319 20.90960854 70.42189224 38.58689765 75.09765625 53.45703125 C75.91774842 55.7682001 76.84750574 57.66763756 78.125 59.75 C83.56959971 69.18730617 83.11685403 80.79706826 82.875 91.375 C82.78708227 98.36599628 83.0889958 104.6106391 85.24609375 111.33203125 C87.12810603 117.99220941 87.08459896 124.59046359 86.88671875 131.44140625 C86.85456366 133.26104088 86.82401693 135.0807045 86.79492188 136.90039062 C86.74587785 139.7222523 86.68810756 142.54252711 86.60229492 145.36352539 C86.22922547 158.19328232 87.43087437 167.38461722 93 179 C95.91325067 188.24543634 95.58299652 201.13562297 91.4375 209.8125 C88.35655045 214.97912798 84.49308296 220.25345852 79 223 C77.94258399 225.15037541 77.08378707 227.35320548 76.1953125 229.578125 C73.6335417 234.768641 70.59197769 237.62741987 65.4375 240.1875 C64.48746094 240.67605469 63.53742188 241.16460937 62.55859375 241.66796875 C52.89194685 245.28632945 42.9860709 245.33090978 32.78515625 245.21484375 C25.14860575 245.34228298 20.89375365 247.23755955 15 252 C13.85342267 252.84674673 12.70390684 253.6895365 11.55078125 254.52734375 C11.02025146 254.92356934 10.48972168 255.31979492 9.94311523 255.72802734 C-1.0059554 263.84925746 -12.66190433 269.79094848 -26 273 C-26.70157227 273.17805176 -27.40314453 273.35610352 -28.12597656 273.53955078 C-36.8908268 275.47262049 -45.70509179 275.30231109 -54.6328125 275.26074219 C-57.36220661 275.25005012 -60.09093872 275.26066965 -62.8203125 275.2734375 C-91.22251249 275.29830582 -91.22251249 275.29830582 -99 268 C-108.4414909 256.47653931 -107.02065082 241.03813171 -106 227 C-103.854387 211.24383182 -97.33173032 193.87179453 -84.375 184 C-81.70939287 182.8776391 -79.86430217 182.6817442 -77 183 C-76 184 -76 184 -75.73828125 187.16015625 C-76.03115434 191.45708533 -77.08779932 193.70818089 -79.1875 197.4375 C-86.05530759 210.34128912 -91.55754917 225.88721083 -87.9375 240.5625 C-86.01885397 245.81081425 -83.12017531 248.32774918 -78.20703125 250.9609375 C-67.85761986 255.32490594 -54.50888106 253.99801011 -44.18359375 250.32421875 C-33.8359359 246.02010095 -24.79680527 240.91177557 -16 234 C-16.39832031 233.06800781 -16.79664062 232.13601562 -17.20703125 231.17578125 C-30.55296666 199.35668216 -26.39510547 167.36218169 -14.16455078 135.82910156 C-9.12559848 123.58772226 -3.45169658 111.36819312 3.87792969 100.32543945 C5.64419058 96.66494446 5.24321203 93.28619426 5.015625 89.30859375 C4.98500559 82.82493289 6.104942 74.790116 9 69 C8.443125 68.9175 7.88625 68.835 7.3125 68.75 C2.83828188 67.29890223 -0.66533111 64.02414439 -3 60 C-3.29860561 57.23643434 -3.4276154 54.75668177 -3.375 52 C-3.36557373 51.24396484 -3.35614746 50.48792969 -3.34643555 49.70898438 C-3.05600972 38.79545286 -0.35974633 29.03072607 6.328125 20.2578125 C7.44486135 16.50505895 5.62186125 13.33853322 4.1875 9.875 C3.75727539 8.78251953 3.75727539 8.78251953 3.31835938 7.66796875 C2.28878335 5.07122922 1.2497974 2.49959479 0 0 Z "
                     fill="#352E34"
@@ -345,7 +346,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function frame() {
-        // Frame uses the default size as it will be scaled by the transformation matrix
+        // Frame uses the default size as it will be scaled by the transformation scale
         return (
             <g id="window-frame">
                 <rect
@@ -457,23 +458,33 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             midHill = "#dadfe8";
             closeHill = "#ccd6e0";
         }
+
+        const closeHeight = SCENE_SIZE * 0.7
+        const midHeight = SCENE_SIZE * 0.8
+        const farHeight = SCENE_SIZE * 0.65
         return (
             <g id="land">
                 <path
                     id="land-far"
                     fill={farHill}
-                    d={`M 0.741 272.444 C 103.909 235.368 375.944 240.152 ${SCENE_SIZE} 240.152 L ${SCENE_SIZE} 306.428 L 0.741 306.024 L 0.741 272.444 Z`}
+                    // d={`M 0.741 272.444 C 103.909 235.368 375.944 240.152 ${SCENE_SIZE} 240.152 L ${SCENE_SIZE} 306.428 L 0.741 306.024 L 0.741 272.444 Z`}
+                    d={`M ${SCENE_SIZE} ${SCENE_SIZE} H -${SCENE_SIZE} S 0 ${farHeight} ${SCENE_SIZE} ${farHeight}`}
                 />
                 <path
                     id="land-mid"
                     fill={midHill}
-                    d={`M 0.741 298.57 C 103.909 335.646 375.944 330.862 363.869 330.862 L ${SCENE_SIZE} 264.586 L 0.741 264.99 L 0.741 298.57 Z`}
-                    transform="matrix(-1, 0, 0, -1, 364.999364, 595.649292)"
+                    d={`M ${SCENE_SIZE} ${SCENE_SIZE} H 0 S 0 ${midHeight} ${SCENE_SIZE} ${midHeight}`}
+                    //d={`M 0.741 298.57 C 103.909 335.646 375.944 330.862 363.869 330.862 L ${SCENE_SIZE} 264.586 L 0.741 264.99 L 0.741 298.57 Z`}
+                    // d={`M 0 ${SCENE_SIZE * 0.8} C ${SCENE_SIZE/4} ${SCENE_SIZE * 0.8} ${SCENE_SIZE * 0.9} ${SCENE_SIZE/1.5} ${SCENE_SIZE} ${SCENE_SIZE * 0.75} L ${SCENE_SIZE} ${SCENE_SIZE} 0 ${SCENE_SIZE}`}
+                    
                 />
                 <path
                     id="land-close"
                     fill={closeHill}
-                    d={`M 1.59 318.026 C 104.276 266.778 375.041 281.673 ${SCENE_SIZE} 281.673 L ${SCENE_SIZE} ${SCENE_SIZE} L 1.59 ${SCENE_SIZE} L 1.59 318.026 Z`}
+                    //d={`M 0 ${SCENE_SIZE} H ${SCENE_SIZE * 2} S ${SCENE_SIZE} ${closeHeight} 0 ${closeHeight}`}
+                    //d={`M ${SCENE_SIZE} ${SCENE_SIZE} H -${SCENE_SIZE} S 0 ${closeHeight} ${SCENE_SIZE} ${closeHeight}`}
+                    d={`M ${SCENE_SIZE} ${SCENE_SIZE * 0.75} C 173 290 84 308 19 343 S -40 383 -55 ${SCENE_SIZE} H ${SCENE_SIZE}`}
+                    // d={`M 0 ${SCENE_SIZE * 0.8} C ${SCENE_SIZE/4} ${SCENE_SIZE * 0.8} ${SCENE_SIZE * 0.9} ${SCENE_SIZE/1.5} ${SCENE_SIZE} ${SCENE_SIZE * 0.75} L ${SCENE_SIZE} ${SCENE_SIZE} 0 ${SCENE_SIZE}`}
                 />
             </g>
         );
@@ -669,14 +680,15 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
     function sun() {
         var colour = palette.sun;
-        var cx = "182.5";
-        var cy = "46.095";
+        // Sun position: half point of scene for the X, shifted slightly down from top
+        var cx = `${SCENE_SIZE / 2}`;
+        var cy = `${SCENE_SIZE * 0.125}`;
         if (scene.time === TimeOfDay.Sunset) {
-            cx = "27.523";
-            cy = "105.484";
+            cx = `${SCENE_SIZE * 0.075}`;
+            cy = `${SCENE_SIZE * 0.25}`;
         } else if (scene.time === TimeOfDay.Sunrise) {
-            cx = "334.084";
-            cy = "117.927";
+            cx = `${SCENE_SIZE * 0.875}`;
+            cy = `${SCENE_SIZE * 0.25}`;
         }
         return (
             <g id="sun">
@@ -702,13 +714,20 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function moon() {
+        const moonPosition = SCENE_SIZE / 2;
         return (
             <g id="moon">
-                <path
+                {/* <path
                     fill={WHITE}
-                    d="M 197.444 35.317 C 188.55 24.211 170.968 26.895 165.795 40.151 C 160.623 53.406 171.739 67.29 185.805 65.143 C 190.39 64.443 194.544 62.044 197.444 58.423 C 188.55 64.321 176.607 58.382 175.944 47.731 C 175.283 37.08 186.398 29.706 195.954 34.458 C 196.468 34.714 196.965 35.001 197.444 35.317 Z"
-                    transform="matrix(0.891006, -0.453991, 0.453991, 0.891006, -1.554919, 87.269449)"
-                />
+                    //d="m 200 0 c-8.894-11.106-26.476-8.422-31.649 4.834-5.172 13.255 5.944 27.139 20.01 24.992 4.585-.7 8.739-3.099 11.639-6.72-8.894 5.898-20.837-.041-21.5-10.692-.661-10.651 10.454-18.025 20.01-13.273.514.256 1.011.543 1.49.859z"
+                    d="M 50 20 A 40 40 0 1 0 50 70 30 30 0 1 1 50 20z"
+                /> */}
+                <circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
+                <circle cx="115" cy="50" r="30" stroke="black" stroke-width="2" fill="white" />
+                <circle cx="130" cy="50" r="23" stroke="white" stroke-width="2" fill="white" />
+                <circle cx={`${moonPosition}`} cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
+                <circle cx={`${moonPosition * 1.15}`} cy="50" r="30" stroke="black" stroke-width="2" fill="white" />
+                <circle cx={`${moonPosition * 1.35}`} cy="50" r="23" stroke="white" stroke-width="2" fill="white" />
             </g>
         );
     }
