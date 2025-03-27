@@ -308,7 +308,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 {showSunOrMoon
                     ? scene.time === TimeOfDay.Night
                         ? moon()
-                        : moon()
+                        : sun()
                     : null}
                 {clouds()}
                 {city()}
@@ -459,9 +459,9 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             closeHill = "#ccd6e0";
         }
 
-        const closeHeight = SCENE_SIZE * 0.7
-        const midHeight = SCENE_SIZE * 0.8
-        const farHeight = SCENE_SIZE * 0.65
+        const closeHeight = SCENE_SIZE * 0.7;
+        const midHeight = SCENE_SIZE * 0.7;
+        const farHeight = SCENE_SIZE * 0.6;
         return (
             <g id="land">
                 <path
@@ -473,7 +473,8 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 <path
                     id="land-mid"
                     fill={midHill}
-                    d={`M ${SCENE_SIZE} ${SCENE_SIZE} H 0 S 0 ${midHeight} ${SCENE_SIZE} ${midHeight}`}
+                    // d={`M ${SCENE_SIZE} ${SCENE_SIZE} H 0 S 0 ${midHeight} ${SCENE_SIZE} ${midHeight}`}
+                    d={`m 0 ${SCENE_SIZE} V ${midHeight} s ${SCENE_SIZE} 0 ${SCENE_SIZE} ${SCENE_SIZE/2}`}
                     //d={`M 0.741 298.57 C 103.909 335.646 375.944 330.862 363.869 330.862 L ${SCENE_SIZE} 264.586 L 0.741 264.99 L 0.741 298.57 Z`}
                     // d={`M 0 ${SCENE_SIZE * 0.8} C ${SCENE_SIZE/4} ${SCENE_SIZE * 0.8} ${SCENE_SIZE * 0.9} ${SCENE_SIZE/1.5} ${SCENE_SIZE} ${SCENE_SIZE * 0.75} L ${SCENE_SIZE} ${SCENE_SIZE} 0 ${SCENE_SIZE}`}
                     
@@ -491,12 +492,51 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function city() {
-        var buildingColour = palette.building;
-        var windowColour = palette.window;
-        var windowBorder = palette.windowFrame;
+        var buildingColour : string = palette.building;
+        var windowColour : string = palette.window;
+        var windowBorder : string = palette.windowFrame;
         // TODO: lots of duplicating, maybe we generate window/building positions in a loop eventually?
+        // const defaultY : number = 300;
+        // // Technically it's "reversed" - the building is bigger the higher the number
+        // const heightMax : number = 180;
+        // const heightMin : number = 85;
+
+        // const buildingCount : number = 10;
+        
+        // const buildings = [];
+        // const buildingWidth = 50;
+        // let buildingX = 0;
+        // for(let i = 0; i < buildingCount; i++) {
+        //     const buildingY = Math.random() * (heightMax - heightMin + 1) + heightMin;
+        //     buildings.push(<rect
+        //         id={`"city-building-${i+1}"`}
+        //         x={buildingX}
+        //         y={`${buildingY}`}
+        //         width={`${buildingWidth}`}
+        //         height={`${defaultY}`}
+        //         fill={buildingColour}
+        //     />);
+            
+        //     // const buildingHeight = defaultY + buildingY;
+        //     // // Windows for building
+        //     // for (let y = 0; y < 3; y++) {
+        //     //     const windowY = `${Math.random() * buildingY + 1}`;
+        //     //     const windowX = `${Math.random() * buildingX + 1}`;
+        //     //     buildings.push(<rect
+        //     //         id={`"city-building-${i+1}-window-${y+1}"`}
+        //     //         x={windowX}
+        //     //         y={windowY}
+        //     //         width="13"
+        //     //         height="13"
+        //     //         fill={windowColour}
+        //     //         stroke={windowBorder}
+        //     //     />);
+        //     // }
+        //     buildingX += buildingWidth;
+        // }
         return (
             <g id="city">
+                {/* { buildings } */}
                 {/* 6 buildings */}
                 <rect
                     id="city-building-1"
@@ -714,20 +754,15 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function moon() {
-        const moonPosition = SCENE_SIZE / 2;
+        const x = SCENE_SIZE / 2 ;
+        const y = SCENE_SIZE * 0.225;
         return (
             <g id="moon">
-                {/* <path
+                <path
+                    transform="rotate(-15)"
                     fill={WHITE}
-                    //d="m 200 0 c-8.894-11.106-26.476-8.422-31.649 4.834-5.172 13.255 5.944 27.139 20.01 24.992 4.585-.7 8.739-3.099 11.639-6.72-8.894 5.898-20.837-.041-21.5-10.692-.661-10.651 10.454-18.025 20.01-13.273.514.256 1.011.543 1.49.859z"
-                    d="M 50 20 A 40 40 0 1 0 50 70 30 30 0 1 1 50 20z"
-                /> */}
-                <circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
-                <circle cx="115" cy="50" r="30" stroke="black" stroke-width="2" fill="white" />
-                <circle cx="130" cy="50" r="23" stroke="white" stroke-width="2" fill="white" />
-                <circle cx={`${moonPosition}`} cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
-                <circle cx={`${moonPosition * 1.15}`} cy="50" r="30" stroke="black" stroke-width="2" fill="white" />
-                <circle cx={`${moonPosition * 1.35}`} cy="50" r="23" stroke="white" stroke-width="2" fill="white" />
+                    d={`m ${x} ${y} c -8.894 -11.106 -26.476 -8.422 -31.649 4.834 -5.172 13.255 5.944 27.139 20.01 24.992 4.585-.7 8.739-3.099 11.639-6.72-8.894 5.898-20.837-.041-21.5-10.692-.661-10.651 10.454-18.025 20.01-13.273.514.256 1.011.543 1.49.859z`}
+                />
             </g>
         );
     }
