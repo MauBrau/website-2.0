@@ -6,7 +6,7 @@
     font-size: 12px;
     padding-top: 3em;
     font-family: "'Raleway', sans-serif";
-    color: #C7E6FC
+    color: #c7e6fc;
 }
 
 .windowFrame {
@@ -68,7 +68,7 @@
     transform: translateY(-100%);
 }
 .s-top-layer {
-    animation: fall 22.5s infinite linear; 
+    animation: fall 22.5s infinite linear;
     animation-delay: -10s;
 }
 
@@ -86,7 +86,7 @@
 }
 
 .r-top-layer {
-    animation: fall 1.7s infinite linear; 
+    animation: fall 1.7s infinite linear;
 }
 
 .r-bottom-layer {
@@ -104,19 +104,19 @@
 }
 
 @keyframes fall {
-from {
-    transform: translateY(-370px);
-}
-to {
-    transform: translateY(370px);
-}
+    from {
+        transform: translateY(-370px);
+    }
+    to {
+        transform: translateY(370px);
+    }
 }
 
 @keyframes move {
-from {
-    transform: translateX(-400px);
-}
-to {
-    transform: translateX(400px);
-}
+    from {
+        transform: translateX(-415px);
+    }
+    to {
+        transform: translateX(415px);
+    }
 }

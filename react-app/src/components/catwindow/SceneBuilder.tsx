@@ -64,6 +64,7 @@ const SUNRISE = DateTime.now().set({ hour: 7 }).toUnixInteger();
 const SUNSET = DateTime.now().set({ hour: 19 }).toUnixInteger();
 
 const DEFAULT_WINDOW_SIZE = 400;
+const DEFAULT_FRAME_WIDTH = 16;
 
 function SceneBuilder({ weatherInfo }: SceneProps) {
     const fixed = weatherInfo === undefined;
@@ -77,40 +78,52 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     const palette = generatePalette();
-    const windowClass = "windowView " //+ palette.sky;
+    const windowClass = "windowView";
     const isSnowy = scene.weather === WeatherState.Snowy;
     const isRainy = scene.weather === WeatherState.Rainy;
     const showSunOrMoon = !isSnowy && !isRainy;
-    var weatherText = fixed ? "Weather info unavailable" : `Weather in Montreal:  ${Math.round(scene.temp)} °C, ${scene.weather}`;
-    
+    var weatherText = fixed
+        ? "Weather info unavailable"
+        : `Weather in Montreal:  ${Math.round(scene.temp)} °C, ${
+              scene.weather
+          }`;
+
     const SCENE_SIZE = 400;
-    const scale = SCENE_SIZE/DEFAULT_WINDOW_SIZE;
-    const adjustmentValue = -5;
     return (
         <span>
-            <div className={windowClass} style={{ width: SCENE_SIZE, height: SCENE_SIZE }}>
-                <svg
-                    viewBox={`0 0 ${SCENE_SIZE} ${SCENE_SIZE}`}
-                >
-                    
-                    <svg viewBox={`0 0 400 432`} overflow='hidden'>
-                        <defs>
-                            {gradients()}
-                        </defs>
-                        <g >
-                            {baseScene()}
-                        </g>
+            <div
+                className={windowClass}
+                style={{ width: SCENE_SIZE, height: SCENE_SIZE }}
+            >
+                <svg viewBox={`0 0 ${SCENE_SIZE} ${SCENE_SIZE}`}>
+                    <defs>
+                        <clipPath id="window-frame-clip">
+                            <rect
+                                x="0"
+                                y="0"
+                                width={`${DEFAULT_WINDOW_SIZE}px`}
+                                height={`${DEFAULT_WINDOW_SIZE}px`}
+                                
+                            />
+                        </clipPath>
+                    </defs>
+                    <svg
+                        viewBox={`0 0 ${DEFAULT_WINDOW_SIZE} ${
+                            DEFAULT_WINDOW_SIZE + DEFAULT_FRAME_WIDTH
+                        }`}
+                        clipPath="url(#window-frame-clip)"
+                    >
+                        <defs>{gradients()}</defs>
+                        <g>{baseScene()}</g>
                     </svg>
-                    <g>
-                        {frame()}
-                    </g>
+                    <g>{frame()}</g>
+                    <g>{cat()}</g>
                 </svg>
                 <div className="weatherInfo">
                     <p>{weatherText}</p>
                 </div>
             </div>
         </span>
-        
     );
 
     function createScene() {
@@ -341,13 +354,13 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     <stop offset="0%" stopColor="#b8b9d8" />
                     <stop offset="100%" stopColor="#9899ad" />
                 </radialGradient>
-                <linearGradient id={`${SUNRISE_SKY}-sky`} y2='1'>
-                    <stop stopColor='#e08594'/>
-                    <stop offset='1' stopColor='#ffd596'/>
+                <linearGradient id={`${SUNRISE_SKY}-sky`} y2="1">
+                    <stop stopColor="#e08594" />
+                    <stop offset="1" stopColor="#ffd596" />
                 </linearGradient>
-                <linearGradient id={`${SUNSET_SKY}-sky`} x1='1' x2='0' y2='1'>
-                    <stop stopColor='#ffcb32'/>
-                    <stop offset='1' stopColor='yellow'/>
+                <linearGradient id={`${SUNSET_SKY}-sky`} x1="1" x2="0" y2="1">
+                    <stop stopColor="#ffcb32" />
+                    <stop offset="1" stopColor="yellow" />
                 </linearGradient>
                 <radialGradient id={`${NIGHT_SKY}-sky`} cx="50%" cy="0%">
                     <stop offset="0%" stopColor="#2454c1" />
@@ -358,28 +371,27 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     <stop offset="100%" stopColor="#1e2e30" />
                 </radialGradient>
             </>
-        )
+        );
     }
 
     function sky() {
         return (
             <rect
-                width='100%'
-                height='100%'
+                width="100%"
+                height="100%"
                 fill={`url(#${palette.sky}-sky)`}
             />
-        )
+        );
     }
 
     function cat() {
         return (
-            <g transform="scale(0.7)">
-                <path
-                    d="M0 0 C6.76199177 -0.49178122 11.02301073 0.93381486 17 4 C17.77472656 4.3815625 18.54945312 4.763125 19.34765625 5.15625 C21.2387667 6.0901317 23.12042021 7.04312301 25 8 C25.474375 6.865625 25.94875 5.73125 26.4375 4.5625 C28 1 28 1 29 0 C35.34207928 0.12943019 39.49171527 2.57462626 44 7 C44.30292969 7.70511719 44.60585937 8.41023437 44.91796875 9.13671875 C45.27503906 9.75160156 45.63210937 10.36648438 46 11 C47.65406261 11.3911084 49.32352029 11.7201703 51 12 C64.76216319 20.90960854 70.42189224 38.58689765 75.09765625 53.45703125 C75.91774842 55.7682001 76.84750574 57.66763756 78.125 59.75 C83.56959971 69.18730617 83.11685403 80.79706826 82.875 91.375 C82.78708227 98.36599628 83.0889958 104.6106391 85.24609375 111.33203125 C87.12810603 117.99220941 87.08459896 124.59046359 86.88671875 131.44140625 C86.85456366 133.26104088 86.82401693 135.0807045 86.79492188 136.90039062 C86.74587785 139.7222523 86.68810756 142.54252711 86.60229492 145.36352539 C86.22922547 158.19328232 87.43087437 167.38461722 93 179 C95.91325067 188.24543634 95.58299652 201.13562297 91.4375 209.8125 C88.35655045 214.97912798 84.49308296 220.25345852 79 223 C77.94258399 225.15037541 77.08378707 227.35320548 76.1953125 229.578125 C73.6335417 234.768641 70.59197769 237.62741987 65.4375 240.1875 C64.48746094 240.67605469 63.53742188 241.16460937 62.55859375 241.66796875 C52.89194685 245.28632945 42.9860709 245.33090978 32.78515625 245.21484375 C25.14860575 245.34228298 20.89375365 247.23755955 15 252 C13.85342267 252.84674673 12.70390684 253.6895365 11.55078125 254.52734375 C11.02025146 254.92356934 10.48972168 255.31979492 9.94311523 255.72802734 C-1.0059554 263.84925746 -12.66190433 269.79094848 -26 273 C-26.70157227 273.17805176 -27.40314453 273.35610352 -28.12597656 273.53955078 C-36.8908268 275.47262049 -45.70509179 275.30231109 -54.6328125 275.26074219 C-57.36220661 275.25005012 -60.09093872 275.26066965 -62.8203125 275.2734375 C-91.22251249 275.29830582 -91.22251249 275.29830582 -99 268 C-108.4414909 256.47653931 -107.02065082 241.03813171 -106 227 C-103.854387 211.24383182 -97.33173032 193.87179453 -84.375 184 C-81.70939287 182.8776391 -79.86430217 182.6817442 -77 183 C-76 184 -76 184 -75.73828125 187.16015625 C-76.03115434 191.45708533 -77.08779932 193.70818089 -79.1875 197.4375 C-86.05530759 210.34128912 -91.55754917 225.88721083 -87.9375 240.5625 C-86.01885397 245.81081425 -83.12017531 248.32774918 -78.20703125 250.9609375 C-67.85761986 255.32490594 -54.50888106 253.99801011 -44.18359375 250.32421875 C-33.8359359 246.02010095 -24.79680527 240.91177557 -16 234 C-16.39832031 233.06800781 -16.79664062 232.13601562 -17.20703125 231.17578125 C-30.55296666 199.35668216 -26.39510547 167.36218169 -14.16455078 135.82910156 C-9.12559848 123.58772226 -3.45169658 111.36819312 3.87792969 100.32543945 C5.64419058 96.66494446 5.24321203 93.28619426 5.015625 89.30859375 C4.98500559 82.82493289 6.104942 74.790116 9 69 C8.443125 68.9175 7.88625 68.835 7.3125 68.75 C2.83828188 67.29890223 -0.66533111 64.02414439 -3 60 C-3.29860561 57.23643434 -3.4276154 54.75668177 -3.375 52 C-3.36557373 51.24396484 -3.35614746 50.48792969 -3.34643555 49.70898438 C-3.05600972 38.79545286 -0.35974633 29.03072607 6.328125 20.2578125 C7.44486135 16.50505895 5.62186125 13.33853322 4.1875 9.875 C3.75727539 8.78251953 3.75727539 8.78251953 3.31835938 7.66796875 C2.28878335 5.07122922 1.2497974 2.49959479 0 0 Z "
-                    fill="#352E34"
-                    transform="translate(400,400)" // Move him
-                />
-            </g>
+            <path
+                d="M0 0 C6.76199177 -0.49178122 11.02301073 0.93381486 17 4 C17.77472656 4.3815625 18.54945312 4.763125 19.34765625 5.15625 C21.2387667 6.0901317 23.12042021 7.04312301 25 8 C25.474375 6.865625 25.94875 5.73125 26.4375 4.5625 C28 1 28 1 29 0 C35.34207928 0.12943019 39.49171527 2.57462626 44 7 C44.30292969 7.70511719 44.60585937 8.41023437 44.91796875 9.13671875 C45.27503906 9.75160156 45.63210937 10.36648438 46 11 C47.65406261 11.3911084 49.32352029 11.7201703 51 12 C64.76216319 20.90960854 70.42189224 38.58689765 75.09765625 53.45703125 C75.91774842 55.7682001 76.84750574 57.66763756 78.125 59.75 C83.56959971 69.18730617 83.11685403 80.79706826 82.875 91.375 C82.78708227 98.36599628 83.0889958 104.6106391 85.24609375 111.33203125 C87.12810603 117.99220941 87.08459896 124.59046359 86.88671875 131.44140625 C86.85456366 133.26104088 86.82401693 135.0807045 86.79492188 136.90039062 C86.74587785 139.7222523 86.68810756 142.54252711 86.60229492 145.36352539 C86.22922547 158.19328232 87.43087437 167.38461722 93 179 C95.91325067 188.24543634 95.58299652 201.13562297 91.4375 209.8125 C88.35655045 214.97912798 84.49308296 220.25345852 79 223 C77.94258399 225.15037541 77.08378707 227.35320548 76.1953125 229.578125 C73.6335417 234.768641 70.59197769 237.62741987 65.4375 240.1875 C64.48746094 240.67605469 63.53742188 241.16460937 62.55859375 241.66796875 C52.89194685 245.28632945 42.9860709 245.33090978 32.78515625 245.21484375 C25.14860575 245.34228298 20.89375365 247.23755955 15 252 C13.85342267 252.84674673 12.70390684 253.6895365 11.55078125 254.52734375 C11.02025146 254.92356934 10.48972168 255.31979492 9.94311523 255.72802734 C-1.0059554 263.84925746 -12.66190433 269.79094848 -26 273 C-26.70157227 273.17805176 -27.40314453 273.35610352 -28.12597656 273.53955078 C-36.8908268 275.47262049 -45.70509179 275.30231109 -54.6328125 275.26074219 C-57.36220661 275.25005012 -60.09093872 275.26066965 -62.8203125 275.2734375 C-91.22251249 275.29830582 -91.22251249 275.29830582 -99 268 C-108.4414909 256.47653931 -107.02065082 241.03813171 -106 227 C-103.854387 211.24383182 -97.33173032 193.87179453 -84.375 184 C-81.70939287 182.8776391 -79.86430217 182.6817442 -77 183 C-76 184 -76 184 -75.73828125 187.16015625 C-76.03115434 191.45708533 -77.08779932 193.70818089 -79.1875 197.4375 C-86.05530759 210.34128912 -91.55754917 225.88721083 -87.9375 240.5625 C-86.01885397 245.81081425 -83.12017531 248.32774918 -78.20703125 250.9609375 C-67.85761986 255.32490594 -54.50888106 253.99801011 -44.18359375 250.32421875 C-33.8359359 246.02010095 -24.79680527 240.91177557 -16 234 C-16.39832031 233.06800781 -16.79664062 232.13601562 -17.20703125 231.17578125 C-30.55296666 199.35668216 -26.39510547 167.36218169 -14.16455078 135.82910156 C-9.12559848 123.58772226 -3.45169658 111.36819312 3.87792969 100.32543945 C5.64419058 96.66494446 5.24321203 93.28619426 5.015625 89.30859375 C4.98500559 82.82493289 6.104942 74.790116 9 69 C8.443125 68.9175 7.88625 68.835 7.3125 68.75 C2.83828188 67.29890223 -0.66533111 64.02414439 -3 60 C-3.29860561 57.23643434 -3.4276154 54.75668177 -3.375 52 C-3.36557373 51.24396484 -3.35614746 50.48792969 -3.34643555 49.70898438 C-3.05600972 38.79545286 -0.35974633 29.03072607 6.328125 20.2578125 C7.44486135 16.50505895 5.62186125 13.33853322 4.1875 9.875 C3.75727539 8.78251953 3.75727539 8.78251953 3.31835938 7.66796875 C2.28878335 5.07122922 1.2497974 2.49959479 0 0 Z "
+                fill="#352E34"
+                transform="translate(400,400)" // Move him
+                //transform={`translate(${SCENE_SIZE},${SCENE_SIZE})`} // Move him
+            />
         );
         // TODO - tail movement
         // return (
@@ -398,10 +410,11 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         // Frame uses the default size as it will be scaled by the transformation scale
         return (
             <g id="window-frame">
+                {cat()}
                 <rect
-                    id='frame-white'
-                    width={`${DEFAULT_WINDOW_SIZE - 32}`}
-                    height={`${DEFAULT_WINDOW_SIZE - 32}`}
+                    id="frame-white"
+                    width={`${SCENE_SIZE - DEFAULT_FRAME_WIDTH*2}`}
+                    height={`${SCENE_SIZE - DEFAULT_FRAME_WIDTH*3}`}
                     stroke="white"
                     strokeWidth={16}
                     fillOpacity={0}
@@ -411,11 +424,11 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 />
                 <rect
                     z={9999}
-                    id='frame-base'
-                    width={`${DEFAULT_WINDOW_SIZE}`}
-                    height={16}
+                    id="frame-base"
+                    width={`${SCENE_SIZE}`}
+                    height={DEFAULT_FRAME_WIDTH*2}
                     fill="#cccbc9"
-                    y={`${SCENE_SIZE - 16}`}
+                    y={`${SCENE_SIZE - DEFAULT_FRAME_WIDTH*2}`}
                 />
             </g>
         );
@@ -517,32 +530,35 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             closeHill = "#ccd6e0";
         }
 
-        const closeHeight = SCENE_SIZE * 0.7;
-        const midHeight = SCENE_SIZE * 0.7;
-        const farHeight = SCENE_SIZE * 0.6;
+        const closeHeight = DEFAULT_WINDOW_SIZE * 0.7;
+        const midHeight = DEFAULT_WINDOW_SIZE * 0.7;
+        const farHeight = DEFAULT_WINDOW_SIZE * 0.6;
         return (
             <g id="land">
                 <path
                     id="land-far"
                     fill={farHill}
                     // d={`M 0.741 272.444 C 103.909 235.368 375.944 240.152 ${SCENE_SIZE} 240.152 L ${SCENE_SIZE} 306.428 L 0.741 306.024 L 0.741 272.444 Z`}
-                    d={`M ${SCENE_SIZE} ${SCENE_SIZE} H -${SCENE_SIZE} S 0 ${farHeight} ${SCENE_SIZE} ${farHeight}`}
+                    d={`M ${DEFAULT_WINDOW_SIZE} ${DEFAULT_WINDOW_SIZE} H -${DEFAULT_WINDOW_SIZE} S 0 ${farHeight} ${DEFAULT_WINDOW_SIZE} ${farHeight}`}
                 />
                 <path
                     id="land-mid"
                     fill={midHill}
                     // d={`M ${SCENE_SIZE} ${SCENE_SIZE} H 0 S 0 ${midHeight} ${SCENE_SIZE} ${midHeight}`}
-                    d={`m 0 ${SCENE_SIZE} V ${midHeight} s ${SCENE_SIZE} 0 ${SCENE_SIZE} ${SCENE_SIZE/2}`}
+                    d={`m 0 ${DEFAULT_WINDOW_SIZE} V ${midHeight} s ${DEFAULT_WINDOW_SIZE} 0 ${DEFAULT_WINDOW_SIZE} ${
+                        DEFAULT_WINDOW_SIZE / 2
+                    }`}
                     //d={`M 0.741 298.57 C 103.909 335.646 375.944 330.862 363.869 330.862 L ${SCENE_SIZE} 264.586 L 0.741 264.99 L 0.741 298.57 Z`}
                     // d={`M 0 ${SCENE_SIZE * 0.8} C ${SCENE_SIZE/4} ${SCENE_SIZE * 0.8} ${SCENE_SIZE * 0.9} ${SCENE_SIZE/1.5} ${SCENE_SIZE} ${SCENE_SIZE * 0.75} L ${SCENE_SIZE} ${SCENE_SIZE} 0 ${SCENE_SIZE}`}
-                    
                 />
                 <path
                     id="land-close"
                     fill={closeHill}
                     //d={`M 0 ${SCENE_SIZE} H ${SCENE_SIZE * 2} S ${SCENE_SIZE} ${closeHeight} 0 ${closeHeight}`}
                     //d={`M ${SCENE_SIZE} ${SCENE_SIZE} H -${SCENE_SIZE} S 0 ${closeHeight} ${SCENE_SIZE} ${closeHeight}`}
-                    d={`M ${SCENE_SIZE} ${SCENE_SIZE * 0.75} C 173 290 84 308 19 343 S -40 383 -55 ${SCENE_SIZE} H ${SCENE_SIZE}`}
+                    d={`M ${DEFAULT_WINDOW_SIZE} ${
+                        DEFAULT_WINDOW_SIZE * 0.75
+                    } C 173 290 84 308 19 343 S -40 383 -55 ${DEFAULT_WINDOW_SIZE} H ${DEFAULT_WINDOW_SIZE}`}
                     // d={`M 0 ${SCENE_SIZE * 0.8} C ${SCENE_SIZE/4} ${SCENE_SIZE * 0.8} ${SCENE_SIZE * 0.9} ${SCENE_SIZE/1.5} ${SCENE_SIZE} ${SCENE_SIZE * 0.75} L ${SCENE_SIZE} ${SCENE_SIZE} 0 ${SCENE_SIZE}`}
                 />
             </g>
@@ -550,9 +566,9 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function city() {
-        var buildingColour : string = palette.building;
-        var windowColour : string = palette.window;
-        var windowBorder : string = palette.windowFrame;
+        var buildingColour: string = palette.building;
+        var windowColour: string = palette.window;
+        var windowBorder: string = palette.windowFrame;
         // TODO: lots of duplicating, maybe we generate window/building positions in a loop eventually?
         // const defaultY : number = 300;
         // // Technically it's "reversed" - the building is bigger the higher the number
@@ -560,7 +576,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         // const heightMin : number = 85;
 
         // const buildingCount : number = 10;
-        
+
         // const buildings = [];
         // const buildingWidth = 50;
         // let buildingX = 0;
@@ -574,7 +590,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         //         height={`${defaultY}`}
         //         fill={buildingColour}
         //     />);
-            
+
         //     // const buildingHeight = defaultY + buildingY;
         //     // // Windows for building
         //     // for (let y = 0; y < 3; y++) {
@@ -600,7 +616,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     id="city-building-1"
                     x="300"
                     y="125"
-                    width="90"
+                    width="100"
                     height="150"
                     fill={buildingColour}
                 />
@@ -632,7 +648,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     id="city-building-5"
                     x="235"
                     y="110"
-                    width="65"
+                    width="70"
                     height="160"
                     fill={buildingColour}
                 />
@@ -777,16 +793,21 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function sun() {
-        var colour = palette.sun;
-        // Sun position: half point of scene for the X, shifted slightly down from top
-        var cx = `${SCENE_SIZE / 2}`;
-        var cy = `${SCENE_SIZE * 0.125}`;
+        var colour: string = palette.sun;
+        const daySunX: string = "50%";
+        const daySunY: string = "12.5%";
+        const sunsetSunX: string = "7.5%";
+        const sunriseSunX: string = "87.5%";
+        const sunSetOrRiseY: string = "25%";
+
+        var cx = daySunX;
+        var cy = daySunY;
         if (scene.time === TimeOfDay.Sunset) {
-            cx = `${SCENE_SIZE * 0.075}`;
-            cy = `${SCENE_SIZE * 0.25}`;
+            cx = sunsetSunX;
+            cy = sunSetOrRiseY;
         } else if (scene.time === TimeOfDay.Sunrise) {
-            cx = `${SCENE_SIZE * 0.875}`;
-            cy = `${SCENE_SIZE * 0.25}`;
+            cx = sunriseSunX;
+            cy = sunSetOrRiseY;
         }
         return (
             <g id="sun">
@@ -812,7 +833,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function moon() {
-        const x = SCENE_SIZE / 2 ;
+        const x = SCENE_SIZE / 2;
         const y = SCENE_SIZE * 0.225;
         return (
             <g id="moon">
@@ -824,29 +845,26 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             </g>
         );
     }
+    
     function clouds() {
         var cloud = palette.cloud;
 
         if (scene.weather === WeatherState.Clear) {
             return <g />;
         }
+        
         var showAllClouds = scene.weather !== WeatherState.PartlyCloudy;
         return (
-            <g>
+            <g id="clouds">
                 {/* 7 on rainy/snow/cloudy day, 4 on partly cloudy */}
                 {/* Furthest to the right */}
                 <path
                     id="cloud-1"
-                    // className="cloud c1"
-                    fill= 'red' //{cloud}
+                    className="cloud c1"
+                    fill={cloud}
                     d="M 397.286 45.861 C 401.69 45.861 405.299 48.49 405.299 51.699 C 405.299 54.907 401.692 57.536 397.286 57.536 L 362.946 57.536 L 361.802 57.536 C 355.483 57.536 350.358 53.802 350.358 49.197 C 350.358 44.592 356.507 43.989 362.829 43.989 C 363.358 43.857 371.942 32.975 380.116 34.187 C 388.181 35.383 396.145 37.211 396.145 45.861 L 397.286 45.861 Z"
-                    transform="matrix(1, 0, 0, 1, -50, 0)"
-                >
-                     <animateMotion
-                        path="M0, 0 90 0 0 0"
-                        begin="0s" dur="35s" repeatCount="indefinite"
-                    />
-                </path>
+                    //transform="matrix(1, 0, 0, 1, -50, 0)"
+                ></path>
                 {/* Second from the right */}
                 <path
                     id="cloud-2"
@@ -870,30 +888,31 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     fill={cloud}
                     d="M 120.268 76.358 C 124.446 76.358 127.868 73.73 127.868 70.52 C 127.868 67.312 124.448 64.683 120.268 64.683 C 118.501 55.85 86.467 58.537 87.696 64.683 L 86.611 64.683 C 80.617 64.683 75.755 68.418 75.755 73.022 C 75.755 77.628 80.615 81.361 86.611 81.361 C 86.611 81.361 91.632 88.032 103.983 88.032 C 111.717 88.032 119.185 85.008 119.185 76.358 L 120.268 76.358 Z"
                 />
-                { showAllClouds && <>
-                    {/*third from the right, under long one */}
-                    <path
-                        id="cloud-5"
-                        className="cloud c5"
-                        fill={cloud}
-                        d="M 265.57 74.377 C 269.158 74.377 272.098 76.942 272.098 80.074 C 272.098 83.204 269.16 85.77 265.57 85.77 C 265.57 87.902 237.593 88.16 237.593 85.77 L 236.662 85.77 C 231.513 85.77 227.337 82.125 227.337 77.633 C 227.337 73.139 231.512 69.495 236.662 69.495 C 236.662 69.495 240.974 62.986 251.582 62.986 C 258.225 62.986 264.639 65.937 264.639 74.377 L 265.57 74.377 Z"
-                    />
-                    {/* second from the left */}
-                    <path
-                        id="cloud-6"
-                        className="cloud c6"
-                        fill={cloud}
-                        d="M 73.379 29.781 C 78.191 29.781 82.134 33.3 82.134 37.599 L 82.134 37.599 C 82.134 41.895 78.194 45.416 73.379 45.416 L 35.857 45.416 L 34.608 45.416 C 27.703 45.416 22.102 40.414 22.102 34.249 C 22.102 28.081 27.701 23.081 34.608 23.081 C 34.608 23.081 40.392 14.148 54.619 14.148 C 63.528 14.148 72.131 18.197 72.131 29.781 L 73.379 29.781 Z"
-                    />
-                    {/* middle */}
-                    <path
-                        id="cloud-7"
-                        className="cloud c7"
-                        fill={cloud}
-                        d="M 199.699 37.329 C 205.916 37.329 211.011 42.121 211.011 47.975 C 211.011 53.825 205.92 58.62 199.699 58.62 C 201.931 61.968 154.938 64.2 151.218 58.62 L 149.604 58.62 C 140.682 58.62 138.79 54.484 133.445 43.413 C 128.1 32.342 133.989 24.86 149.604 28.205 C 145.758 20.513 155.185 9.347 175.459 16.04 C 186.072 19.544 195.778 29.631 198.086 37.329 L 199.699 37.329 Z"
-                    />
-                </>}
-                
+                {showAllClouds && (
+                    <>
+                        {/*third from the right, under long one */}
+                        <path
+                            id="cloud-5"
+                            className="cloud c5"
+                            fill={cloud}
+                            d="M 265.57 74.377 C 269.158 74.377 272.098 76.942 272.098 80.074 C 272.098 83.204 269.16 85.77 265.57 85.77 C 265.57 87.902 237.593 88.16 237.593 85.77 L 236.662 85.77 C 231.513 85.77 227.337 82.125 227.337 77.633 C 227.337 73.139 231.512 69.495 236.662 69.495 C 236.662 69.495 240.974 62.986 251.582 62.986 C 258.225 62.986 264.639 65.937 264.639 74.377 L 265.57 74.377 Z"
+                        />
+                        {/* second from the left */}
+                        <path
+                            id="cloud-6"
+                            className="cloud c6"
+                            fill={cloud}
+                            d="M 73.379 29.781 C 78.191 29.781 82.134 33.3 82.134 37.599 L 82.134 37.599 C 82.134 41.895 78.194 45.416 73.379 45.416 L 35.857 45.416 L 34.608 45.416 C 27.703 45.416 22.102 40.414 22.102 34.249 C 22.102 28.081 27.701 23.081 34.608 23.081 C 34.608 23.081 40.392 14.148 54.619 14.148 C 63.528 14.148 72.131 18.197 72.131 29.781 L 73.379 29.781 Z"
+                        />
+                        {/* middle */}
+                        <path
+                            id="cloud-7"
+                            className="cloud c7"
+                            fill={cloud}
+                            d="M 199.699 37.329 C 205.916 37.329 211.011 42.121 211.011 47.975 C 211.011 53.825 205.92 58.62 199.699 58.62 C 201.931 61.968 154.938 64.2 151.218 58.62 L 149.604 58.62 C 140.682 58.62 138.79 54.484 133.445 43.413 C 128.1 32.342 133.989 24.86 149.604 28.205 C 145.758 20.513 155.185 9.347 175.459 16.04 C 186.072 19.544 195.778 29.631 198.086 37.329 L 199.699 37.329 Z"
+                        />
+                    </>
+                )}
             </g>
         );
     }
