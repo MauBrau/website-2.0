@@ -1,17 +1,22 @@
 import { createTheme } from "@mui/material";
 declare module "@mui/material/styles" {
     interface Palette {
-        transparent: Palette["primary"];
+        appBarBackground: Palette['appBar'];
     }
 
     interface PaletteOptions {
-        transparent?: PaletteOptions["primary"];
+        appBarBackground?: PaletteOptions['appBar'];
+    }
+}
+
+declare module '@mui/material/AppBar' {
+    interface AppBarPropsColorOverrides {
+        appBar: true;
     }
 }
 
 export let theme = createTheme({});
 theme = createTheme(theme, {
-    components: {},
     palette: {
         primary: theme.palette.augmentColor({
             color: {
@@ -24,11 +29,14 @@ theme = createTheme(theme, {
             dark: "#ba000d",
             contrastText: "#000",
         },
-        transparent: {
-            main: "#0000000",
-        },
+        appBar: {
+            main: "#352e34",
+            backgroundColor: "#352e34",
+        }
     },
 });
+console.log('theme?');
+console.log(theme);
 
 export const nameFont = 'birthstone bounce';
 export const stylizedTextFont = 'bagel fat one';

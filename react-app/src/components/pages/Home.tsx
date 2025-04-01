@@ -7,7 +7,7 @@ import { HomeText } from "../../interface/IText";
 
 
 export default function Home() {
-    const isDesktop = useMediaQuery('(min-width:800px)');
+    const isDesktop = useMediaQuery('(min-width:900px)');
     const pageText: HomeText = require("../../data/text/home.json");
     return (
         <div
@@ -57,6 +57,19 @@ export default function Home() {
                             }}
                         >
                             {pageText.body}
+                        </Typography>
+                        <br/>
+                        <Typography
+                            sx={{
+                                flexGrow: 1,
+                                mr: 2,
+                                fontFamily: textFont,
+                                textAlign: { xs: "center", sm: "left" },
+                                color: "primary.main",
+                                textDecoration: "none",
+                            }}
+                        >
+                            {pageText.body2}
                         </Typography>
                     </div>
                 </Grid>

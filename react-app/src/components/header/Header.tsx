@@ -12,6 +12,7 @@ import {
     Drawer,
     IconButton,
     CssBaseline,
+    useMediaQuery,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -21,6 +22,7 @@ import { pages } from "../helper/Routes";
 const drawerWidth = 240;
 
 function Header() {
+    const isDesktop = useMediaQuery('(min-width:600px)');
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -41,14 +43,14 @@ function Header() {
         </Box>
     );
 
-    
+    const color = isDesktop ? "primary" : "appBarBackground"
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <AppBar
                 component="nav"
                 position="fixed"
-                color="transparent"
+                color={color}
                 elevation={0}
                 sx={{ mt: 2 }}
             >
@@ -80,7 +82,7 @@ function Header() {
                         }}
                         href={'/'}
                     >
-                        Maude
+                        Maude {isDesktop ? 'true' : 'false'}
                     </Typography>
                     <Box sx={{ display: { xs: "none", sm: "block" } }}>
                         {pages.map((item) => (

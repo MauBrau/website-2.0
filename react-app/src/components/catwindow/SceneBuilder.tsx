@@ -70,7 +70,6 @@ const DEFAULT_FRAME_WIDTH = 16;
 function SceneBuilder({ weatherInfo }: SceneProps) {
     const fixed = weatherInfo === undefined;
     const isDesktop = useMediaQuery('(min-width:600px)');
-    console.log('isDesktop? ' + isDesktop);
     const currentTime: DateTime = DateTime.now().setZone("America/Toronto");
     const currentTimeUnix: number = currentTime.toUnixInteger();
 
