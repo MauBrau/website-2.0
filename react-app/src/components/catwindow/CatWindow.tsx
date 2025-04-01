@@ -8,34 +8,25 @@ export default function CatWindow() {
     const [weatherRetrieved, setWeatherRetrieved] = useState<Boolean>(false);
     const [weatherInfo, setWeatherInfo] = useState<Weather>();
     useEffect(() => {
-        const getWeather = async () => (
-            await axios.get<Weather>("/api/weather")
-        );
+        const getWeather = async () => await axios.get<Weather>("/api/weather");
         if (weatherInfo === undefined) {
             getWeather()
-            .then((response: AxiosResponse) => {
-                setWeatherInfo(response.data);
-            })
-            .catch((error: AxiosError) => {
-                setWeatherRetrieved(true);
-            })
-            .finally(() =>  setWeatherRetrieved(true));
+                .then((response: AxiosResponse) => {
+                    setWeatherInfo(response.data);
+                })
+                .catch((error: AxiosError) => {
+                    setWeatherRetrieved(true);
+                })
+                .finally(() => setWeatherRetrieved(true));
         }
-        
     }, [weatherInfo]);
 
     if (!weatherRetrieved) {
-        return <div/>
+        return <div />;
     }
     return (
-        <div>
-            <SceneBuilder weatherInfo={weatherInfo} />
-            {/* <div className="windowFrame">
-                <img
-                    alt="Window frame of the cat window"
-                    src={require("../../data/images/windowframe-grey-cat-moved.png")}
-                />
-            </div> */}
-        </div>
+        <SceneBuilder
+            weatherInfo={weatherInfo}
+        />
     );
 }

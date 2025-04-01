@@ -1,11 +1,7 @@
+
 .app {
     text-align: center;
     background-color: #352e34;
     background-image: url('./data/images/texture.png');
-}
-
-.home {
-    margin-left: 40px;
-    margin-right: 40px;
-    height: 100vh;
+    height: 100%;
 }

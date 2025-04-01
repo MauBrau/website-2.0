@@ -7,12 +7,11 @@ import { ThemeProvider } from "@mui/material";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import { theme } from "./components/helper/Style";
-import CatWindow from "./components/catwindow/CatWindow";
 import { BrowserRouter, Routes, Route } from "react-router";
-import Home from "./pages/Home";
-import Resume from "./pages/Resume";
-import Projects from "./pages/Projects";
-import Contact from "./pages/Contact";
+import Home from "./components/pages/Home";
+import Resume from "./components/pages/Resume";
+import Projects from "./components/pages/Projects";
+import Contact from "./components/pages/Contact";
 
 export const App = () => {
     // const windowState = useAppSelector((state) => state.window);
@@ -40,7 +39,7 @@ export const App = () => {
             <BrowserRouter>
                 <div className="app">
                     <ThemeProvider theme={theme}>
-                        <Header></Header>
+                        <Header/>
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/home" element={<Home />} />
@@ -49,7 +48,7 @@ export const App = () => {
                             <Route path="/contact" element={<Contact />} />
                             <Route path="*" element={<div>Bad page</div>} />
                         </Routes>
-                        <Footer></Footer>
+                        <Footer/>
                     </ThemeProvider>
                 </div>
             </BrowserRouter>

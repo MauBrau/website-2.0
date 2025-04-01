@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ElementType } from "react";
 import "./Header.css";
 import {
     AppBar,
@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import { nameFont, textFont } from "../helper/Style";
+import { nameFont, stylizedTextFont } from "../helper/Style";
 import { pages } from "../helper/Routes";
 
 const drawerWidth = 240;
@@ -41,6 +41,7 @@ function Header() {
         </Box>
     );
 
+    
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
@@ -63,7 +64,7 @@ function Header() {
                     </IconButton>
                     <Typography
                         variant="h3"
-                        component="a"
+                        component='a'
                         aria-label="home page"
                         sx={{
                             flexGrow: 1,
@@ -77,7 +78,7 @@ function Header() {
                             },
                             textDecoration: 'none'
                         }}
-                        href="/"
+                        href={'/'}
                     >
                         Maude
                     </Typography>
@@ -87,7 +88,7 @@ function Header() {
                                 key={item.name}
                                 color="primary"
                                 sx={{
-                                    fontFamily: textFont,
+                                    fontFamily: stylizedTextFont,
                                     textTransform: "lowercase",
                                     fontWeight: 400,
                                 }}

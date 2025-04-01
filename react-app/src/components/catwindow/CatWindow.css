@@ -4,7 +4,6 @@
 
 .weatherInfo {
     font-size: 12px;
-    padding-top: 3em;
     font-family: "'Raleway', sans-serif";
     color: #c7e6fc;
 }
@@ -15,18 +14,10 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    /* margin-top: -200px;
-    margin-left: -200px; */
 }
 
 .windowView {
-    position: relative;
-    top: 250px;
-    /* position: relative;
-    top: 50%;
-    left: 50%; */
-    /* margin-top: -167.5px;
-    margin-left: -157.5px; */
+    display: inline-block;
 }
 
 .cloud {

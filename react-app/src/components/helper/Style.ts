@@ -9,18 +9,18 @@ declare module "@mui/material/styles" {
     }
 }
 
-export const theme = createTheme({
+export let theme = createTheme({});
+theme = createTheme(theme, {
     components: {},
     palette: {
-        primary: {
-            light: "#757ce8",
-            main: "#C7E6FC",
-            dark: "#002884",
-            contrastText: "#fff",
-        },
+        primary: theme.palette.augmentColor({
+            color: {
+                main: "#C7E6FC",
+            },
+        }),
         secondary: {
             light: "#ff7961",
-            main: "#352e34",
+            main: "#DD7373",
             dark: "#ba000d",
             contrastText: "#000",
         },
@@ -31,7 +31,8 @@ export const theme = createTheme({
 });
 
 export const nameFont = 'birthstone bounce';
-export const textFont = 'bagel fat one';
+export const stylizedTextFont = 'bagel fat one';
+export const textFont = 'montserrat';
 
 // Common colours used in scene:
 export const DEFAULT_SUN = '#F9DB5A';

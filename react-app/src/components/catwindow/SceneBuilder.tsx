@@ -15,6 +15,7 @@ import {
     WINDOW_FRAME,
 } from "../helper/Style";
 import { DateTime } from "luxon";
+import { useMediaQuery } from "@mui/material";
 
 export interface Palette {
     sky: string;
@@ -68,6 +69,8 @@ const DEFAULT_FRAME_WIDTH = 16;
 
 function SceneBuilder({ weatherInfo }: SceneProps) {
     const fixed = weatherInfo === undefined;
+    const isDesktop = useMediaQuery('(min-width:600px)');
+    console.log('isDesktop? ' + isDesktop);
     const currentTime: DateTime = DateTime.now().setZone("America/Toronto");
     const currentTimeUnix: number = currentTime.toUnixInteger();
 
@@ -78,7 +81,6 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     const palette = generatePalette();
-    const windowClass = "windowView";
     const isSnowy = scene.weather === WeatherState.Snowy;
     const isRainy = scene.weather === WeatherState.Rainy;
     const showSunOrMoon = !isSnowy && !isRainy;
@@ -88,42 +90,40 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
               scene.weather
           }`;
 
-    const SCENE_SIZE = 400;
+    const SCENE_SIZE : number = isDesktop ? 400 : 300;
     return (
-        <span>
-            <div
-                className={windowClass}
-                style={{ width: SCENE_SIZE, height: SCENE_SIZE }}
-            >
-                <svg viewBox={`0 0 ${SCENE_SIZE} ${SCENE_SIZE}`}>
-                    <defs>
-                        <clipPath id="window-frame-clip">
-                            <rect
-                                x="0"
-                                y="0"
-                                width={`${DEFAULT_WINDOW_SIZE}px`}
-                                height={`${DEFAULT_WINDOW_SIZE}px`}
-                                
-                            />
-                        </clipPath>
-                    </defs>
-                    <svg
-                        viewBox={`0 0 ${DEFAULT_WINDOW_SIZE} ${
-                            DEFAULT_WINDOW_SIZE + DEFAULT_FRAME_WIDTH * 2
-                        }`}
-                        clipPath="url(#window-frame-clip)"
-                    >
-                        <defs>{gradients()}</defs>
-                        <g>{baseScene()}</g>
-                    </svg>
-                    <g>{frame()}</g>
-                    <g>{cat()}</g>
+        <div
+            className="windowView"
+            style={{ width: SCENE_SIZE, height: SCENE_SIZE }}
+        >
+            <svg viewBox={`0 0 ${SCENE_SIZE} ${SCENE_SIZE}`}>
+                <defs>
+                    <clipPath id="window-frame-clip">
+                        <rect
+                            x="0"
+                            y="0"
+                            width={`${DEFAULT_WINDOW_SIZE}px`}
+                            height={`${DEFAULT_WINDOW_SIZE}px`}
+                            
+                        />
+                    </clipPath>
+                </defs>
+                <svg
+                    viewBox={`0 0 ${DEFAULT_WINDOW_SIZE} ${
+                        DEFAULT_WINDOW_SIZE + DEFAULT_FRAME_WIDTH * 2
+                    }`}
+                    clipPath="url(#window-frame-clip)"
+                >
+                    <defs>{gradients()}</defs>
+                    <g>{baseScene()}</g>
                 </svg>
-                <div className="weatherInfo">
-                    <p>{weatherText}</p>
-                </div>
+                <g>{frame()}</g>
+                <g>{cat()}</g>
+            </svg>
+            <div className="weatherInfo">
+                <p>{weatherText}</p>
             </div>
-        </span>
+        </div>
     );
 
     function createScene() {
@@ -385,10 +385,11 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
     }
 
     function cat() {
+        const multiplier : number = isDesktop ? 0.5 : 0.35;
         return (
             <g >
                 <path
-                    d={`m${SCENE_SIZE * 0.75} ${SCENE_SIZE * 0.5 - DEFAULT_FRAME_WIDTH}c5 0 8 1 13 3 1 0 1 1 2 1 1 1 3 1 4 2 0-1 1-2 1-3 1-3 1-3 2-3 5 0 8 2 11 5 0 1 0 1 1 2 0 0 1 1 1 1 1 0 2 1 4 1 10 7 15 20 18 31 1 2 1 3 2 5 4 7 4 16 4 24 0 5 0 10 2 15 1 5 1 10 1 15 0 1 0 3 0 4 0 2 0 4 0 6 0 10 1 17 5 25 2 7 2 17-1 23-2 4-5 8-9 10-1 2-1 3-2 5-2 4-4 6-8 8-1 0-1 1-2 1-7 3-15 3-22 3-6 0-9 2-13 5-1 1-2 1-3 2 0 0-1 1-1 1-8 6-17 11-27 13-1 0-1 0-2 0-7 1-13 1-20 1-2 0-4 0-6 0-21 0-21 0-27-5-7-9-6-20-5-31 2-12 7-25 16-32 2-1 3-1 6-1 1 1 1 1 1 3 0 3-1 5-3 8-5 10-9 21-7 32 1 4 4 6 7 8 8 3 18 2 26 0 8-3 15-7 21-12 0-1-1-1-1-2-10-24-7-48 2-72 4-9 8-18 14-27 1-3 1-5 1-8 0-5 1-11 3-15 0 0-1 0-1 0-3-1-6-4-8-7 0-2 0-4 0-6 0-1 0-1 0-2 0-8 2-16 7-22 1-3-1-5-2-8 0-1 0-1-1-2-1-2-2-4-2-6z`}
+                    d={`m${SCENE_SIZE * 0.75} ${SCENE_SIZE * multiplier - DEFAULT_FRAME_WIDTH}c5.072-.369 8.267.7 12.75 3 .581.286 1.162.572 1.761.867 1.418.7 2.83 1.415 4.239 2.133.356-.851.712-1.702 1.078-2.578 1.172-2.672 1.172-2.672 1.922-3.422 4.757.097 7.869 1.931 11.25 5.25.227 .529.454 1.058.689 1.603.268 .461.536 .922.811 1.397 1.241.293 2.493.54 3.75.75 10.322 6.682 14.566 19.94 18.073 31.093.615 1.733 1.312 3.158 2.27 4.72 4.083 7.078 3.744 15.785 3.563 23.719-.066 5.243.161 9.927 1.778 14.968 1.411 4.995 1.379 9.944 1.23 15.082-.024 1.365-.047 2.729-.069 4.094-.037 2.116-.08 4.232-.144 6.347-.28 9.622.621 16.516 4.798 25.227 2.185 6.934 1.937 16.602-1.172 23.109-2.311 3.875-5.208 7.831-9.328 9.891-.793 1.613-1.437 3.265-2.104 4.934-1.921 3.893-4.202 6.037-8.068 7.957-.713.366-1.425.733-2.159 1.11-7.25 2.714-14.679 2.747-22.33 2.66-5.727.096-8.919 1.517-13.339 5.089-.86.635-1.722 1.267-2.587 1.895-.398.297-.796.594-1.206.901-8.212 6.091-16.954 10.547-26.957 12.954-.526.134-1.052.267-1.594.405-6.574 1.45-13.184 1.322-19.88 1.291-2.047-.008-4.094 0-6.141.01-21.302.019-21.302.019-27.135-5.455-7.081-8.643-6.016-20.221-5.25-30.75 1.609-11.817 6.501-24.846 16.219-32.25 1.999-.842 3.383-.989 5.531-.75.75 .75.75 .75.946 3.12-.22 3.223-1.012 4.911-2.587 7.708-5.151 9.678-9.278 21.337-6.562 32.344 1.439 3.936 3.613 5.824 7.298 7.799 7.762 3.273 17.774 2.278 25.518-.478 7.761-3.228 14.54-7.059 21.138-12.243-.299-.699-.597-1.398-.905-2.118-10.009-23.864-6.891-47.86 2.282-71.51 3.779-9.181 8.035-18.346 13.532-26.628 1.325-2.745 1.024-5.279.853-8.263-.023-4.863.817-10.889 2.988-15.231-.418-.062-.835-.124-1.266-.187-3.356-1.088-5.983-3.544-7.734-6.562-.224-2.073-.321-3.932-.281-6 .007-.567.014-1.134.021-1.718.218-8.185 2.24-15.509 7.256-22.088.838-2.815-.53-5.189-1.605-7.787-.323-.819-.323-.819-.652-1.655-.772-1.948-1.551-3.876-2.489-5.751z`}
                     fill="#352E34"
                 />
             </g>

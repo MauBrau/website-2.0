@@ -21,14 +21,3 @@
     font-weight: 500;
     line-height: inherit;
 }
-/* 
-@media screen and (max-width: 500px) {
-    .header a {
-      float: none;
-      display: block;
-      text-align: left;
-    }
-    .header-right {
-      float: none;
-    }
-  } */

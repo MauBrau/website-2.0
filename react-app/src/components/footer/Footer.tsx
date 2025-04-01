@@ -1,14 +1,27 @@
 import "./Footer.css";
-import { Grid2, IconButton } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import EmailIcon from "@mui/icons-material/Email";
+import { GeneralText } from "../../interface/IText";
+import { textFont } from "../helper/Style";
 
 function Footer() {
+    const pageText: GeneralText = require("../../data/text/general.json");
     return (
         <div className="footer">
-            {/* © 2025 Maude Braunstein  */}
-            <IconButton
+            <Typography
+                sx={{
+                    flexGrow: 1,
+                    mr: 2,
+                    fontFamily: textFont,
+                    color: "primary.main",
+                    textDecoration: "none",
+                }}
+            >
+                {pageText.copyright}
+            </Typography>
+            {/* <IconButton
                 color="primary"
                 aria-label="LinkedIn"
                 href="https://www.linkedin.com/in/maudebraunstein/"
@@ -30,7 +43,7 @@ function Footer() {
                 href="mailto:maude.braunstein@gmail.com"
             >
                 <EmailIcon />
-            </IconButton>
+            </IconButton> */}
         </div>
     )
 }
