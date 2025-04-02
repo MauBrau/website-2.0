@@ -19,11 +19,12 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import { BACKGROUND_BROWN, nameFont, SECONDARY_COLOUR, stylizedTextFont, TRANSPARENT } from "../helper/Style";
 import { pages } from "../helper/Routes";
+import { store } from "../../redux/store";
 
 const drawerWidth = 240;
 
 function Header() {
-    const isDesktop = useMediaQuery('(min-width:600px)');
+    const isDesktop = store.getState().window.isDesktop;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);

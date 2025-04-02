@@ -4,10 +4,11 @@ import "./Pages.css";
 import { Typography, useMediaQuery } from "@mui/material";
 import { stylizedTextFont, textFont } from "../helper/Style";
 import { HomeText } from "../../interface/IText";
+import { store } from "../../redux/store";
 
 
 export default function Home() {
-    const isDesktop = useMediaQuery('(min-width:900px)');
+    const isDesktop = store.getState().window.isDesktop; // TODO was 900 not 600
     const pageText: HomeText = require("../../data/text/home.json");
     return (
         <div

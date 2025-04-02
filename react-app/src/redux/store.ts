@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import windowReducer  from './window/windowSlice';
+import windowReducer  from './window/windowStatus';
 
 export const store = configureStore({
   reducer: {

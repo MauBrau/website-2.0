@@ -18,6 +18,7 @@ import {
 } from "../helper/Style";
 import { DateTime } from "luxon";
 import { useMediaQuery } from "@mui/material";
+import { store } from "../../redux/store";
 
 export interface Palette {
     sky: string;
@@ -70,8 +71,9 @@ const DEFAULT_WINDOW_SIZE = 400;
 const DEFAULT_FRAME_WIDTH = 16;
 
 function SceneBuilder({ weatherInfo }: SceneProps) {
+    const isDesktop = store.getState().window.isDesktop;
+    
     const fixed = weatherInfo === undefined;
-    const isDesktop = useMediaQuery('(min-width:600px)');
     const currentTime: DateTime = DateTime.now().setZone("America/Toronto");
     const currentTimeUnix: number = currentTime.toUnixInteger();
 

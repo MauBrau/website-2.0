@@ -1,9 +1,9 @@
 import "./App.css";
 import React, { StrictMode, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "./redux/hooks";
-import { updateWindow } from "./redux/window/windowSlice";
+import { updateWindow } from "./redux/window/windowStatus";
 
-import { ThemeProvider } from "@mui/material";
+import { ThemeProvider, useMediaQuery } from "@mui/material";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import { theme } from "./components/helper/Style";
@@ -14,15 +14,14 @@ import Projects from "./components/pages/Projects";
 import Contact from "./components/pages/Contact";
 
 export const App = () => {
-    // const windowState = useAppSelector((state) => state.window);
-    //const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
+    dispatch(updateWindow({ isDesktop: useMediaQuery('(min-width:600px)') }))
 
     // useEffect(() => {
     //     const resizeListener = () => {
     //         dispatch(
     //             updateWindow({
-    //                 height: window.innerHeight + "px",
-    //                 width: window.innerWidth + "px",
+    //                 isDesktop: useMediaQuery('(min-width:600px)')
     //             })
     //         );
     //     };
