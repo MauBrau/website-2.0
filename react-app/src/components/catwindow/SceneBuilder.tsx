@@ -10,6 +10,7 @@ import {
     LIGHT_GRAY,
     NIGHT_RAIN_SKY,
     NIGHT_SKY,
+    PRIMARY_COLOUR,
     SUNRISE_SKY,
     SUNSET_SKY,
     WHITE,
@@ -120,7 +121,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                 <g>{frame()}</g>
                 <g>{cat()}</g>
             </svg>
-            <div className="weatherInfo">
+            <div className="weatherInfo" style={{ color: `${PRIMARY_COLOUR}`}}>
                 <p>{weatherText}</p>
             </div>
         </div>

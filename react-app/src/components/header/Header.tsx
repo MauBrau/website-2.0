@@ -13,10 +13,11 @@ import {
     IconButton,
     CssBaseline,
     useMediaQuery,
+    Tooltip,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import { BACKGROUND_BROWN, nameFont, stylizedTextFont, TRANSPARENT } from "../helper/Style";
+import { BACKGROUND_BROWN, nameFont, SECONDARY_COLOUR, stylizedTextFont, TRANSPARENT } from "../helper/Style";
 import { pages } from "../helper/Routes";
 
 const drawerWidth = 240;
@@ -33,8 +34,10 @@ function Header() {
             <List>
                 {pages.map((item) => (
                     <ListItem key={item.name} disablePadding>
-                        <ListItemButton sx={{ textAlign: "center", color: "primary.main" }} href={item.link}>
-                            <ListItemText primary={item.name} />
+                        <ListItemButton sx={{ textAlign: "center", color: "primary.main" }} href={item.disabled ? '' : item.link}>
+                            {
+                                item.disabled ? <ListItemText primary={`${item.name} - ${item.message}`} /> : <ListItemText primary={item.name} />
+                            }
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -84,20 +87,26 @@ function Header() {
                         Maude
                     </Typography>
                     <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                        {pages.map((item) => (
-                            <Button
-                                key={item.name}
-                                color="primary"
-                                sx={{
-                                    fontFamily: stylizedTextFont,
-                                    textTransform: "lowercase",
-                                    fontWeight: 400,
-                                }}
-                                href={item.link}
-                            >
-                                {item.name}
-                            </Button>
-                        ))}
+                        {
+                            pages.map((item) => (
+                                <Tooltip title={item.message} key={item.name}>
+                                    <Button
+                                        color="primary"
+                                        sx={{
+                                            fontFamily: stylizedTextFont,
+                                            textTransform: "lowercase",
+                                            fontWeight: 400,
+                                            "&:hover": {
+                                                color: SECONDARY_COLOUR
+                                            }
+                                        }}
+                                        href={item.disabled ? '' : item.link}
+                                    >
+                                        {item.name}
+                                    </Button>
+                                </Tooltip>
+                            ))
+                        }
                     </Box>
                 </Toolbar>
             </AppBar>

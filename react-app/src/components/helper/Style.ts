@@ -1,29 +1,13 @@
 import { createTheme } from "@mui/material";
 
-export let theme = createTheme({});
-theme = createTheme(theme, {
-    palette: {
-        primary: {
-            light: "#d2ebfc",
-            main: "#C7E6FC",
-            dark: "#8ba1b0",
-            contrastText: "#000"
-        },
-        secondary: {
-            light: "#ff7961",
-            main: "#DD7373",
-            dark: "#ba000d",
-            contrastText: "#000",
-        }
-    },
-});
-
 export const nameFont = 'birthstone bounce';
 export const stylizedTextFont = 'bagel fat one';
 export const textFont = 'montserrat';
 
 export const TRANSPARENT = "#00000000";
 export const BACKGROUND_BROWN = "#352e34";
+export const PRIMARY_COLOUR = "#C7E6FC";
+export const SECONDARY_COLOUR = "#DD7373";
 
 // Common colours used in scene:
 export const DEFAULT_SUN = '#F9DB5A';
@@ -37,3 +21,20 @@ export const SUNRISE_SKY = 'sunrise';
 export const SUNSET_SKY = 'sunset';
 export const NIGHT_SKY = 'night';
 export const DAY_SKY = 'day';
+
+
+export let theme = createTheme({});
+theme = createTheme(theme, {
+    palette: {
+        primary: theme.palette.augmentColor({
+            color: {
+                main: `${PRIMARY_COLOUR}`,
+            },
+        }),
+        secondary: theme.palette.augmentColor({
+            color: {
+                main: `${SECONDARY_COLOUR}`,
+            },
+        })
+    }
+});
