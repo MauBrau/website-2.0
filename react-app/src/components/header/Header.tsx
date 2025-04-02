@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import { nameFont, stylizedTextFont } from "../helper/Style";
+import { BACKGROUND_BROWN, nameFont, stylizedTextFont, TRANSPARENT } from "../helper/Style";
 import { pages } from "../helper/Routes";
 
 const drawerWidth = 240;
@@ -43,16 +43,15 @@ function Header() {
         </Box>
     );
 
-    const color = isDesktop ? "primary" : "appBarBackground"
+    const color = isDesktop ? TRANSPARENT : BACKGROUND_BROWN;
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <AppBar
                 component="nav"
                 position="fixed"
-                color={color}
                 elevation={0}
-                sx={{ mt: 2 }}
+                sx={{ mt: 2, backgroundColor: color, marginTop: 0, paddingTop: '16px' }}
             >
                 <Toolbar>
                     <IconButton
@@ -82,7 +81,7 @@ function Header() {
                         }}
                         href={'/'}
                     >
-                        Maude {isDesktop ? 'true' : 'false'}
+                        Maude
                     </Typography>
                     <Box sx={{ display: { xs: "none", sm: "block" } }}>
                         {pages.map((item) => (
@@ -110,11 +109,17 @@ function Header() {
                     ModalProps={{
                         keepMounted: true,
                     }}
+                    color="secondary"
+                    slotProps={{
+                        root: {
+                            keepMounted: true, // Better open performance on mobile.
+                        }
+                    }}
                     sx={{
                         display: { xs: "block", sm: "none" },
                         "& .MuiDrawer-paper": {
                             boxSizing: "border-box",
-                            backgroundColor: "#352e34",
+                            backgroundColor: `${BACKGROUND_BROWN} !important`,
                             width: drawerWidth,
                         },
                     }}

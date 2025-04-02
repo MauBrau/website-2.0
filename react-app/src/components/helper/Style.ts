@@ -1,46 +1,29 @@
 import { createTheme } from "@mui/material";
-declare module "@mui/material/styles" {
-    interface Palette {
-        appBarBackground: Palette['appBar'];
-    }
-
-    interface PaletteOptions {
-        appBarBackground?: PaletteOptions['appBar'];
-    }
-}
-
-declare module '@mui/material/AppBar' {
-    interface AppBarPropsColorOverrides {
-        appBar: true;
-    }
-}
 
 export let theme = createTheme({});
 theme = createTheme(theme, {
     palette: {
-        primary: theme.palette.augmentColor({
-            color: {
-                main: "#C7E6FC",
-            },
-        }),
+        primary: {
+            light: "#d2ebfc",
+            main: "#C7E6FC",
+            dark: "#8ba1b0",
+            contrastText: "#000"
+        },
         secondary: {
             light: "#ff7961",
             main: "#DD7373",
             dark: "#ba000d",
             contrastText: "#000",
-        },
-        appBar: {
-            main: "#352e34",
-            backgroundColor: "#352e34",
         }
     },
 });
-console.log('theme?');
-console.log(theme);
 
 export const nameFont = 'birthstone bounce';
 export const stylizedTextFont = 'bagel fat one';
 export const textFont = 'montserrat';
+
+export const TRANSPARENT = "#00000000";
+export const BACKGROUND_BROWN = "#352e34";
 
 // Common colours used in scene:
 export const DEFAULT_SUN = '#F9DB5A';

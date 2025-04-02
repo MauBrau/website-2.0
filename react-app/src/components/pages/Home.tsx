@@ -15,7 +15,7 @@ export default function Home() {
             style={{
                 transform: `translate(0%, ${
                     isDesktop ? "50%" : "25%"
-                })`,
+                })`
             }}
         >
             <Grid
