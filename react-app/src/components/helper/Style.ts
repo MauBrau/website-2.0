@@ -5,9 +5,9 @@ export const stylizedTextFont = 'bagel fat one';
 export const textFont = 'montserrat';
 
 export const TRANSPARENT = "#00000000";
-export const BACKGROUND_BROWN = "#352e34";
+export const BACKGROUND_BROWN = "#352E34";
 export const PRIMARY_COLOUR = "#C7E6FC";
-export const SECONDARY_COLOUR = "#DD7373";
+export const SECONDARY_COLOUR = "#9ECAC1";
 
 // Common colours used in scene:
 export const DEFAULT_SUN = '#F9DB5A';

@@ -30,7 +30,7 @@ export default function Home() {
                     <CatWindow />
                 </Grid>
                 <Grid size={{ sm: 12, md: 6 }}>
-                    <div className="subtitle">
+                    <div className="title">
                         <Typography
                             variant="h4"
                             sx={{
@@ -42,7 +42,7 @@ export default function Home() {
                                 textDecoration: "none",
                             }}
                         >
-                            {pageText.subtitle}
+                            {pageText.title}
                         </Typography>
                     </div>
                     <div className="text">

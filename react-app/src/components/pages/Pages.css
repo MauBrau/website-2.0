@@ -3,11 +3,39 @@
     margin-right: 40px;
 }
 
-.subtitle {
+.projects {
+    margin-left: 40px;
+    margin-right: 40px;
+    height: 500px;
+}
+
+.resume {
+    margin-left: 40px;
+    margin-right: 40px;
+    height: 500px;
+}
+
+.title {
     text-align: left
 }
 
 .text {
-    text-align: right;
     margin-bottom: 50px;
+}
+
+.resume-body {
+    text-align: left;
+}
+
+.entry-header {
+    font-weight: 600;
+}
+
+.experience {
+    display: flex;
+    justify-content: space-between;
+}
+
+.accomplishment {
+    margin: 5px 0px;
 }
