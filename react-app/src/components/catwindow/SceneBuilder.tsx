@@ -115,11 +115,11 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
                     }`}
                     clipPath="url(#window-frame-clip)"
                 >
-                    <defs>{gradients()}</defs>
-                    <g>{baseScene()}</g>
+                    <defs><Gradients/></defs>
+                    <BaseScene/>
                 </svg>
-                <g>{frame()}</g>
-                <g>{cat()}</g>
+                <Frame/>
+                <Cat/>
             </svg>
             <div className="weatherInfo" style={{ color: `${PRIMARY_COLOUR}`}}>
                 <p>{weatherText}</p>
@@ -127,7 +127,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         </div>
     );
 
-    function createScene() {
+    function createScene() : SceneValues {
         var scene: SceneValues = {
             weather:
                 weatherInfo === undefined
@@ -324,27 +324,27 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         }
     }
 
-    function baseScene() {
+    function BaseScene() {
         return (
-            <>
-                {sky()}
-                {isSnowy || isRainy ? null : stars()}
+            <g>
+                <Sky/>
+                {scene.time === TimeOfDay.Night && (!isSnowy || !isRainy) ? <Stars/> : null}
                 {showSunOrMoon
                     ? scene.time === TimeOfDay.Night
-                        ? moon()
-                        : sun()
+                        ? <Moon/>
+                        : <Sun/>
                     : null}
-                {clouds()}
-                {city()}
-                {land()}
-                {trees()}
-                {isSnowy ? snow() : null}
-                {isRainy ? rain() : null}
-            </>
+                <Clouds/>
+                <City/>
+                <Land/>
+                <Trees/>
+                {isSnowy ? <Snow/> : null}
+                {isRainy ? <Rain/> : null}
+            </g>
         );
     }
 
-    function gradients() {
+    function Gradients() {
         return (
             <>
                 <radialGradient id={`${DAY_SKY}-sky`} cx="50%" cy="0%">
@@ -375,7 +375,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function sky() {
+    function Sky() {
         return (
             <rect
                 width="100%"
@@ -385,7 +385,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function cat() {
+    function Cat() {
         const multiplier : number = isDesktop ? 0.5 : 0.35;
         return (
             <g >
@@ -397,7 +397,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function frame() {
+    function Frame() {
         return (
             <g id="window-frame">
                 <rect
@@ -438,7 +438,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function trees() {
+    function Trees() {
         if (scene.isWinter) {
             // M 68.487 306.771 C 68.532 306.853 68.39 269.839 67.429 259.418 C 68.149 258.666 49.489 228.65 48.405 228.464 L 50.468 225.823 L 66.971 251.107 C 66.971 251.98 68.881 204.075 68.881 204.013 L 72.058 204.211 C 71.608 204.211 70.662 242.054 70.73 242.054 L 90.411 214.259 L 92.102 217.345 L 76.032 239.987 C 75.561 240.697 71.158 241.212 72.43 269.384 C 73.702 297.555 73.316 305.124 73.455 306.8 L 68.487 306.771 Z
             return (
@@ -502,7 +502,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function land() {
+    function Land() {
         var farHill = palette.farHill;
         var midHill = palette.midHill;
         var closeHill = palette.closeHill;
@@ -569,7 +569,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function city() {
+    function City() {
         var buildingColour: string = palette.building;
         var windowColour: string = palette.window;
         var windowBorder: string = palette.windowFrame;
@@ -796,7 +796,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function sun() {
+    function Sun() {
         var colour: string = palette.sun;
         const daySunX: string = "50%";
         const daySunY: string = "12.5%";
@@ -836,7 +836,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function moon() {
+    function Moon() {
         const x = SCENE_SIZE / 2;
         const y = SCENE_SIZE * 0.225;
         return (
@@ -850,7 +850,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
     
-    function clouds() {
+    function Clouds() {
         var cloud = palette.cloud;
 
         if (scene.weather === WeatherState.Clear) {
@@ -921,72 +921,70 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function stars() {
-        if (scene.time === TimeOfDay.Night) {
-            return (
-                <g id="stars">
-                    <circle
-                        id="star-1"
-                        fill="rgb(135, 214, 214"
-                        opacity="0.3"
-                        cx="276.584"
-                        cy="50.905"
-                        r="1.265"
-                    />
-                    <circle
-                        id="star-2"
-                        fill="rgb(135, 214, 214"
-                        opacity="0.3"
-                        cx="245.231"
-                        cy="44.011"
-                        r="1.265"
-                    />
-                    <circle
-                        id="star-3"
-                        fill="rgb(135, 214, 214"
-                        opacity="0.3"
-                        cx="37.231"
-                        cy="59.265"
-                        r="1.265"
-                    />
-                    <circle
-                        id="star-4"
-                        fill="rgb(135, 214, 214"
-                        opacity="0.3"
-                        cx="326.231"
-                        cy="44.011"
-                        r="1.265"
-                    />
-                    <circle
-                        id="star-5"
-                        fill="rgb(135, 214, 214"
-                        opacity="0.3"
-                        cx="56.231"
-                        cy="92.011"
-                        r="1.265"
-                    />
-                    <circle
-                        id="star-6"
-                        fill="rgb(135, 214, 214"
-                        opacity="0.3"
-                        cx="109.231"
-                        cy="19.011"
-                        r="1.265"
-                    />
-                    <circle
-                        id="star-7"
-                        fill="rgb(135, 214, 214"
-                        opacity="0.3"
-                        cx="17.231"
-                        cy="14.011"
-                        r="1.265"
-                    />
-                </g>
-            );
-        }
+    function Stars() {
+        return (
+            <g id="stars">
+                <circle
+                    id="star-1"
+                    fill="rgb(135, 214, 214"
+                    opacity="0.3"
+                    cx="276.584"
+                    cy="50.905"
+                    r="1.265"
+                />
+                <circle
+                    id="star-2"
+                    fill="rgb(135, 214, 214"
+                    opacity="0.3"
+                    cx="245.231"
+                    cy="44.011"
+                    r="1.265"
+                />
+                <circle
+                    id="star-3"
+                    fill="rgb(135, 214, 214"
+                    opacity="0.3"
+                    cx="37.231"
+                    cy="59.265"
+                    r="1.265"
+                />
+                <circle
+                    id="star-4"
+                    fill="rgb(135, 214, 214"
+                    opacity="0.3"
+                    cx="326.231"
+                    cy="44.011"
+                    r="1.265"
+                />
+                <circle
+                    id="star-5"
+                    fill="rgb(135, 214, 214"
+                    opacity="0.3"
+                    cx="56.231"
+                    cy="92.011"
+                    r="1.265"
+                />
+                <circle
+                    id="star-6"
+                    fill="rgb(135, 214, 214"
+                    opacity="0.3"
+                    cx="109.231"
+                    cy="19.011"
+                    r="1.265"
+                />
+                <circle
+                    id="star-7"
+                    fill="rgb(135, 214, 214"
+                    opacity="0.3"
+                    cx="17.231"
+                    cy="14.011"
+                    r="1.265"
+                />
+            </g>
+        );
     }
 
-    function snow() {
+    function Snow() {
         return (
             <g id="snow">
                 <g fill="#FFF" fillOpacity=".35">
@@ -1070,7 +1068,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
         );
     }
 
-    function rain() {
+    function Rain() {
         var smallDrop =
             "M 91.344 187.382 " +
             "C 91.527 187.846 92.138 188.762 93.176 190.129 " +

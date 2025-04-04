@@ -5,6 +5,7 @@ import { PRIMARY_COLOUR, SECONDARY_COLOUR, stylizedTextFont, textFont } from "..
 export default function Resume() {
     const isDesktop = useMediaQuery('(min-width:600px)');
     const pageText: ResumeText = require("../../data/text/resume.json");
+
     return ( 
         <div 
             className="resume"
@@ -54,21 +55,21 @@ export default function Resume() {
                     Skills and Qualifications
                 </Typography>
                 {
-                    pageText.skillset.map(skill => 
-                        <div style={{ fontFamily: textFont}}>
+                    pageText.skillset.map(skillset => 
+                        <div key={skillset.categoryName} style={{ fontFamily: textFont}}>
                             <span className="entry-header" style={{ color: SECONDARY_COLOUR}}>
-                                {skill.categoryName}
+                                {skillset.categoryName}
                             </span>: {
-                                skill.skills.map((s, index) => 
-                                    <span style={{ color: PRIMARY_COLOUR}}>
-                                        {index === skill.skills.length-1 ? `${s}` : `${s}, `}
+                                skillset.skills.map((s, index) => 
+                                    <span key={index} style={{ color: PRIMARY_COLOUR}}>
+                                        {index === skillset.skills.length-1 ? `${s}` : `${s}, `}
                                     </span>
                                 )
                             }
                         </div>
                     )
                 }
-                <hr/>
+                <hr style={{ borderColor: SECONDARY_COLOUR }}/>
                 <Typography
                     variant="h6"
                     sx={{
@@ -80,19 +81,19 @@ export default function Resume() {
                 </Typography>
                 {
                     pageText.workExperience.map(experience => 
-                        <div>
+                        <div key={experience.subtitle}>
                             <div style={{ fontFamily: textFont}}>
                                 {
                                     experience.titles.map(title => 
-                                        <div className="experience entry-header" style={{ color: SECONDARY_COLOUR}}>
+                                        <div key={title.role} className="experience entry-header" style={{ color: SECONDARY_COLOUR}}>
                                             <span >{title.role}</span><span style={{textAlign: "right"}}>{title.yearRange}</span>
                                         </div>
                                     )
                                 }
                                 <div style={{ color: PRIMARY_COLOUR}}>{experience.subtitle}</div>
                                 {
-                                    experience.accomplishments.map(accomplishment => 
-                                        <ul className='accomplishment' style={{ color: PRIMARY_COLOUR}}>
+                                    experience.accomplishments.map((accomplishment, index) => 
+                                        <ul key={index} className='accomplishment' style={{ color: PRIMARY_COLOUR}}>
                                             <li>{accomplishment}</li>
                                         </ul>
                                     )
@@ -114,19 +115,19 @@ export default function Resume() {
                 </Typography>
                 {
                     pageText.education.map(experience => 
-                        <div>
+                        <div key={experience.subtitle}>
                             <div style={{ fontFamily: textFont}}>
                                 {
                                     experience.titles.map(title => 
-                                        <div className="experience entry-header" style={{ color: SECONDARY_COLOUR}}>
+                                        <div key={title.role} className="experience entry-header" style={{ color: SECONDARY_COLOUR}}>
                                             <span >{title.role}</span><span style={{textAlign: "right"}}>{title.yearRange}</span>
                                         </div>
                                     )
                                 }
                                 <div style={{ color: PRIMARY_COLOUR}}>{experience.subtitle}</div>
                                 {
-                                    experience.accomplishments.map(accomplishment => 
-                                        <ul className='accomplishment' style={{ color: PRIMARY_COLOUR}}>
+                                    experience.accomplishments.map((accomplishment, index) => 
+                                        <ul key={index} className='accomplishment' style={{ color: PRIMARY_COLOUR}}>
                                             <li>{accomplishment}</li>
                                         </ul>
                                     )

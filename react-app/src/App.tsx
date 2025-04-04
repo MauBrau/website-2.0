@@ -14,32 +14,11 @@ import Projects from "./components/pages/Projects";
 import Contact from "./components/pages/Contact";
 
 export const App = () => {
-    // const windowState = useAppSelector((state) => state.window);
-    //const dispatch = useAppDispatch();
-
-    // useEffect(() => {
-    //     const resizeListener = () => {
-    //         dispatch(
-    //             updateWindow({
-    //                 height: window.innerHeight + "px",
-    //                 width: window.innerWidth + "px",
-    //             })
-    //         );
-    //     };
-    //     window.addEventListener("resize", resizeListener);
-    //     resizeListener();
-
-    //     return () => {
-    //         window.removeEventListener("resize", resizeListener);
-    //     };
-    // });
-
     return (
-        <StrictMode>
             <BrowserRouter>
                 <div className="app">
                     <ThemeProvider theme={theme}>
-                        <Header/>
+                        <Header />
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/home" element={<Home />} />
@@ -48,11 +27,10 @@ export const App = () => {
                             <Route path="/contact" element={<Contact />} />
                             <Route path="*" element={<div>Bad page</div>} />
                         </Routes>
-                        <Footer/>
+                        <Footer />
                     </ThemeProvider>
                 </div>
             </BrowserRouter>
-        </StrictMode>
-        
     );
-}
+    
+};

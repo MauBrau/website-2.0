@@ -77,7 +77,7 @@
                     "yearRange": "2018"
                 }
             ],
-            "subtitle": "Diabsolut",
+            "subtitle": "Diabsolut (Montreal, Hybrid)",
             "accomplishments": [
                 "Developed custom Salesforce frontend applications using Lightning Web Components (JavaScript/React), Apex, and GraphQL, tailored to client specifications.",
                 "Created a project team management interface within the Field Service app, featuring custom components for advanced search, querying, and a cross-platform file display UI.",
@@ -97,7 +97,7 @@
                     "yearRange": "May 2019 – Aug 2019"
                 }
             ],
-            "subtitle": "ChargeHub / Mogile Technologies",
+            "subtitle": "ChargeHub / Mogile Technologies (Montreal, On-site)",
             "accomplishments": [
                 "Co-led the development, design, and implementation of the frontend web map application on chargehub.com using Vue.js and a new map API, optimizing performance and reducing costs. Enabled real-time tracking of electric vehicle charging station status.",
                 "Created additional API endpoints to display new data on the redesigned site, enhancing user experience and functionality.",
