@@ -1,8 +1,4 @@
 import "./App.css";
-import React, { StrictMode, useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "./redux/hooks";
-import { updateWindow } from "./redux/window/windowSlice";
-
 import { ThemeProvider } from "@mui/material";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";

@@ -1,22 +1,18 @@
 import Grid from "@mui/material/Grid";
 import CatWindow from "../catwindow/CatWindow";
 import "./Pages.css";
-import { Typography, useMediaQuery } from "@mui/material";
-import { stylizedTextFont, textFont } from "../helper/Style";
 import { HomeText } from "../../interface/IText";
+import Page, { Body, Title } from "./Page";
 
 
 export default function Home() {
-    const isDesktop = useMediaQuery('(min-width:900px)');
     const pageText: HomeText = require("../../data/text/home.json");
     return (
-        <div
+        <Page
             className="home"
-            style={{
-                transform: `translate(0%, ${
-                    isDesktop ? "50%" : "25%"
-                })`
-            }}
+            minWidth={900}
+            desktopTranslateAmount={50}
+            mobileTranslateAmount={25}
         >
             <Grid
                 container
@@ -30,50 +26,11 @@ export default function Home() {
                     <CatWindow />
                 </Grid>
                 <Grid size={{ sm: 12, md: 6 }}>
-                    <div className="title">
-                        <Typography
-                            variant="h4"
-                            sx={{
-                                flexGrow: 1,
-                                mr: 2,
-                                fontFamily: stylizedTextFont,
-                                textAlign: "left",
-                                color: "secondary.main",
-                                textDecoration: "none",
-                            }}
-                        >
-                            {pageText.title}
-                        </Typography>
-                    </div>
-                    <div className="text">
-                        <Typography
-                            sx={{
-                                flexGrow: 1,
-                                mr: 2,
-                                fontFamily: textFont,
-                                textAlign: { xs: "center", sm: "left" },
-                                color: "primary.main",
-                                textDecoration: "none",
-                            }}
-                        >
-                            {pageText.body}
-                        </Typography>
-                        <br/>
-                        <Typography
-                            sx={{
-                                flexGrow: 1,
-                                mr: 2,
-                                fontFamily: textFont,
-                                textAlign: { xs: "center", sm: "left" },
-                                color: "primary.main",
-                                textDecoration: "none",
-                            }}
-                        >
-                            {pageText.body2}
-                        </Typography>
-                    </div>
+                    <Title title={pageText.title}/>
+                    <Body text={pageText.body} />
+                    <Body text={pageText.body2} />
                 </Grid>
             </Grid>
-        </div>
+        </Page>
     );
 }

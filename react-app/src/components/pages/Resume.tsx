@@ -1,49 +1,20 @@
-import { Typography, useMediaQuery } from "@mui/material";
+import { Typography } from "@mui/material";
 import { ResumeText } from "../../interface/IText";
 import { PRIMARY_COLOUR, SECONDARY_COLOUR, stylizedTextFont, textFont } from "../helper/Style";
+import Page from "./Page";
 
 export default function Resume() {
-    const isDesktop = useMediaQuery('(min-width:600px)');
     const pageText: ResumeText = require("../../data/text/resume.json");
 
     return ( 
-        <div 
+        <Page
             className="resume"
-            style={{
-                transform: `translate(0%, ${
-                    isDesktop ? "30%" : "25%"
-                })`
-            }}
+            minWidth={600}
+            desktopTranslateAmount={30}
+            mobileTranslateAmount={25}
+            title={pageText.title}
+            body={pageText.body}
         >
-            <div className="title">
-                <Typography
-                    variant="h4"
-                    sx={{
-                        flexGrow: 1,
-                        mr: 2,
-                        fontFamily: stylizedTextFont,
-                        textAlign: "left",
-                        color: "secondary.main",
-                        textDecoration: "none",
-                    }}
-                >
-                    {pageText.title}
-                </Typography>
-            </div>
-            <div className="text">
-                <Typography
-                    sx={{
-                        flexGrow: 1,
-                        mr: 2,
-                        fontFamily: textFont,
-                        textAlign: { xs: "center", sm: "left" },
-                        color: "primary.main",
-                        textDecoration: "none",
-                    }}
-                >
-                    {pageText.body}
-                </Typography>
-            </div>
             <div className="resume-body">
                 <Typography
                     variant="h6"
@@ -138,6 +109,6 @@ export default function Resume() {
                     )
                 }
             </div>
-        </div>
+        </Page>
     );
 }
