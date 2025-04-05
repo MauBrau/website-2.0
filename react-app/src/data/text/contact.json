@@ -1,0 +1,18 @@
+{
+    "title": "Contact",
+    "body": "Got a question? Want to collaborate? Here's some places to reach me!",
+    "socials": [
+        {
+            "name": "Email",
+            "link": "mailto:maude.braunstein@gmail.com"
+        },
+        {
+            "name": "LinkedIn",
+            "link": "https://www.linkedin.com/in/maudebraunstein/"
+        },
+        {
+            "name": "GitHub",
+            "link": "https://github.com/MauBrau/"
+        }
+    ]
+}

@@ -11,6 +11,16 @@ export interface HomeText extends PageText {
     body2: string; // mostly a "I am looking for work or I am not" section
 }
 
+export interface ContactText extends PageText {
+    socials: Social[];
+}
+
+interface Social {
+    name: string;
+    link: string;
+}
+
+
 export interface ProjectsText extends PageText {
     projects: Projects[];
 }

@@ -1,19 +1,20 @@
-.home {
-    margin-left: 40px;
-    margin-right: 40px;
-}
-
-.projects {
+.page {
     margin-left: 40px;
     margin-right: 40px;
     height: 500px;
+}
+.home {
+    height: unset !important;
+}
+
+/* .projects {
 }
 
 .resume {
-    margin-left: 40px;
-    margin-right: 40px;
-    height: 500px;
 }
+
+.contact {
+} */
 
 .title {
     text-align: left

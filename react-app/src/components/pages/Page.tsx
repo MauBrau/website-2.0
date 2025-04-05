@@ -19,7 +19,7 @@ export default function Page(props: PageProps) {
 
     return ( 
         <div 
-            className={className}
+            className={`page ${className}`}
             style={{
                 transform: `translate(0%, ${
                     isDesktop ? `${desktopTranslateAmount}%` : `${mobileTranslateAmount}%`
