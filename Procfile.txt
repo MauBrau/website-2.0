@@ -1,0 +1,1 @@
+web: node node-runtime/dist/index.ts
