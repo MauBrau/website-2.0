@@ -5,7 +5,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node node-runtime/dist/index.js",
-        "build": "cd react-app && npm run build && cd.. && cd node-runtime && npm run build",
+        "build": "cd react-app && npm install && npm run build && cd.. && cd node-runtime && npm run build",
         "webpack": "webpack --config webpackdev.config.ts --watch"
     },
     "description": "Maude Braunstein personal website",
