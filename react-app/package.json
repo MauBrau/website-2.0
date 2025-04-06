@@ -1,6 +1,6 @@
 {
-  "name": "website-2.0",
-  "version": "0.1.0",
+  "name": "website-2.0-frontend",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.3",
