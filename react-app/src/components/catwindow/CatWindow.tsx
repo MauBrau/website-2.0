@@ -7,26 +7,19 @@ import { Weather } from "../../interface/IWeather";
 export default function CatWindow() {
     const [weatherRetrieved, setWeatherRetrieved] = useState<Boolean>(false);
     const [weatherInfo, setWeatherInfo] = useState<Weather>();
+
     useEffect(() => {
-        const getWeather = async () => await axios.get<Weather>("/api/weather");
-        if (weatherInfo === undefined) {
-            getWeather()
-                .then((response: AxiosResponse) => {
-                    setWeatherInfo(response.data);
-                })
-                .catch((error: AxiosError) => {
-                    setWeatherRetrieved(true);
-                })
-                .finally(() => setWeatherRetrieved(true));
-        }
-    }, [weatherInfo]);
+        axios.get<Weather>("/api/weather").then((response: AxiosResponse) => {
+            setWeatherInfo(response.data);
+        })
+        .catch((error: AxiosError) => { 
+            // Leaving it as undefined will make it fall back to static style 
+        })
+        .finally(() => setWeatherRetrieved(true));
+    }, []);
 
     if (!weatherRetrieved) {
         return <div />;
     }
-    return (
-        <SceneBuilder
-            weatherInfo={weatherInfo}
-        />
-    );
+    return <SceneBuilder weatherInfo={weatherInfo} />;
 }

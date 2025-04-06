@@ -8,6 +8,7 @@ import Home from "./components/pages/Home";
 import Resume from "./components/pages/Resume";
 import Projects from "./components/pages/Projects";
 import Contact from "./components/pages/Contact";
+import Error from "./components/pages/Error";
 
 export const App = () => {
     return (
@@ -21,7 +22,7 @@ export const App = () => {
                             <Route path="/resume" element={<Resume />} />
                             <Route path="/projects" element={<Projects />} />
                             <Route path="/contact" element={<Contact />} />
-                            <Route path="*" element={<div>Bad page</div>} />
+                            <Route path="*" element={<Error />} />
                         </Routes>
                         <Footer />
                     </ThemeProvider>

@@ -1,13 +1,16 @@
-export interface GeneralText {
-    copyright: string;
-    contact: Social; // reuse it
-    socials: Social[];
-}
-
 export interface PageText {
     title: string;
     body: string;
 }
+
+export interface GeneralText {
+    copyright: string;
+    contact: Social; // reuse it
+    socials: Social[];
+    error: ErrorText;
+}
+
+interface ErrorText extends PageText {}
 
 export interface HomeText extends PageText {
     body2: string; // mostly a "I am looking for work or I am not" section
