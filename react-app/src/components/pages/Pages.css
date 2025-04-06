@@ -1,0 +1,43 @@
+.page {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.card {
+    background-color: #352e34;
+    padding: 15px 20px;
+    border-radius: 15px;
+}
+
+.resume {
+    
+}
+
+.contact-icons {
+    text-align: left
+}
+
+.title {
+    text-align: left
+}
+
+.text {
+    margin-bottom: 25px;
+}
+
+.resume-body {
+    text-align: left;
+}
+
+.entry-header {
+    font-weight: 600;
+}
+
+.experience {
+    display: flex;
+    justify-content: space-between;
+}
+
+.accomplishment {
+    margin: 5px 0px;
+}

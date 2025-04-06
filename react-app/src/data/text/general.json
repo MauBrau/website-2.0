@@ -1,0 +1,21 @@
+{
+    "copyright": "© 2025 Maude Braunstein",
+    "contact": {
+        "name": "hi@maubrau.com",
+        "link": "mailto:hi@maubrau.com"
+    },
+    "socials": [
+        {
+            "name": "LinkedIn",
+            "link": "https://www.linkedin.com/in/maudebraunstein/"
+        },
+        {
+            "name": "GitHub",
+            "link": "https://github.com/MauBrau/"
+        }
+    ],
+    "error": {
+        "title": "How'd you get here?",
+        "body": "Happy to have you poke around, though seems you took a wrong turn."
+    }
+}
