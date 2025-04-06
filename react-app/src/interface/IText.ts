@@ -1,5 +1,7 @@
 export interface GeneralText {
     copyright: string;
+    contact: Social; // reuse it
+    socials: Social[];
 }
 
 export interface PageText {
@@ -19,7 +21,6 @@ interface Social {
     name: string;
     link: string;
 }
-
 
 export interface ProjectsText extends PageText {
     projects: Projects[];

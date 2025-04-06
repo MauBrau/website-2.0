@@ -3,5 +3,15 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    text-align: center;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+}
+
+.footer-item {
+    display: block;
+}
+
+.copyright {
+    align-self: center;
 }

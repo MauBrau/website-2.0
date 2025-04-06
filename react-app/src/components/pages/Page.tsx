@@ -5,25 +5,24 @@ import { PropsWithChildren } from "react";
 import "./Pages.css";
 
 interface PageProps extends PropsWithChildren<{}>{
-    className: string; // Classname for main div
+    className?: string; // Classname for main div
     minWidth: number; // Value in pixels
-    desktopTranslateAmount: number; // Value as percent (0-100)
-    mobileTranslateAmount: number; // Value as percent (0-100)
+    desktopTopMarginAmount: number; // Value in pixels, minimum 100px preferred
+    mobileTopMarginAmount: number; // Value as percent (0-100)
     title?: string;
     body?: string;
 }
 
 export default function Page(props: PageProps) {
-    const { className, minWidth, desktopTranslateAmount, mobileTranslateAmount, title, body, children } = props;
+    const { className, minWidth, desktopTopMarginAmount, mobileTopMarginAmount, title, body, children } = props;
     const isDesktop = useMediaQuery(`(min-width:${minWidth}px)`);
-
     return ( 
         <div 
-            className={`page ${className}`}
+            className={`page ${className ?? ''}`}
             style={{
-                transform: `translate(0%, ${
-                    isDesktop ? `${desktopTranslateAmount}%` : `${mobileTranslateAmount}%`
-                })`
+                marginTop: `${
+                    isDesktop ? `${desktopTopMarginAmount}px` : `${mobileTopMarginAmount}px`
+                }`
             }}
         >
             { title && <Title title={title}/> }

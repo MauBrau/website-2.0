@@ -1,20 +1,21 @@
 .page {
     margin-left: 40px;
     margin-right: 40px;
-    height: 500px;
-}
-.home {
-    height: unset !important;
 }
 
-/* .projects {
+.card {
+    background-color: #352e34;
+    padding: 15px 20px;
+    border-radius: 15px;
 }
 
 .resume {
+    
 }
 
-.contact {
-} */
+.contact-icons {
+    text-align: left
+}
 
 .title {
     text-align: left

@@ -96,6 +96,7 @@ function Header() {
                                 fontFamily: nameFont,
                                 fontWeight: 500,
                                 textAlign: { xs: "center", sm: "left" },
+                                marginRight: { xs: '40px'},
                                 color: "primary.main",
                                 "&::first-letter": {
                                     fontSize: "4rem",

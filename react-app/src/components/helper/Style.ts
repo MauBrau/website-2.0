@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material";
 export const nameFont = 'birthstone bounce';
 export const stylizedTextFont = 'bagel fat one';
 export const textFont = 'montserrat';
+export const formalFont = 'Raleway';
 
 export const TRANSPARENT = "#00000000";
 export const BACKGROUND_BROWN = "#352E34";
