@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import "./CatWindow.css";
 import { Weather, WeatherMain } from "../../interface/IWeather";
 import {
@@ -543,7 +542,6 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
             closeHill = "#ccd6e0";
         }
 
-        const closeHeight = DEFAULT_WINDOW_SIZE * 0.7;
         const midHeight = DEFAULT_WINDOW_SIZE * 0.7;
         const farHeight = DEFAULT_WINDOW_SIZE * 0.6;
         return (
