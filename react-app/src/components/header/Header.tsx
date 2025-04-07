@@ -107,7 +107,7 @@ function Header() {
                         >
                             Maude
                         </Typography>
-                        <Box sx={{ flexGrow: 1, textAlign: "right", display: { xs: "none", sm: "block" } }}>
+                        <Box width={"100%"} sx={{ flexGrow: 1, textAlign: "right", display: { xs: "none", sm: "block" } }}>
                             {pages.map((item) => (
                                 <Tooltip title={item.message} key={item.name}>
                                     <Button
