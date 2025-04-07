@@ -1,5 +1,5 @@
-import { Grid, Typography } from "@mui/material";
-import { ResumeText } from "../../interface/IText";
+import { Grid, Typography, useMediaQuery } from "@mui/material";
+import { ResumeEntry, ResumeText, RoleTitle } from "../../interface/IText";
 import {
     PRIMARY_COLOUR,
     SECONDARY_COLOUR,
@@ -10,7 +10,7 @@ import Page from "./Page";
 
 export default function Resume() {
     const pageText: ResumeText = require("../../data/text/resume.json");
-
+    const isDesktop = useMediaQuery("(min-width:600px)");
     return (
         <div>
             <Page
@@ -78,18 +78,9 @@ export default function Resume() {
                         {pageText.workExperience.map((experience) => (
                             <div key={experience.subtitle}>
                                 <div style={{ fontFamily: textFont }}>
-                                    {experience.titles.map((title) => (
-                                        <div
-                                            key={title.role}
-                                            className="experience entry-header"
-                                            style={{ color: SECONDARY_COLOUR }}
-                                        >
-                                            <span>{title.role}</span>
-                                            <span style={{ textAlign: "right" }}>
-                                                {title.yearRange}
-                                            </span>
-                                        </div>
-                                    ))}
+                                    {isDesktop
+                                        ? desktopRoleEntry(experience)
+                                        : mobileRoleEntry(experience)}
                                     <div style={{ color: PRIMARY_COLOUR }}>
                                         {experience.subtitle}
                                     </div>
@@ -98,14 +89,15 @@ export default function Resume() {
                                             <ul
                                                 key={index}
                                                 className="accomplishment"
-                                                style={{ color: PRIMARY_COLOUR }}
+                                                style={{
+                                                    color: PRIMARY_COLOUR,
+                                                }}
                                             >
                                                 <li>{accomplishment}</li>
                                             </ul>
                                         )
                                     )}
                                 </div>
-                                <br />
                             </div>
                         ))}
                     </Grid>
@@ -122,18 +114,9 @@ export default function Resume() {
                         {pageText.education.map((experience) => (
                             <div key={experience.subtitle}>
                                 <div style={{ fontFamily: textFont }}>
-                                    {experience.titles.map((title) => (
-                                        <div
-                                            key={title.role}
-                                            className="experience entry-header"
-                                            style={{ color: SECONDARY_COLOUR }}
-                                        >
-                                            <span>{title.role}</span>
-                                            <span style={{ textAlign: "right" }}>
-                                                {title.yearRange}
-                                            </span>
-                                        </div>
-                                    ))}
+                                    {isDesktop
+                                        ? desktopRoleEntry(experience)
+                                        : mobileRoleEntry(experience)}
                                     <div style={{ color: PRIMARY_COLOUR }}>
                                         {experience.subtitle}
                                     </div>
@@ -142,7 +125,9 @@ export default function Resume() {
                                             <ul
                                                 key={index}
                                                 className="accomplishment"
-                                                style={{ color: PRIMARY_COLOUR }}
+                                                style={{
+                                                    color: PRIMARY_COLOUR,
+                                                }}
                                             >
                                                 <li>{accomplishment}</li>
                                             </ul>
@@ -155,8 +140,38 @@ export default function Resume() {
                 </Grid>
             </Page>
             <Grid size={{ xs: 12 }}>
-                <div style={{ height:'105px' }}/>
+                <div style={{ height: "105px" }} />
             </Grid>
         </div>
     );
+
+    function desktopRoleEntry(experience: ResumeEntry) {
+        return experience.titles.map((title: RoleTitle) => (
+            <div
+                key={title.role}
+                className="experience entry-header"
+                style={{ color: SECONDARY_COLOUR }}
+            >
+                <span>{title.role}</span>
+                <span style={{ textAlign: "right" }}>{title.yearRange}</span>
+            </div>
+        ));
+    }
+
+    function mobileRoleEntry(experience: ResumeEntry) {
+        return experience.titles.map((title: RoleTitle) => (
+            <div
+                key={title.role}
+                className="experience entry-header"
+                style={{ color: SECONDARY_COLOUR }}
+            >
+                <span>
+                    {title.role},{" "}
+                    <span style={{ color: PRIMARY_COLOUR, fontWeight: 200 }}>
+                        {title.yearRange}
+                    </span>
+                </span>
+            </div>
+        ));
+    }
 }

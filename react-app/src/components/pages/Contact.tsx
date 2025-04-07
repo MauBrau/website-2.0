@@ -1,15 +1,9 @@
-import React, { Component } from "react";
-import { IconButton, SvgIconTypeMap, Typography } from "@mui/material";
+import React from "react";
+import { IconButton, SvgIconTypeMap } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import EmailIcon from "@mui/icons-material/Email";
-import { ContactText, ResumeText } from "../../interface/IText";
-import {
-    PRIMARY_COLOUR,
-    SECONDARY_COLOUR,
-    stylizedTextFont,
-    textFont,
-} from "../helper/Style";
+import { ContactText } from "../../interface/IText";
 import Page from "./Page";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
