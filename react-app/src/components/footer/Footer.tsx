@@ -9,7 +9,7 @@ function Footer() {
     return (
         <div className="footer" style={{ 
             backgroundColor: BACKGROUND_BROWN,
-            padding: `${isDesktop ? '10px 40px' : '5px'}`,
+            padding: `${isDesktop ? '15px 40px' : '5px'}`,
             display: `${isDesktop ? 'flex' : ''}`,
             justifyContent: `${isDesktop ? 'space-between' : ''}`
         }}>
