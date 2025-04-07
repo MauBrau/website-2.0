@@ -1,0 +1,147 @@
+{
+    "title": "Resume",
+    "body": "I've been coding and exploring new technologies both professionally and as a hobby since 2014. Web development has been a particular passion of mine for just as long, and I enjoy building functional programs with a strong focus on user interface (UI) and user experience (UX). I’m skilled at breaking down complex concepts, researching emerging technologies, and developing proofs of concept. My strengths lie in rapid learning, attention to detail, and crafting human-centered solutions that align with both user needs and business objectives. ",
+    "skillset": [
+        {
+            "categoryName": "Applications",
+            "skills": [
+                "Visual Studio",
+                "Visual Studio Code",
+                "GitHub",
+                "Eclipse",
+                "Azure DevOps",
+                "Jira",
+                "Salesforce"
+            ]
+        },
+        {
+            "categoryName": "Programming Languages",
+            "skills": [
+                "JavaScript",
+                "TypeScript",
+                "C#",
+                "Java",
+                "SQL",
+                "C++",
+                "Python",
+                "HTML",
+                "CSS"
+            ]
+        },
+        {
+            "categoryName": "Software",
+            "skills": [
+                "React",
+                "Vue.js",
+                "Redux",
+                "GraphQL",
+                "Node.js",
+                "Express",
+                "Salesforce Platform (Lightning Components, Apex, SOQL, Visualforce)",
+                "Jest",
+                "Jasmine",
+                "jQuery",
+                ".NET"
+            ]
+        },
+        {
+            "categoryName": "Languages",
+            "skills": [
+                "English",
+                "French"
+            ]
+        },
+        {
+            "categoryName": "Certifications",
+            "skills": [
+                "Salesforce Certified Administrator",
+                "Salesforce Certified JavaScript Developer",
+                "Salesforce Certified Platform Developer I and II",
+                "Salesforce Certified Service Cloud Consultant"
+            ]
+        }
+    ],
+    "workExperience": [
+        {
+            "titles": [
+                {
+                    "role": "Senior Software Developer",
+                    "yearRange": "2024 – 2025"
+                },
+                {
+                    "role": "Software Developer",
+                    "yearRange": "2020 – 2024"
+                },
+                {
+                    "role": "Software Developer Intern",
+                    "yearRange": "2018"
+                }
+            ],
+            "subtitle": "Diabsolut (Montreal, Hybrid)",
+            "accomplishments": [
+                "Developed custom Salesforce frontend applications using Lightning Web Components (JavaScript/React), Apex, and GraphQL, tailored to client specifications.",
+                "Created a project team management interface within the Field Service app, featuring custom components for advanced search, querying, and a cross-platform file display UI.",
+                "Designed and implemented a Salesforce UI for timesheet entries, accounting for pay variations and user skills, with support for comments, attachments, and file submissions, using Apex and Lightning Web Components.",
+                "Built an Azure DevOps web extension for generating release notes using JavaScript and Node.js, improving performance by 10x and scaling ticket support from 250 to 2000.",
+                "Developed a Salesforce extension for real-time work site alerts and timers using JavaScript and Lightning Web Components, syncing data between on-site technicians and dispatchers, enabling live status tracking and communication.",
+                "Interpreted Figma designs to build a work item tracking system for a client, utilizing React and JavaScript for an intuitive and dynamic user experience.",
+                "Contributed to a client-facing tracking website for incident and bug reports, adding search functionality, downloadable results, and dynamic charts, built with TypeScript, React, and Node.js.",
+                "Developed and unit-tested applications following both company and client coding standards, ensuring quality and performance.",
+                "Mentored colleagues on research, troubleshooting, code reviews, and optimization techniques, enhancing team productivity and skill development."
+            ]
+        },
+        {
+            "titles": [
+                {
+                    "role": "Software Developer Intern",
+                    "yearRange": "May 2019 – Aug 2019"
+                }
+            ],
+            "subtitle": "ChargeHub / Mogile Technologies (Montreal, On-site)",
+            "accomplishments": [
+                "Co-led the development, design, and implementation of the frontend web map application on chargehub.com using Vue.js and a new map API, optimizing performance and reducing costs. Enabled real-time tracking of electric vehicle charging station status.",
+                "Created additional API endpoints to display new data on the redesigned site, enhancing user experience and functionality.",
+                "Performed and documented all data imports, ensuring seamless integration and accurate display across applications.",
+                "Improved database administration and management to support the site’s redesign, optimizing for scalability and efficiency.",
+                "Managed and processed user contributions to the company database, ensuring accurate data updates and maintaining data integrity."
+            ]
+        }
+    ],
+    "education": [
+        {
+            "titles": [
+                {
+                    "role": "Bachelor of Computer Science - Computer Games Co-op",
+                    "yearRange": "2016 - 2019"
+                }
+            ],
+            "subtitle": "Concordia University, Montreal, QC",
+            "accomplishments": [
+                "Member of the Institute for Co-operative Education",
+                "Relevant Courses: Object-Oriented Programming I and II, Advanced Program Design with C++, Databases, Artificial Intelligence, Web Programming"
+            ]
+        },
+        {
+            "titles": [
+                {
+                    "role": "Software Engineering (25 credits)",
+                    "yearRange": "2014 - 2015"
+                }
+            ],
+            "subtitle": "McGill University, Montreal, QC",
+            "accomplishments": []
+        },
+        {
+            "titles": [
+                {
+                    "role": "DEC in Honours Social Sciences with Math",
+                    "yearRange": "2012 - 2014"
+                }
+            ],
+            "subtitle": "John Abbott College, Sainte-Anne-de-Bellevue, QC",
+            "accomplishments": [
+                "Honour Roll Student (2014)"
+            ]
+        }
+    ]
+}
