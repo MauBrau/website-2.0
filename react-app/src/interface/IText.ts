@@ -42,13 +42,13 @@ export interface ResumeText extends PageText {
     education: ResumeEntry[];
 }
 
-interface ResumeEntry {
+export interface ResumeEntry {
     titles: RoleTitle[];
     subtitle: string;
     accomplishments: string[];
 }
 
-interface RoleTitle {
+export interface RoleTitle {
     role: string;
     yearRange: string;
 }
