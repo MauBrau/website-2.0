@@ -1,4 +1,4 @@
-import React, { ElementType } from "react";
+import React from "react";
 import "./Header.css";
 import {
     AppBar,
@@ -91,8 +91,8 @@ function Header() {
                             component="a"
                             aria-label="home page"
                             sx={{
-                                flexGrow: 1,
                                 mr: 2,
+                                flexGrow: { xs: 1 },
                                 fontFamily: nameFont,
                                 fontWeight: 500,
                                 textAlign: { xs: "center", sm: "left" },
@@ -107,7 +107,7 @@ function Header() {
                         >
                             Maude
                         </Typography>
-                        <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                        <Box sx={{ flexGrow: 1, textAlign: "right", display: { xs: "none", sm: "block" } }}>
                             {pages.map((item) => (
                                 <Tooltip title={item.message} key={item.name}>
                                     <Button
