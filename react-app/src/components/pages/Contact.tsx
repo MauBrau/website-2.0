@@ -6,6 +6,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import { ContactText } from "../../interface/IText";
 import Page from "./Page";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { SECONDARY_COLOUR } from "../helper/Style";
 
 export default function Contact() {
     const pageText: ContactText = require("../../data/text/contact.json");
@@ -38,6 +39,11 @@ export default function Contact() {
                             aria-label={social.name}
                             href={social.link}
                             target="_blank"
+                            sx={{
+                                "&:hover": {
+                                    color: SECONDARY_COLOUR,
+                                }
+                            }}
                         >
                             {React.createElement(component)}
                         </IconButton>
