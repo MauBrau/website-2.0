@@ -90,7 +90,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
               scene.weather
           }`;
 
-    const SCENE_SIZE: number = isDesktop ? 400 : 300;
+    const SCENE_SIZE: number = isDesktop ? 400 : 275;
     return (
         <div
             className="windowView"
