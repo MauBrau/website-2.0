@@ -7,7 +7,7 @@ node-runtime/node_modules/
 .pnp.js
 
 # testing
-/coverage
+**/coverage
 
 # production
 react-app/build/

@@ -90,7 +90,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
               scene.weather
           }`;
 
-    const SCENE_SIZE: number = isDesktop ? 400 : 300;
+    const SCENE_SIZE: number = isDesktop ? 400 : 275;
     return (
         <div
             className="windowView"
@@ -201,7 +201,7 @@ function SceneBuilder({ weatherInfo }: SceneProps) {
 
         if (currentTimeUnix > sunrise && currentTimeUnix < sunset - HOUR) {
             return TimeOfDay.Day;
-        } else if (currentTimeUnix > sunset) {
+        } else if (currentTimeUnix > sunset || currentTimeUnix < sunrise - HOUR) {
             return TimeOfDay.Night;
         } else if (
             currentTimeUnix >= sunrise - HOUR &&

@@ -79,7 +79,7 @@
             ],
             "subtitle": "Diabsolut (Montreal, Hybrid)",
             "accomplishments": [
-                "Developed custom Salesforce frontend applications using Lightning Web Components (JavaScript/React), Apex, and GraphQL, tailored to client specifications.",
+                "Developed custom Salesforce frontend applications using Lightning Web Components (JavaScript/React-like), Apex, and GraphQL, tailored to client specifications.",
                 "Created a project team management interface within the Field Service app, featuring custom components for advanced search, querying, and a cross-platform file display UI.",
                 "Designed and implemented a Salesforce UI for timesheet entries, accounting for pay variations and user skills, with support for comments, attachments, and file submissions, using Apex and Lightning Web Components.",
                 "Built an Azure DevOps web extension for generating release notes using JavaScript and Node.js, improving performance by 10x and scaling ticket support from 250 to 2000.",
