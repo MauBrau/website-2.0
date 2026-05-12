@@ -1,0 +1,121 @@
+name: CI - Tests & Coverage
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  branch-gate:
+    name: Branch Policy Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify source branch
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          echo "Source branch: $BRANCH"
+          if [ "$BRANCH" != "staging" ] && [ "$BRANCH" != "dev" ]; then
+            echo "Only 'staging' and 'dev' branches can be merged into main/master."
+            echo "Current branch '$BRANCH' must first be merged into staging or dev."
+            exit 1
+          fi
+          echo "Branch '$BRANCH' is allowed to merge into main/master."
+
+  test-frontend:
+    name: Frontend Tests & Coverage
+    needs: branch-gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: react-app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: react-app
+        run: npm ci
+
+      - name: Run tests with coverage
+        working-directory: react-app
+        run: npx react-scripts test --watchAll=false --coverage --coverageReporters=text --coverageReporters=json-summary
+        env:
+          CI: true
+
+      - name: Check coverage thresholds
+        working-directory: react-app
+        run: |
+          echo "Checking frontend coverage thresholds..."
+          node -e "
+            const report = require('./coverage/coverage-summary.json');
+            const totals = report.total;
+            const thresholds = { statements: 80, branches: 80, functions: 80, lines: 80 };
+            let failed = false;
+
+            for (const [metric, threshold] of Object.entries(thresholds)) {
+              const actual = totals[metric].pct;
+              const status = actual >= threshold ? 'PASS' : 'FAIL';
+              console.log(status + ' ' + metric + ': ' + actual + '% (threshold: ' + threshold + '%)');
+              if (actual < threshold) failed = true;
+            }
+
+            if (failed) {
+              console.log('\nCoverage below 80% threshold. Add more tests before merging.');
+              process.exit(1);
+            } else {
+              console.log('\nAll coverage thresholds met.');
+            }
+          "
+
+  test-backend:
+    name: Backend Tests & Coverage
+    needs: branch-gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: node-runtime/package-lock.json
+
+      - name: Install dependencies
+        working-directory: node-runtime
+        run: npm ci
+
+      - name: Run tests with coverage
+        working-directory: node-runtime
+        run: npx jest --coverage --coverageReporters=text --coverageReporters=json-summary
+
+      - name: Check coverage thresholds
+        working-directory: node-runtime
+        run: |
+          echo "Checking backend coverage thresholds..."
+          node -e "
+            const report = require('./coverage/coverage-summary.json');
+            const totals = report.total;
+            const thresholds = { statements: 80, branches: 80, functions: 80, lines: 80 };
+            let failed = false;
+
+            for (const [metric, threshold] of Object.entries(thresholds)) {
+              const actual = totals[metric].pct;
+              const status = actual >= threshold ? 'PASS' : 'FAIL';
+              console.log(status + ' ' + metric + ': ' + actual + '% (threshold: ' + threshold + '%)');
+              if (actual < threshold) failed = true;
+            }
+
+            if (failed) {
+              console.log('\nCoverage below 80% threshold. Add more tests before merging.');
+              process.exit(1);
+            } else {
+              console.log('\nAll coverage thresholds met.');
+            }
+          "
