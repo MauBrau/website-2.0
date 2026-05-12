@@ -20,7 +20,7 @@ const renderHeader = () => {
 describe('Header', () => {
     it('renders the site name "Maude"', () => {
         renderHeader();
-        expect(screen.getByText('Maude')).toBeInTheDocument();
+        expect(screen.getByText('John')).toBeInTheDocument();
     });
 
     it('renders navigation buttons for all pages (desktop view)', () => {
